@@ -3,8 +3,8 @@
 
 ## Requirements
 
-- PHP >= 5.5.x (with PDO and SQLite)
-- Apache2 >= 2.4.x
+- PHP >= 5.5.x (with _PDO_ and _SQLite_)
+- Apache2 >= 2.4.x (with *mod_rewrite*)
 
 ## Libraries
 **n!** does not pretend to reinvent the wheel, so it takes advantage of the following libraries:
@@ -22,7 +22,7 @@ Administration interface is built on top of:
 - Font Awesome
 
 ## License
-See [LICENSE](LICENSE.md) file.
+See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
 [slim]: http://www.slimframework.com/
