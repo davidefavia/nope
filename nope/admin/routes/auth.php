@@ -1,12 +1,12 @@
 <?php
 
-$app->group(NOPE_ADMIN_ROUTE . 'user/', function() {
+$app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
-  $this->get('login', function ($req, $res) {
+  $this->post('/login', function ($req, $res) {
     return $res;
   });
 
-  $this->get('logout', function ($req, $res) {
+  $this->get('/logout', function ($req, $res) {
     return $res;
   })->add(auth());
 
