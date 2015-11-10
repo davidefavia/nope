@@ -1,0 +1,17 @@
+{
+  "name": "davidefavia/nope",
+  "description": "Content management for small projects",
+  "homepage": "https://github.com/davidefavia/nope",
+  "license": "MIT",
+  "authors": [{
+    "name": "Davide Favia",
+    "email": "davide.favia@gmail.com"
+  }],
+  "config": {
+    "vendor-dir": "nope/vendor"
+  },
+  "require": {
+    "php": ">=5.5.0",
+    "slim/slim": "^3.0@RC"
+  }
+}
