@@ -1,6 +1,5 @@
-<div style="text-align:center">
-  ![nope!](nope/admin/assets/img/nope.png "nope!")
-</div>
+![nope](nope/admin/assets/img/nope.png "nope!")
+
 
 ### :shit: Crapware warning! :shit:
 Almost badly written, badly commented and documented, badly extensible, not usable and not tested. I'm working on it in the few spare time!
