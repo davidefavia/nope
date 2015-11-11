@@ -1,3 +1,10 @@
+<div style="text-align:center">
+  ![nope!](nope/admin/assets/img/nope.png "nope!")
+</div>
+
+### :shit: Crapware warning! :shit:
+Almost badly written, badly commented and documented, badly extensible, not usable and not tested. I'm working on it in the few spare time!
+
 # nope!
 **nope!** (_a.k.a._ **n!**) is a content management system written in PHP suitable for small projects.
 
@@ -10,19 +17,22 @@
 **n!** does not pretend to reinvent the wheel, so it takes advantage of the following libraries:
 
 - [Slim framework][slim]
-- RedbeanPHP
-- Respect\Validation
+- [RedbeanPHP][redbeanphp]
+- [Respect\Validation][validation]
 - Intervention
 - League\Event
 
 Administration interface is built on top of:
 
 - [AngularJS][angular]
-- Bootstrap 4 (without jQuery)
+- [Bootstrap 3][bootstrap] (no jQuery!)
 - Font Awesome
 
 ## License
 See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
+[bootstrap]: http://getbootstrap.com/
+[redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
+[validation]: https://github.com/Respect/Validation
