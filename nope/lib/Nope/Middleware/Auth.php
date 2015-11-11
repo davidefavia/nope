@@ -18,6 +18,7 @@ class Auth
       if(!$loggedIn) {
         return $response->withStatus(401);
       }
+      $response = $next($request, $response);
       return $response;
     }
 }

@@ -29,7 +29,7 @@ class View {
     foreach($data as $key => $value) {
       $$key = $value;
     }
-    include_once $template;
+    require_once $template;
     $renderedTemplate = ob_get_contents();
     ob_end_clean();
     return $renderedTemplate;

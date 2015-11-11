@@ -10,5 +10,4 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     return $res;
   })->add(auth());
 
-
 });
