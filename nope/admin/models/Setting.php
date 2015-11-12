@@ -10,6 +10,10 @@ class Setting extends Nope\Model {
     return true;
   }
 
+  function jsonSerialize() {
+    return;
+  }
+
   static function getByKey($key) {
     $setting = R::findOne(self::MODELTYPE, 'key = ?', [$key]);
     return self::__transform($setting);

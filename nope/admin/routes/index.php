@@ -10,8 +10,6 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
   });
 
   $this->get('/', function ($req, $res) {
-
-    var_dump($_SESSION);
     return $this->view->adminRender($res, 'index.php', ['request' => $req]);
   });
 
@@ -40,10 +38,10 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'passed' => $isConnected
     ];
     // Nope salt
-    $passedSalt = v::stringType()->length(1)->not(v::nullType())->validate(NOPE_SALT);
+    $passedSalt = v::stringType()->length(1)->not(v::nullType())->validate(NOPE_SECURITY_SALT);
     $suggestedSalt = password_hash("nope".microtime(), PASSWORD_BCRYPT, ['cost' => 12]);
     $data['nope'] = (object) [
-      'salt' => NOPE_SALT,
+      'salt' => NOPE_SECURITY_SALT,
       'suggestion' => $suggestedSalt,
       'passed' => $passedSalt
     ];

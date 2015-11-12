@@ -9,7 +9,7 @@ function install() {
 }
 
 function path($fileName) {
-  return '/' . NOPE_PATH . $fileName;
+  return NOPE_PATH . $fileName;
 }
 
 function redirect($request, $response, $path) {

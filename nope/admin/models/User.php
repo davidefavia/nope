@@ -8,19 +8,21 @@ class User extends Nope\Model {
 
   const MODELTYPE = 'user';
 
+  function jsonSerialize() {
+    $obj = parent::jsonSerialize();
+    unset($obj->password);
+    unset($obj->salt);
+    unset($obj->last_login_date);
+    unset($obj->reset_code);
+    return $obj;
+  }
+
   function validate() {
     $userValidator = v::attribute('username', v::alnum()->noWhitespace()->length(1,20))
       ->attribute('password', v::stringType()->noWhitespace()->notEmpty())
       ->attribute('email', v::stringType()->email());
     try {
-      // @TODO better validation, obviously, do not create COPY!
-      $copy = new stdClass();
-      $copy->username = $this->model->username;
-      $copy->password = $this->model->password;
-      $copy->email = $this->email;
-      var_dump($copy);
-      #die();
-      $userValidator->check($copy);
+      $userValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
       throw $exception;
     }
@@ -53,7 +55,7 @@ class User extends Nope\Model {
     $salt = (string) $data[1];
     $user = self::findByUsername($username);
     if($user) {
-      if($salt === $user->salt.NOPE_SALT) {
+      if($salt === $user->salt.NOPE_SECURITY_SALT) {
         return $user;
       } else {
         $user->deleteFromSession();
@@ -73,12 +75,14 @@ class User extends Nope\Model {
     $user = self::getAuthenticated();
     if($user) {
       $user->deleteFromSession();
+      $user = self::getAuthenticated();
+      return is_null($user);
     }
-    return true;
+    return false;
   }
 
   function saveInSession() {
-    $_SESSION['nope.user'] = implode('|', [$this->username, $this->salt.NOPE_SALT]);
+    $_SESSION['nope.user'] = implode('|', [$this->username, $this->salt.NOPE_SECURITY_SALT]);
   }
 
   function deleteFromSession() {

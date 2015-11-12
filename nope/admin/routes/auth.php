@@ -17,9 +17,21 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     }
   });
 
+  $this->get('/loginstatus', function($req, $res) {
+    $currentUser = \User::getAuthenticated();
+    if(is_null($currentUser)) {
+      return $res->withStatus(401);
+    }
+    $body = $res->getBody();
+    $body->write(json_encode(['currentUser' => $currentUser]));
+    return $res->withBody($body);
+  });
+
   $this->get('/logout', function ($req, $res) {
-    User::logout();
-    return $res;
-  })->add(auth());
+    if(User::logout()) {
+      return $res->withStatus(401);
+    }
+    return $res->withStatus(500);
+  });
 
 });

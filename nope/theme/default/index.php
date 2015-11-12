@@ -1,3 +1,3 @@
 <h3>Default theme.</h3>
 
-<p>Hello: <?php echo $name ?></p> 
+<p>Hello: <?php echo $name ?></p>

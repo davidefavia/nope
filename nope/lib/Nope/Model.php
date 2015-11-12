@@ -4,7 +4,7 @@ namespace Nope;
 
 use RedBeanPHP\R as R;
 
-abstract class Model {
+abstract class Model implements \JsonSerializable {
 
   const MODELTYPE = '';
   protected $model;
@@ -47,6 +47,10 @@ abstract class Model {
 
 
   abstract public function validate();
+
+  public function jsonSerialize() {
+      return (object) $this->model->export();
+  }
 
   public function save() {
     if($this->validate()) {
