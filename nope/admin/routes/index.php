@@ -6,14 +6,21 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE, function() {
 
   $this->get('', function ($req, $res) {
-    return $this->view->adminRender($res, 'index.php', ['request' => $req]);
+    return redirect($req, $res, NOPE_ADMIN_ROUTE . '/');
   });
 
   $this->get('/', function ($req, $res) {
+
+    var_dump($_SESSION);
     return $this->view->adminRender($res, 'index.php', ['request' => $req]);
   });
 
-  $this->get('/install', function ($req, $res) {
+  $this->map(['GET', 'POST'], '/install', function ($req, $res) {
+
+    if(\Nope::isAlredyInstalled()) {
+      return $res->withStatus(302)->withHeader('Location', $req->getUri()->getBasePath() . NOPE_ADMIN_ROUTE);
+    }
+
     $data = [];
     // PHP version
     $phpVersion = phpversion();
@@ -28,6 +35,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     // SQLite
     $isConnected = R::testConnection();
     $data['sqlite'] = (object) [
+      'dbPath' => NOPE_DATABASE_PATH,
+      'isDbPathWriteable' => is_writable(basename(NOPE_DATABASE_PATH)),
       'passed' => $isConnected
     ];
     // Nope salt
@@ -39,7 +48,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'passed' => $passedSalt
     ];
     // Folders
-    $isDataPathWriteable = is_writable(NOPE_DATA_PATH);
+    $isDataPathWriteable = is_writable(NOPE_STORAGE_PATH);
     $data['folders'] = (object) [
       'passed' => $isDataPathWriteable
     ];
@@ -47,6 +56,32 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     $data['timezone'] = (object) [
       'list' => timezone_identifiers_list()
     ];
+    $data['step'] = 1;
+
+    $data['ok'] = ($isRightPhpVersion && $isConnected && $passedSalt && $isDataPathWriteable);
+
+    if($req->isPost() && $data['ok']) {
+      $data['step'] = 2;
+      $body = $req->getParsedBody();
+      if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::email()->validate($body['email'])) {
+        $user = new User();
+        $user->username = $body['username'];
+        $user->setPassword($body['password']);
+        $user->email = $body['email'];
+        $user->role = 'admin';
+        $user->save();
+
+        $setting = new Setting();
+        $setting->group = 'nope';
+        $setting->key = 'installation';
+        $setting->value = new DateTime();
+        $setting->save();
+
+        return redirect($req, $res, NOPE_ADMIN_ROUTE);
+      } else if($body) {
+        $data['user'] = false;
+      }
+    }
 
 
     return $this->view->adminRender($res, 'install.php', $data);

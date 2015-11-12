@@ -4,14 +4,15 @@ use RedBeanPHP\R as R;
 
 class Setting extends Nope\Model {
 
-  protected $type = 'setting';
+  const MODELTYPE = 'setting';
 
   function validate() {
     return true;
   }
 
   static function getByKey($key) {
-    return self::__transform(R::findOne('setting', 'key = ?', [$key]));
+    $setting = R::findOne(self::MODELTYPE, 'key = ?', [$key]);
+    return self::__transform($setting);
   }
 
 }

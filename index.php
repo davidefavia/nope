@@ -15,6 +15,6 @@ require 'nope/admin/models/Setting.php';
 # app routes
 require 'nope/app/routes/index.php';
 
-$app->add(new Nope\Middleware\Install());
+#$app->add(new Nope\Middleware\Install());
 
 $app->run();

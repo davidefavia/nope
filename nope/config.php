@@ -1,17 +1,24 @@
 <?php
 
+session_start();
+
 use RedBeanPHP\R as R;
 
 date_default_timezone_set('Europe/Rome');
 
 require 'lib/functions.php';
 
-define('NOPE_SALT', '');
+$basePath = basename(dirname(__DIR__.'../'));
+$thisFolder = basename(__DIR__);
+$dbName = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..') . '/nope.db';
+
+define('NOPE_SALT', '$2y$12$NYDSfg.DBr0ZmdfR7AyS7OU16p8VRREi2ozHGsmIh4efQz9LIbw7S');
 define('NOPE_ADMIN_ROUTE', '/admin');
-define('NOPE_PATH', basename(__DIR__) . '/nope/');
-define('NOPE_DATA_PATH', dirname(__DIR__) . '/nope/data/');
-define('NOPE_THEME_DEFAULT_PATH', 'nope/theme/default/');
-define('NOPE_ADMIN_VIEWS_PATH', 'nope/admin/views/');
+define('NOPE_DATABASE_PATH', $dbName);
+define('NOPE_PATH', $basePath . '/' . $thisFolder . '/');
+define('NOPE_STORAGE_PATH', __DIR__ . '/storage/');
+define('NOPE_THEME_DEFAULT_PATH', __DIR__ . '/theme/default/');
+define('NOPE_ADMIN_VIEWS_PATH', __DIR__ . '/admin/views/');
 
 $configuration = [
     'settings' => [
@@ -29,4 +36,11 @@ $container['view'] = function ($c) {
 };
 
 // Database
-R::setup('sqlite:' . dirname(__DIR__) . '/nope/data/nope.db');
+try {
+  $db = new SQLite3(NOPE_DATABASE_PATH, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+  R::setup('sqlite:'.NOPE_DATABASE_PATH);
+  R::freeze(false);
+  R::debug(false);
+} catch(\Exception $e) {
+
+}

@@ -6,14 +6,19 @@ use RedBeanPHP\R as R;
 
 abstract class Model {
 
-  protected $type;
+  const MODELTYPE = '';
   protected $model;
 
-  public function __construct($id = null) {
-    if(is_null($id)) {
-      $this->model = R::dispense($this->type);
+  public function __construct($id = null, $model = null) {
+    $c = get_called_class();
+    if(is_null($id) && is_null($model)) {
+      $this->model = R::dispense($c::MODELTYPE);
     } else {
-      $this->model = R::load($this->type, $id);
+      if(is_null($model)) {
+        $this->model = R::load($c::MODELTYPE, $id);
+      } else {
+        $this->model = $model;
+      }
     }
   }
 
@@ -30,17 +35,16 @@ abstract class Model {
     if(is_array($models)) {
       $list = [];
       foreach($models as $model) {
-        $item = new $className;
-        $item->model = $model;
+        $item = new $className(null, $model);
         $list[] = $item;
       }
       return $list;
     } else {
-      $item = new $className;
-      $item->model = $model;
+      $item = new $className(null, $models);
       return $item;
     }
   }
+
 
   abstract public function validate();
 

@@ -2,10 +2,10 @@
 
 
 ### :shit: Crapware warning! :shit:
-Almost badly written, badly commented and documented, badly extensible, not usable and not tested. I'm working on it in the few spare time!
+Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!
 
 # nope!
-**nope!** (_a.k.a._ **n!**) is a content management system written in PHP suitable for small projects.
+**nope!** (_a.k.a._ **n!**) is a content management system written in PHP and suitable for small projects.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ Almost badly written, badly commented and documented, badly extensible, not usab
 ## Libraries
 **n!** does not pretend to reinvent the wheel, so it takes advantage of the following libraries:
 
-- [Slim framework][slim]
+- [Slim framework][slim] (with [Psr7Middlewares collection](psr7middlewares))
 - [RedbeanPHP][redbeanphp]
 - [Respect\Validation][validation]
 - Intervention
@@ -32,6 +32,7 @@ See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
 [bootstrap]: http://getbootstrap.com/
+[psr7middlewares]: https://github.com/oscarotero/psr7-middlewares
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
 [validation]: https://github.com/Respect/Validation
