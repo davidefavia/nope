@@ -22,6 +22,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
         $userToCreate->import($body, $fields);
         $userToCreate->setPassword($body['password']);
         $userToCreate->save();
+        if($currentUser->id == $userToCreate->id) {
+          $userToCreate->saveInSession();
+          $currentUser = $userToCreate;
+        }
         $body = $res->getBody();
         $body->write(json_encode(['currentUser' => $currentUser, "data" => $userToCreate]));
         return $res->withBody($body);
@@ -52,13 +56,13 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
         $fields = ['email','description','pretty_name'];
       }
       $userToUpdate = new User($args['id']);
-      $userToUpdate->import($req->getParsedBody(), $fields);
-      $userToUpdate->save();
-      if($currentUser->id === $userToUpdate->id) {
-        $userToUpdate->saveInSession();
-        $currentUser = $userToUpdate;
-      }
       if($userToUpdate) {
+        $userToUpdate->import($req->getParsedBody(), $fields);
+        $userToUpdate->save();
+        if($currentUser->id == $userToUpdate->id) {
+          $userToUpdate->saveInSession();
+          $currentUser = $userToUpdate;
+        }
         $body = $res->getBody();
         $body->write(json_encode(['currentUser' => $currentUser, "data" => $userToUpdate]));
         return $res->withBody($body);

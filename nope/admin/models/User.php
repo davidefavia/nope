@@ -12,6 +12,7 @@ class User extends Nope\Model {
     $obj = parent::jsonSerialize();
     $obj->id = (int) $obj->id;
     $obj->enabled = (int) $obj->enabled;
+    $obj->permissions = $this->getPermissions();
     unset($obj->password);
     unset($obj->salt);
     unset($obj->last_login_date);

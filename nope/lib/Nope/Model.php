@@ -72,7 +72,9 @@ abstract class Model implements \JsonSerializable {
   public function import($body, $fields) {
     if(is_array($fields)) {
       foreach($fields as $f) {
-        $this->model->$f = $body[$f];
+        if(array_key_exists($f, $body)) {
+          $this->model->$f = $body[$f];
+        }
       }
     }
   }

@@ -89,13 +89,26 @@
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$stateParams', 'rolesList', 'User', 'usersList', function($scope, $filter, $stateParams, rolesList, User, usersList) {
+   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'rolesList', 'User', 'usersList', function($scope, $filter, $state, $stateParams, rolesList, User, usersList) {
      $scope.user = $filter('filter')(usersList, {id:$stateParams.id})[0];
      $scope.rolesList = rolesList;
+     $scope.changed = false;
+
+     $scope.$watch('user', function(n,o) {
+       if(!angular.equals(n,o)) {
+          $scope.changed = true;
+       }
+     }, true);
+
+     $scope.reset = function() {
+       $state.go('app.user.detail', {id:$stateParams.id}, {
+         reload: true
+       });
+     }
 
      $scope.save = function() {
        User.update($scope.user, function() {
-
+         $scope.changed = false;
        });
      }
    }])
@@ -103,7 +116,7 @@
     * Services
     */
     .factory('User', ['$resource', function($resource) {
-      return $resource('user/:id', {id:'@id'}, {
+      var r = $resource('user/:id', {id:'@id'}, {
         login : {
           url: 'user/login',
           method: 'POST'
@@ -123,6 +136,17 @@
           method : 'PUT'
         }
       });
+
+      r.prototype.isAdmin = function() {
+        return this.role === 'admin';
+      }
+
+      r.prototype.can = function(p) {
+        return (this.isAdmin() || this.permissions.indexOf(p)!==-1);
+      }
+
+      return r;
+
     }])
    /**
     * Interceptor
@@ -154,7 +178,9 @@
        },
        response : function(response) {
          if(response.data.currentUser) {
-           $rootScope.currentUser = response.data.currentUser;
+           var User = $injector.get('User');
+           $rootScope.currentUser = new User();
+           $rootScope.currentUser = angular.extend($rootScope.currentUser, response.data.currentUser);
            response.data = response.data.data;
          }
          return response;
