@@ -16,7 +16,7 @@ class Setting extends Nope\Model {
 
   static function getByKey($key) {
     $setting = R::findOne(self::MODELTYPE, 'key = ?', [$key]);
-    return self::__transform($setting);
+    return self::__to($setting);
   }
 
 }

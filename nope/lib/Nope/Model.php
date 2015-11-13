@@ -30,17 +30,27 @@ abstract class Model implements \JsonSerializable {
     return $this->model->$name;
   }
 
-  static public function __transform($models) {
+  static function __to($data, $limit=-1, $offset=0, &$count=0) {
     $className = static::class;
-    if(is_array($models)) {
+    if(is_null($data)) {
+      return null;
+    } elseif(is_array($data)) {
+      $count = count($data);
+      if($limit>0) {
+        $data = array_slice($data, $offset, $limit);
+      } else {
+        $data = array_slice($data, $offset);
+      }
+    }
+    if(is_array($data)) {
       $list = [];
-      foreach($models as $model) {
-        $item = new $className(null, $model);
+      foreach($data as $d) {
+        $item = new $className(null, $d);
         $list[] = $item;
       }
       return $list;
     } else {
-      $item = new $className(null, $models);
+      $item = new $className(null, $data);
       return $item;
     }
   }
@@ -56,6 +66,14 @@ abstract class Model implements \JsonSerializable {
     if($this->validate()) {
       $this->beforeSave();
       $this->model->id = R::store($this->model);
+    }
+  }
+
+  public function import($body, $fields) {
+    if(is_array($fields)) {
+      foreach($fields as $f) {
+        $this->model->$f = $body[$f];
+      }
     }
   }
 

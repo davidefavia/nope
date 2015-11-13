@@ -7,6 +7,7 @@
     <script>
       window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
       window.TEMPLATES_PATH = "<?php echo path($request->getUri()->getPath()); ?>";
+      window.ROLES = <?php echo json_encode($roles); ?>;
     </script>
   </head>
   <body>

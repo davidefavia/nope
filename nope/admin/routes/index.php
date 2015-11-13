@@ -10,7 +10,13 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
   });
 
   $this->get('/', function ($req, $res) {
-    return $this->view->adminRender($res, 'index.php', ['request' => $req]);
+    foreach(\Nope::getConfig('nope.roles') as $key => $value) {
+      $roles[] = [
+        'label' => $value['label'],
+        'key' => $key
+      ];
+    }
+    return $this->view->adminRender($res, 'index.php', ['request' => $req, 'roles' => $roles]);
   });
 
   $this->map(['GET', 'POST'], '/install', function ($req, $res) {
@@ -66,6 +72,9 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $user->username = $body['username'];
         $user->setPassword($body['password']);
         $user->email = $body['email'];
+        $user->enabled = 1;
+        $user->prettyName = null;
+        $user->description = null;
         $user->role = 'admin';
         $user->save();
 

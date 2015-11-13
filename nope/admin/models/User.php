@@ -10,6 +10,8 @@ class User extends Nope\Model {
 
   function jsonSerialize() {
     $obj = parent::jsonSerialize();
+    $obj->id = (int) $obj->id;
+    $obj->enabled = (int) $obj->enabled;
     unset($obj->password);
     unset($obj->salt);
     unset($obj->last_login_date);
@@ -20,7 +22,9 @@ class User extends Nope\Model {
   function validate() {
     $userValidator = v::attribute('username', v::alnum()->noWhitespace()->length(1,20))
       ->attribute('password', v::stringType()->noWhitespace()->notEmpty())
-      ->attribute('email', v::stringType()->email());
+      ->attribute('email', v::stringType()->email())
+      ->attribute('role', v::noWhitespace()->notEmpty())
+      ;
     try {
       $userValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
@@ -38,7 +42,7 @@ class User extends Nope\Model {
 
   static function authenticate($username, $password) {
     $user = self::findByUsername($username);
-    if($user && v::identical($user->password)->validate(hashPassword($password,$user->salt))) {
+    if($user && v::identical($user->password)->validate(hashPassword($password,$user->salt)) && $user->enabled==1) {
       $user->lastLoginDate = new \DateTime();
       $user->resetCode = null;
       $user->save();
@@ -112,12 +116,57 @@ class User extends Nope\Model {
     parent::beforeSave();
   }
 
+  function is($role) {
+    $role = explode(',',$role);
+    return in_array($this->role, $role);
+  }
+
+  function isAdmin() {
+    return $this->is('admin');
+  }
+
+  function can($permission) {
+    if($this->isAdmin()) {
+      return true;
+    } else {
+      return $this->hasPermission($permission);
+    }
+  }
+
+  private function hasPermission($permission) {
+    $permissionsList = $this->getPermissions();
+    return in_array($permission, $permissionsList);
+  }
+
+  function getPermissions() {
+    $permissions = \Nope::getConfig('nope.roles');
+    return $permissions[$this->role]['permissions'];
+  }
+
+  static public function findById($id) {
+    return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
+  }
+
   static public function findByUsername($username) {
-    return self::__transform(R::findOne(self::MODELTYPE, 'username = ?', [$username]));
+    return self::__to(R::findOne(self::MODELTYPE, 'username = ?', [$username]));
   }
 
   static public function findByEmail($email) {
-    return self::__transform(R::findOne(self::MODELTYPE, 'email = ?', [email]));
+    return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [email]));
+  }
+
+  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
+    $filters = (object) $filters;
+    $params = [];
+    if($filters->role) {
+      $sql[] = 'role = ?';
+      $params[] = $filters->role;
+    }
+    if($orderBy) {
+      $sql[] = 'order by '.$orderBy;
+    }
+    $users = R::findAll(self::MODELTYPE, implode(' ',$sql),$params);
+    return self::__to($users, $limit, $offset, $count);
   }
 
 }

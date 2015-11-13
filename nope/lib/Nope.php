@@ -106,4 +106,8 @@ class Nope {
     self::getInstance()->addConfig('nope.routes', $route);
   }
 
+  static function registerRole($key, $item) {
+    self::getInstance()->addConfigWithException('nope.roles', $key, $item, 'Role "'.$key.'" already exists');
+  }
+
 }

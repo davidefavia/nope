@@ -1,3 +1,11 @@
-<div>
-  user
+<div class="row">
+  <div class="col col-md-3">
+    <div class="list-group">
+      <a class="list-group-item" ng-repeat="u in usersList" ng-href="#/user/{{u.id}}">{{u.username}} - {{u.pretty_name}}</a>
+    </div>
+    <a href="#/user/create">Create new user</a>
+  </div>
+  <div class="col col-md-9" ui-view="content">
+
+  </div>
 </div>

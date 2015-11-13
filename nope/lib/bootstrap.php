@@ -47,12 +47,19 @@ $app = new \Slim\App($container);
   'model' => NOPE_DIR . 'admin/models/User.php',
   'route' => [
     NOPE_DIR . 'admin/routes/index.php',
-    NOPE_DIR . 'admin/routes/auth.php'
+    NOPE_DIR . 'admin/routes/auth.php',
+    NOPE_DIR . 'admin/routes/user.php'
   ]
 ]);
 \Nope::registerModel('setting', [
   'model' => NOPE_DIR . 'admin/models/Setting.php',
   'route' => NOPE_DIR . 'admin/routes/setting.php'
+]);
+
+// register roles
+\Nope::registerRole('admin', [
+  'label' => 'Admin',
+  'permissions' => ['*']
 ]);
 
 require NOPE_DIR . 'admin/models/Content.php';

@@ -2,6 +2,7 @@
   angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'app']);
 
   angular.module('app', [])
+  .constant('rolesList', window.ROLES)
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('app', {
@@ -27,6 +28,29 @@
           templateUrl : 'assets/tmpl/user.html',
           controller: 'UserController'
         }
+      },
+      resolve : {
+        usersList : function(User) {
+          return User.getAll().$promise;
+        }
+      }
+    })
+    .state('app.user.create', {
+      url : '/create',
+      views : {
+        'content@app.user' : {
+          templateUrl : 'assets/tmpl/user-detail.html',
+          controller : 'UserCreateController'
+        }
+      }
+    })
+    .state('app.user.detail', {
+      url : '/:id',
+      views : {
+        'content@app.user' : {
+          templateUrl : 'assets/tmpl/user-detail.html',
+          controller : 'UserDetailController'
+        }
       }
     })
     ;
@@ -51,14 +75,35 @@
      }
 
    }])
-   .controller('UserController', ['$scope', function($scope) {
+   .controller('UserController', ['$scope', 'usersList', function($scope, usersList) {
+     $scope.usersList = usersList;
+   }])
+   .controller('UserCreateController', ['$scope', '$state', 'rolesList', 'User', 'usersList', function($scope, $state, rolesList, User, usersList) {
+     $scope.user = new User();
+     $scope.rolesList = rolesList;
 
+     $scope.save = function() {
+       User.save($scope.user, function(data) {
+         usersList.push(data);
+         $state.go('app.user.detail', {id:data.id});
+       });
+     }
+   }])
+   .controller('UserDetailController', ['$scope', '$filter', '$stateParams', 'rolesList', 'User', 'usersList', function($scope, $filter, $stateParams, rolesList, User, usersList) {
+     $scope.user = $filter('filter')(usersList, {id:$stateParams.id})[0];
+     $scope.rolesList = rolesList;
+
+     $scope.save = function() {
+       User.update($scope.user, function() {
+
+       });
+     }
    }])
    /**
     * Services
     */
     .factory('User', ['$resource', function($resource) {
-      return $resource('user', {}, {
+      return $resource('user/:id', {id:'@id'}, {
         login : {
           url: 'user/login',
           method: 'POST'
@@ -70,13 +115,19 @@
         logout : {
           url : 'user/logout',
           cache : false
+        },
+        getAll : {
+          isArray : true
+        },
+        update : {
+          method : 'PUT'
         }
       });
     }])
    /**
     * Interceptor
     */
-   .service('NopeHttpInterceptor', ['$injector', function($injector) {
+   .service('NopeHttpInterceptor', ['$rootScope', '$injector', '$q', function($rootScope, $injector, $q) {
      return {
        request : function(request) {
          if(!request.cache) {
@@ -96,8 +147,17 @@
          var $state = $injector.get('$state');
          if(reason.status === 401) {
            $state.go('login');
+         } else {
+           return $q.reject(reason);
          }
          return reason;
+       },
+       response : function(response) {
+         if(response.data.currentUser) {
+           $rootScope.currentUser = response.data.currentUser;
+           response.data = response.data.data;
+         }
+         return response;
        }
      }
    }])
