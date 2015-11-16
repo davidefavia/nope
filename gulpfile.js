@@ -30,6 +30,8 @@ gulp.task('watch', function() {
     'nope/*.*',
     'nope/**/*.*',
     'nope/*.*',
+    '!nope/**/*.less',
+    '!nope/**/*.css',
     '!nope/vendor/**'
   ], ['else']);
 });

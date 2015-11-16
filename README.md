@@ -47,7 +47,7 @@ I worked a lot with [WordPress][wordpress] for customers and personal projects. 
 10. MySQL search and replace for URLs.
 11. Write instructions for customer on how to insert new content, manage images, carousels, widgets and anything else I developed to customize every single _fu**ing_ box/carousel/list in the sidebar/footer (that probably will never change in future).
 
-(Maybe a lot of this stuff is achievable via plugins I never used or discovered or learnt how to use. Things could be easier event with this workflow.)
+(Maybe a lot of this stuff is achievable via plugins I never used or discovered or learnt how to configure. Things could be easier even with this workflow, but not for me at this time.)
 
 I'm tired of this workflow, I'm tired of an heavy administration interface and different plugins UI. I spent more time to hide features or configure administration than to develop good code, I neither updated my code customizations nor the platform. I NEVER had the need to add plugins or change theme _on-the-fly_ through administration interface when in production without deploying code from local environment (even if a single _CSS_ line).
 
@@ -55,7 +55,7 @@ I need something radically different:
 
 1. Download and install **nope!** locally.
 2. Enable or define (and develop code for) custom content types.
-3. Develop custom theme and hooks.
+3. Develop custom theme and plugins/hooks.
 4. Set roles and permissions inside a PHP file.
 5. Insert content.
 6. Build package for production.
@@ -63,7 +63,7 @@ I need something radically different:
 
 If I'll need something new (1% of cases), I'll develop locally and I'll update everything (except database, maybe).
 
-Don't get me wrong: I :heart: [WordPress][wordpress], but it doesn't fit my needs anymore. I need something simpler even if still customizable and hookable. Few actions: write content, upload files, create gallery, build a custom theme, let people add/edit and organize content without full administration privileges. If I need more features, I need to develop them, simple.
+**Don't get me wrong**: I :heart: [WordPress][wordpress], but it doesn't fit my needs anymore. I need something simpler even if still customizable and hookable. Few actions: write content, upload files, create gallery, build a custom theme, let people add/edit and organize content without full administration privileges. If I need more features, I need to develop them, simple.
 
 ## License
 See [LICENSE](LICENSE) file.
