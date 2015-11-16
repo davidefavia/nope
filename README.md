@@ -31,7 +31,7 @@ Administration interface is built on top of:
 
 **TL;DR** I :heart: [WordPress][wordpress] but I need something simpler.
 
-I worked a lot with [WordPress][wordpress] for customers and personal projects. Every single project had the same path for me:
+I worked a lot with [WordPress][wordpress] for customers and personal projects. Every single project had the same path for me.
 
 1. Download WordPress locally.
 2. Create MySQL database.
@@ -40,12 +40,13 @@ I worked a lot with [WordPress][wordpress] for customers and personal projects. 
 3. Define custom post types.
 4. Develop custom plugins and theme.
 5. Insert content.
-6. Set user permissions to forbid administration settings change.
+6. Set permissions and menu to forbid administration settings change.
 7. Export MySQL database.
 8. FTP to production.
 9. Import MySQL database to production environment (via PHPMyAdmin or MySQL GUI client if database server is remotely accessible).
 10. MySQL search and replace for URLs.
-11. Write instructions for customer on how to insert new content, manage images, carousels, widgets and anything else I developed to customize every single _fu**ing_ box/carousel/list in the sidebar/footer (that probably will never change in future).
+11. Write instructions for customer about how to insert new content, manage images, carousels, widgets and anything else I developed to customize every single _fu**ing_ box/carousel/list in the sidebar/footer (that probably will never change in future).
+12. Backup database and FTP to local environment all changes (_e.g._ uploaded files).
 
 (Maybe a lot of this stuff is achievable via plugins I never used or discovered or learnt how to configure. Things could be easier even with this workflow, but not for me at this time.)
 
@@ -60,6 +61,7 @@ I need something radically different:
 5. Insert content.
 6. Build package for production.
 7. FTP to production.
+8. Easy backup (_e.g._ compressed file with SQLite database and uploaded files).
 
 If I'll need something new (1% of cases), I'll develop locally and I'll update everything (except database, maybe).
 
