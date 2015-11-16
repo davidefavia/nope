@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
-    <link href="<?php echo path('admin/assets/css/bootstrap.min.css'); ?>" rel="stylesheet" />
+    <link href="<?php echo path('admin/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <script>
       window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
       window.TEMPLATES_PATH = "<?php echo path($request->getUri()->getPath()); ?>";
@@ -17,5 +17,9 @@
     <script src="<?php echo path('admin/assets/js/lib/angular-sanitize.min.js'); ?>"></script>
     <script src="<?php echo path('admin/assets/js/lib/angular-ui-router.min.js'); ?>"></script>
     <script src="<?php echo path('admin/assets/js/app.js'); ?>"></script>
+    <script>
+      document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+      ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
   </body>
 </html>

@@ -190,10 +190,10 @@
    .config(['$httpProvider', function($httpProvider) {
      $httpProvider.interceptors.push('NopeHttpInterceptor');
    }])
-   .run(['$rootScope', function($rootScope) {
+   .run(['$rootScope', '$location', function($rootScope, $location) {
 
-     $rootScope.$on('$stateChangeError', function(e) {
-
+     $rootScope.$on('$stateChangeSuccess', function(e) {
+       $rootScope.selectedPath = $location.path();
      });
 
    }])
