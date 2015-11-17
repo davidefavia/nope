@@ -18,7 +18,7 @@
     </div>
     <div class="checkbox">
       <label>
-        <input type="checkbox" ng-model="user.enabled" ng-true-value="1" ng-false-value="0"> Enabled
+        <input type="checkbox" ng-model="user.enabled" ng-true-value="1" ng-false-value="0"  ng-disabled="!currentUser.isAdmin() || currentUser.id===user.id"> Enabled
       </label>
     </div>
     <div class="form-group">

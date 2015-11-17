@@ -84,6 +84,7 @@
    }])
    .controller('UserCreateController', ['$scope', '$state', 'RolesList', 'User', 'usersList', function($scope, $state, RolesList, User, usersList) {
      $scope.user = new User();
+     $scope.$parent.selectedUser = $scope.user;
      $scope.rolesList = RolesList;
 
      $scope.save = function() {
@@ -112,7 +113,8 @@
      }
 
      $scope.save = function() {
-       User.update($scope.user, function() {
+       User.update($scope.user, function(data) {
+         $scope.user = data;
          $scope.changed = false;
        });
      }
@@ -156,6 +158,13 @@
 
       r.prototype.getFullName = function() {
         return this.pretty_name || this.username;
+      }
+
+      r.prototype.itsMe = function(u) {
+        if(u) {
+          return this.id === u.id;
+        }
+        return false;
       }
 
       return r;
@@ -203,6 +212,23 @@
    .config(['$httpProvider', function($httpProvider) {
      $httpProvider.interceptors.push('NopeHttpInterceptor');
    }])
+   /**
+    * Directives
+    */
+   .directive('noEmpty', [function() {
+     return {
+       restrict : 'E',
+       transclude : true,
+       replace: true,
+       template : '<div class="empty"><i class="fa fa-{{icon}}"><h3 ng-transclude></h3></div>',
+       scope : {
+         icon : '@'
+       }
+     }
+   }])
+   /**
+    * Run!
+    */
    .run(['$rootScope', '$location', function($rootScope, $location) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {

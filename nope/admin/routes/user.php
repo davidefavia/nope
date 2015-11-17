@@ -51,7 +51,11 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     $currentUser = \User::getAuthenticated();
     if($currentUser->can('profile.update')) {
       if($currentUser->isAdmin()) {
-        $fields = ['email','description','enabled','pretty_name','role'];
+        if($currentUser->id == $args['id']) {
+          $fields = ['email','description','pretty_name','role'];
+        } else {
+          $fields = ['email','description','enabled','pretty_name','role'];
+        }
       } else {
         $fields = ['email','description','pretty_name'];
       }

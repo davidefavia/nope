@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 @import "bootstrap.less";
 
 @gutter: 15px;
@@ -56,5 +60,38 @@
     min-height: 120px;
   }
   #model {
+  }
+}
+
+.list-group-item {
+  .list-group-item-heading {
+    i {
+      &.text-success {
+        .text-emphasis-variant(@state-success-text);
+      }
+      &.text-danger {
+        .text-emphasis-variant(@state-danger-text);
+      }
+    }
+  }
+}
+.toolbar {
+  .btn {
+    border:0;
+    background: transparent;
+    i {
+      font-size: 14px;
+    }
+  }
+}
+
+.empty {
+  color: darken(@gray-lighter, 20%);
+  text-align: center;
+  i {
+    font-size: 48px;
+  }
+  h3 {
+    margin: 10px 0;
   }
 }
