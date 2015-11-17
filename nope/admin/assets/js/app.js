@@ -70,7 +70,9 @@
      $rootScope.assetsPath = AssetsPath;
 
    }])
-   .controller('LoginController', ['$scope', '$state', 'User', function($scope, $state, User) {
+   .controller('LoginController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'User', function($scope, $rootScope, $state, AssetsPath, User) {
+
+     $rootScope.assetsPath = AssetsPath;
 
      $scope.login = function() {
        User.login($scope.user, function() {
