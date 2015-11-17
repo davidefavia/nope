@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
+    <link href="<?php echo path('admin/assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('admin/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <script>
       window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";

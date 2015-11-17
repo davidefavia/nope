@@ -2,17 +2,15 @@
   <div class="row">
     <div id="sidebar" class="col col-md-2">
       <div id="welcome">
-        <p>
-          Welcome,
-          {{currentUser.pretty_name}}
-        </p>
+        <img ng-src="{{assetsPath + 'assets/img/nope.png'}}" />
+        <p>{{currentUser.getFullName()}}</p>
       </div>
       <ul class="nav">
         <li ng-class="{active:selectedPath.indexOf('/user')!==-1}">
-          <a href="#/user">User</a>
+          <a href="#/user"><i class="fa fa-user"></i> User</a>
         </li>
         <li>
-          <a href="" ng-click="logout()">Logout</a>
+          <a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> Logout</a>
         </li>
       </ul>
     </div>

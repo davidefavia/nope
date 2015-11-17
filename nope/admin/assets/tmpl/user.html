@@ -1,7 +1,17 @@
 <div class="row">
-  <div class="col col-md-3">
+  <div id="model" class="col col-md-3">
+    <div class="form-group">
+      <input type="text" class="form-control" ng-model="q.username" placeholder="Filter users by username" />
+    </div>
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="u in usersList" ng-href="#/user/{{u.id}}">{{u.username}} - {{u.pretty_name}}</a>
+      <div class="list-group-item clearfix" ng-class="{active:selectedUser.id===u.id}" ng-repeat="u in usersList | filter : q">
+        <h4 class="list-group-item-heading">{{u.username}}</h4>
+        <p class="list-group-item-text" ng-if="u.pretty_name">{{u.pretty_name}}</p>
+        <div class="btn-group btn-group-xs pull-right">
+          <a ng-href="#/user/{{u.id}}" class="btn btn-default"><i class="fa fa-edit"></i></a>
+          <a ng-href="#/user/{{u.id}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+        </div>
+      </div>
     </div>
     <a href="#/user/create">Create new user</a>
   </div>

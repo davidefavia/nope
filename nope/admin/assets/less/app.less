@@ -4,6 +4,7 @@
 
 @gutter: 15px;
 @menu-color: @brand-danger;
+@light-menu-color: lighten(@menu-color, 10%);
 
 .container-fluid {
   padding:0;
@@ -14,7 +15,7 @@
 // sidebar
 #sidebar {
   color: #fff;
-  background: #000;
+  background: lighten(#000, 15%);
   position: fixed;
   left:0;
   top:0;
@@ -22,6 +23,10 @@
   padding:0;
   #welcome {
     padding: @gutter;
+    text-align: center;
+    img {
+      margin-bottom: 5px;
+    }
   }
   .nav {
     margin:0;
@@ -37,7 +42,7 @@
       a {
         color: #fff;
         &:hover {
-          background: lighten(@menu-color, 20%);
+          background: @light-menu-color;
         }
       }
     }
@@ -47,4 +52,9 @@
 // main
 #main {
   padding: @gutter;
+  textarea {
+    min-height: 120px;
+  }
+  #model {
+  }
 }

@@ -2,7 +2,9 @@
   angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'app']);
 
   angular.module('app', [])
-  .constant('rolesList', window.ROLES)
+  .constant('BasePath', window.BASE_PATH)
+  .constant('AssetsPath', window.TEMPLATES_PATH)
+  .constant('RolesList', window.ROLES)
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('app', {
@@ -59,11 +61,13 @@
   /**
    * Controllers
    */
-   .controller('AppController', ['$scope', '$rootScope', 'User', function($scope, $rootScope, User) {
+   .controller('AppController', ['$scope', '$rootScope', 'AssetsPath', 'User', function($scope, $rootScope, AssetsPath, User) {
 
      $rootScope.logout = function() {
        User.logout();
      }
+
+     $rootScope.assetsPath = AssetsPath;
 
    }])
    .controller('LoginController', ['$scope', '$state', 'User', function($scope, $state, User) {
@@ -78,9 +82,9 @@
    .controller('UserController', ['$scope', 'usersList', function($scope, usersList) {
      $scope.usersList = usersList;
    }])
-   .controller('UserCreateController', ['$scope', '$state', 'rolesList', 'User', 'usersList', function($scope, $state, rolesList, User, usersList) {
+   .controller('UserCreateController', ['$scope', '$state', 'RolesList', 'User', 'usersList', function($scope, $state, RolesList, User, usersList) {
      $scope.user = new User();
-     $scope.rolesList = rolesList;
+     $scope.rolesList = RolesList;
 
      $scope.save = function() {
        User.save($scope.user, function(data) {
@@ -89,9 +93,10 @@
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'rolesList', 'User', 'usersList', function($scope, $filter, $state, $stateParams, rolesList, User, usersList) {
+   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'RolesList', 'User', 'usersList', function($scope, $filter, $state, $stateParams, RolesList, User, usersList) {
      $scope.user = $filter('filter')(usersList, {id:$stateParams.id})[0];
-     $scope.rolesList = rolesList;
+     $scope.$parent.selectedUser = $scope.user;
+     $scope.rolesList = RolesList;
      $scope.changed = false;
 
      $scope.$watch('user', function(n,o) {
@@ -138,11 +143,19 @@
       });
 
       r.prototype.isAdmin = function() {
-        return this.role === 'admin';
+        return this.is('admin');
       }
 
       r.prototype.can = function(p) {
         return (this.isAdmin() || this.permissions.indexOf(p)!==-1);
+      }
+
+      r.prototype.is = function(role) {
+        return this.role === role;
+      }
+
+      r.prototype.getFullName = function() {
+        return this.pretty_name || this.username;
       }
 
       return r;
