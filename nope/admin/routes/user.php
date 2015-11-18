@@ -78,4 +78,19 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     }
   });
 
+  $this->delete('/{id}', function($req, $res, $args) {
+    $currentUser = \User::getAuthenticated();
+    if($currentUser->can('profile.delete')) {
+      $userToDelete = new User($args['id']);
+      if($userToDelete && $currentUser->id === $userToDelete->id) {
+        return $res->withStatus(403);
+      } else {
+        $userToDelete->delete();
+      }
+    }
+    $body = $res->getBody();
+    $body->write(json_encode(['currentUser' => $currentUser]));
+    return $res->withBody($body);
+  });
+
 });

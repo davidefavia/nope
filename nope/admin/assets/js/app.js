@@ -1,7 +1,9 @@
 (function() {
-  angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'app']);
+  angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'nope.app']);
 
-  angular.module('app', [])
+  angular.module('nope.app', [
+    'nope.ui'
+  ])
   .constant('BasePath', window.BASE_PATH)
   .constant('AssetsPath', window.TEMPLATES_PATH)
   .constant('RolesList', window.ROLES)
@@ -32,7 +34,7 @@
         }
       },
       resolve : {
-        usersList : function(User) {
+        UsersList : function(User) {
           return User.getAll().$promise;
         }
       }
@@ -81,23 +83,47 @@
      }
 
    }])
-   .controller('UserController', ['$scope', 'usersList', function($scope, usersList) {
-     $scope.usersList = usersList;
+   .controller('UserController', ['$scope', '$state', '$nopeModal', 'User', 'UsersList', function($scope, $state, $nopeModal, User, UsersList) {
+     $scope.usersList = UsersList;
+
+     $scope.deleteUserOnClick = function() {
+       User.delete({id:$scope.userToDelete.id}, function() {
+         User.getAll(function(data) {
+           UsersList = data;
+           $scope.usersList = UsersList;
+           $state.go('app.user');
+         });
+       });
+     }
+
+     $scope.deleteUser = function(u) {
+       $scope.userToDelete = u;
+       $nopeModal.fromTemplate('<nope-modal title="Delete user">\
+       <nope-modal-body><p>Are you sure to delete user "{{userToDelete.getFullName()}}"?</p></nope-modal-body>\
+       <nope-modal-footer>\
+         <a class="btn btn-default" nope-modal-close>Close</a>\
+         <a class="btn btn-danger" ng-click="deleteUserOnClick();">Yes, delete</a>\
+       </nope-modal-footer>\
+      </nope-modal>', $scope).then(function(modal) {
+        modal.show();
+      });
+     };
    }])
-   .controller('UserCreateController', ['$scope', '$state', 'RolesList', 'User', 'usersList', function($scope, $state, RolesList, User, usersList) {
+   .controller('UserCreateController', ['$scope', '$state', 'RolesList', 'User', 'UsersList', function($scope, $state, RolesList, User, UsersList) {
      $scope.user = new User();
+     $scope.user.email = '';
      $scope.$parent.selectedUser = $scope.user;
      $scope.rolesList = RolesList;
 
      $scope.save = function() {
        User.save($scope.user, function(data) {
-         usersList.push(data);
+         UsersList.push(data);
          $state.go('app.user.detail', {id:data.id});
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'RolesList', 'User', 'usersList', function($scope, $filter, $state, $stateParams, RolesList, User, usersList) {
-     $scope.user = $filter('filter')(usersList, {id:$stateParams.id})[0];
+   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'RolesList', 'User', 'UsersList', function($scope, $filter, $state, $stateParams, RolesList, User, UsersList) {
+     $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
      $scope.$parent.selectedUser = $scope.user;
      $scope.rolesList = RolesList;
      $scope.changed = false;
@@ -175,7 +201,7 @@
    /**
     * Interceptor
     */
-   .service('NopeHttpInterceptor', ['$rootScope', '$injector', '$q', function($rootScope, $injector, $q) {
+   .service('NopeHttpInterceptor', ['$rootScope', '$cacheFactory', '$injector', '$q', function($rootScope, $cacheFactory, $injector, $q) {
      return {
        request : function(request) {
          if(!request.cache) {
@@ -188,6 +214,9 @@
            request.url = window.TEMPLATES_PATH + request.url;
          } else {
            request.url = window.BASE_PATH + request.url;
+         }
+         if(request.method.toLowerCase!=='get') {
+           $cacheFactory.get('$http').removeAll();
          }
          return request;
        },
