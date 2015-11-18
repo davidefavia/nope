@@ -122,7 +122,7 @@
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$state', '$stateParams', 'RolesList', 'User', 'UsersList', function($scope, $filter, $state, $stateParams, RolesList, User, UsersList) {
+   .controller('UserDetailController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'RolesList', 'User', 'UsersList', function($scope, $filter, $timeout, $state, $stateParams, RolesList, User, UsersList) {
      $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
      $scope.$parent.selectedUser = $scope.user;
      $scope.rolesList = RolesList;
@@ -143,7 +143,9 @@
      $scope.save = function() {
        User.update($scope.user, function(data) {
          $scope.user = data;
-         $scope.changed = false;
+         $timeout(function() {
+           $scope.changed = false;
+         }, 100);
        });
      }
    }])
@@ -177,7 +179,9 @@
       }
 
       r.prototype.can = function(p) {
-        return (this.isAdmin() || this.permissions.indexOf(p)!==-1);
+        var section = p.split('.')[0];
+        var a = (this.isAdmin() || this.permissions.indexOf(p)!==-1 || this.permissions.indexOf(section + '.*')!==-1);
+        return a;
       }
 
       r.prototype.is = function(role) {

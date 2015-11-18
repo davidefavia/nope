@@ -136,7 +136,9 @@ class User extends Nope\Model {
 
   private function hasPermission($permission) {
     $permissionsList = $this->getPermissions();
-    return in_array($permission, $permissionsList);
+    $pieces = explode('.', $permission);
+    $section = $pieces[0];
+    return in_array($permission, $permissionsList) || in_array($section.'.*', $permissionsList);
   }
 
   function getPermissions() {

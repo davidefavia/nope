@@ -30,8 +30,8 @@
           });
         },
         fromTemplateUrl : function(templateUrl, scope) {
-          return $http(templateUrl).then(function() {
-            modal = $compile(templateString)(scope);
+          return $http({url: templateUrl}).then(function(response) {
+            modal = $compile(response.data)(scope);
             return $q.resolve({
               show : show,
               hide : hide
@@ -95,6 +95,33 @@
         $element.on('click', function() {
           nopeModalCtrl.close();
         });
+      }
+    }
+  }])
+  .directive('nopeRole', ['$rootScope', function($rootScope) {
+    return {
+      restrict : 'A',
+      scope : {
+        role : '@nopeRole'
+      },
+      link : function($scope, $element, $attrs) {
+        var roles = $scope.role.split(',');
+        if(roles.indexOf($rootScope.currentUser.role)===-1) {
+          $element.remove();
+        }
+      }
+    }
+  }])
+  .directive('nopeCan', ['$rootScope', function($rootScope) {
+    return {
+      restrict : 'A',
+      scope : {
+        permission : '@nopeCan'
+      },
+      link : function($scope, $element, $attrs) {
+        if(!$rootScope.currentUser.can($scope.permission)) {
+          $element.remove();
+        }
       }
     }
   }])

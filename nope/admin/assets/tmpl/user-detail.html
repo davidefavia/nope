@@ -1,8 +1,9 @@
 <div id="user-detail">
   <form name="userForm" ng-submit="save()">
-    <div class="form-group" ng-if="!user.id">
+    <div class="form-group">
       <label>Username</label>
-      <input type="text" name="username" class="form-control" ng-model="user.username" required />
+      <input type="text" name="username" class="form-control" ng-model="user.username" required  ng-if="!user.id" />
+      <p class="form-control-static" ng-if="user.id">{{user.username}}</p>
     </div>
     <div class="form-group" ng-if="!user.id">
       <label>Password</label>
@@ -27,9 +28,10 @@
     </div>
     <div class="form-group">
       <label>Role</label>
-      <select name="role" class="form-control" ng-model="user.role" required ng-disabled="!currentUser.isAdmin() || currentUser.id===user.id">
+      <select name="role" class="form-control" ng-model="user.role" required ng-if="currentUser.isAdmin() && !currentUser.itsMe(user)" nope-can="user.update" ng-disabled="!currentUser.isAdmin() || currentUser.itsMe(user)">
         <option ng-repeat="r in rolesList" value="{{r.key}}">{{r.label}}</option>
       </select>
+      <p class="form-control-static" ng-repeat="r in rolesList" ng-if="(!currentUser.isAdmin() || currentUser.isAdmin() && currentUser.itsMe(user)) && user.is(r.key)">{{r.label}}</p>
     </div>
     <div class="form-group">
       <label>Description</label>

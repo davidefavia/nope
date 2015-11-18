@@ -6,7 +6,5 @@
 \Nope::registerRole('editor', [
   'label' => 'Editor',
   'permissions' => [
-    'profile.read',
-    'profile.update'
   ]
 ]);

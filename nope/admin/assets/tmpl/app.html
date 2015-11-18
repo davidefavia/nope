@@ -9,6 +9,9 @@
         <li ng-class="{active:selectedPath.indexOf('/user')!==-1}">
           <a href="#/user"><i class="fa fa-user"></i> User</a>
         </li>
+        <li ng-class="{active:selectedPath.indexOf('/setting')!==-1}" nope-can="setting.*">
+          <a href="#/setting"><i class="fa fa-gear"></i> Setting</a>
+        </li>
         <li>
           <a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> Logout</a>
         </li>

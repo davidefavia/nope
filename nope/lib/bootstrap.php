@@ -15,9 +15,9 @@ define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . '/theme/'. NOPE_THEME .'/');
 define('NOPE_ADMIN_VIEWS_PATH', NOPE_DIR . '/admin/views/');
 
 $configuration = [
-    'settings' => [
-        'displayErrorDetails' => true,
-    ],
+  'settings' => [
+    'displayErrorDetails' => true,
+  ],
 ];
 
 // Create container
@@ -59,7 +59,7 @@ $app = new \Slim\App($container);
 // register roles
 \Nope::registerRole('admin', [
   'label' => 'Admin',
-  'permissions' => ['*']
+  'permissions' => ['*.*']
 ]);
 
 require NOPE_DIR . 'admin/models/Content.php';
