@@ -275,7 +275,10 @@
      $rootScope.$on('nope.error', function(e, reason) {
        $rootScope.errorReason = reason;
        $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}">\
-       <nope-modal-body><p>{{errorReason.statusText}}</p></nope-modal-body>\
+       <nope-modal-body>\
+        <p ng-if="!errorReason.data.exception.length">{{errorReason.statusText}}</p>\
+        <p ng-if="errorReason.data.exception.length">{{errorReason.data.exception[0].message}}</p>\
+      </nope-modal-body>\
        <nope-modal-footer>\
          <a class="btn btn-default" nope-modal-close>Close</a>\
        </nope-modal-footer>\

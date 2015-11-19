@@ -41,18 +41,15 @@ abstract class Model implements \JsonSerializable {
       } else {
         $data = array_slice($data, $offset);
       }
-    }
-    if(is_array($data)) {
       $list = [];
       foreach($data as $d) {
         $item = new $className(null, $d);
         $list[] = $item;
       }
       return $list;
-    } else {
-      $item = new $className(null, $data);
-      return $item;
     }
+    $item = new $className(null, $data);
+    return $item;
   }
 
 
@@ -79,7 +76,7 @@ abstract class Model implements \JsonSerializable {
     }
   }
 
-  private function beforeSave() {
+  function beforeSave() {
     if(!$this->model->id) {
       $this->model->creationDate = new \DateTime();
     }

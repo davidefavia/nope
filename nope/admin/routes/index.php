@@ -16,7 +16,20 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         'key' => $key
       ];
     }
-    return $this->view->adminRender($res, 'index.php', ['request' => $req, 'roles' => $roles]);
+    $models = \Nope::getConfig('nope.models');
+    $jsFiles = [];
+    foreach($models as $name => $definition) {
+      if($definition['js']) {
+        if(is_array($definition['js'])) {
+          foreach($definition['js'] as $file) {
+            $jsFiles[] = $file;
+          }
+        } else {
+          $jsFiles[] = $definition['js'];
+        }
+      }
+    }
+    return $this->view->adminRender($res, 'index.php', ['request' => $req, 'roles' => $roles, 'js' => $jsFiles]);
   });
 
   $this->map(['GET', 'POST'], '/install', function ($req, $res) {

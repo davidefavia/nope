@@ -49,6 +49,10 @@ $app = new \Slim\App($container);
     NOPE_DIR . 'admin/routes/index.php',
     NOPE_DIR . 'admin/routes/auth.php',
     NOPE_DIR . 'admin/routes/user.php'
+  ],
+  'js' => [
+    'admin/assets/js/app.js',
+    'admin/assets/js/ui.js'
   ]
 ]);
 \Nope::registerModel('setting', [

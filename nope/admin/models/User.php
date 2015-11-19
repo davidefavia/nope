@@ -110,9 +110,6 @@ class User extends Nope\Model {
     } elseif(!$this->id && $emailCheck) {
       $e = new \Exception("Error saving user due to existing email.");
       throw $e;
-    } elseif(!v::email()->length(1,255)->validate($this->email)) {
-      $e = new \Exception("Not a valid email.");
-      throw $e;
     }
     parent::beforeSave();
   }
@@ -155,7 +152,7 @@ class User extends Nope\Model {
   }
 
   static public function findByEmail($email) {
-    return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [email]));
+    return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [$email]));
   }
 
   static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
