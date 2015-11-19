@@ -143,6 +143,18 @@ class User extends Nope\Model {
     return $permissions[$this->role]['permissions'];
   }
 
+  function delete() {
+    $this->beforeDelete();
+    parent::delete();
+  }
+
+  function beforeDelete() {
+    if($this->isAdmin()) {
+      $e = new \Exception("Error deleting administrator.");
+      throw $e;
+    }
+  }
+
   static public function findById($id) {
     return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
   }

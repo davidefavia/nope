@@ -12,9 +12,29 @@ Almost badly written, badly commented and documented, not tested. I'm working on
 
 - PHP >= 5.5.x (with _PDO_ and _SQLite_)
 - Apache2 >= 2.4.x (with *mod_rewrite*)
+- [composer][composer]
+
+## Install
+
+Download or clone this repository:
+
+```
+$ git clone https://github.com/davidefavia/nope.git
+```
+
+Use [composer][composer] to manage PHP dependencies.
+
+```
+$ composer install
+```
+
+Go to [http://localhost/admin](http://localhost/admin) if you prefer to use installation directory as `DocumentRoot`.
+Go to [http://localhost/path/to/installation/admin](http://localhost/path/to/installation/admin) if you installed **nope!** inside a subfolder or `DocumentRoot`.
+
+Simple installation process will drive you through requirements and folder permissions.
 
 ## Libraries
-**n!** does not pretend to reinvent the wheel, so it takes advantage of the following libraries:
+**nope!** does not pretend to reinvent the wheel, so it takes advantage of the following libraries:
 
 - [Slim framework][slim]
 - [RedbeanPHP][redbeanphp]
@@ -25,7 +45,7 @@ Almost badly written, badly commented and documented, not tested. I'm working on
 Administration interface is built on top of:
 
 - [AngularJS][angular]
-- [Bootstrap 3][bootstrap] (no jQuery!)
+- [Bootstrap 3][bootstrap] (without jQuery, of course)
 - [Font Awesome][fontawesome]
 
 ## Why (if anyone is interested)?
@@ -72,7 +92,8 @@ If I need something new (1% of cases), I develop locally and I update everything
 See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
-[bootstrap]: http://getbootstrap.com/
+[bootstrap]: https://getcomposer.org/
+[composer]: http://getcomposer.org
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
