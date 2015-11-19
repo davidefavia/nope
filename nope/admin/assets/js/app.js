@@ -228,7 +228,9 @@
          var $state = $injector.get('$state');
          if(reason.status === 401) {
            $state.go('login');
+           return $q.reject(reason);
          } else {
+           $rootScope.$emit('nope.error', reason);
            return $q.reject(reason);
          }
          return reason;
@@ -264,10 +266,22 @@
    /**
     * Run!
     */
-   .run(['$rootScope', '$location', function($rootScope, $location) {
+   .run(['$rootScope', '$location', '$nopeModal', function($rootScope, $location, $nopeModal) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
+     });
+
+     $rootScope.$on('nope.error', function(e, reason) {
+       $rootScope.errorReason = reason;
+       $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}">\
+       <nope-modal-body><p>{{errorReason.statusText}}</p></nope-modal-body>\
+       <nope-modal-footer>\
+         <a class="btn btn-default" nope-modal-close>Close</a>\
+       </nope-modal-footer>\
+      </nope-modal>', $rootScope).then(function(modal) {
+        modal.show();
+      });
      });
 
    }])

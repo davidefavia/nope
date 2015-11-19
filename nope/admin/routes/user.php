@@ -22,7 +22,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
       $fields = ['username','email','description','enabled','pretty_name','role'];
       $userToCreate = new User();
       $body = $req->getParsedBody();
-      if(v::identical($body['password'])->validate($body['confirm'])) {
+      if(v::identical($body['password'])->validate($body['confirm']) && $body['role']!=='admin') {
         $userToCreate->import($body, $fields);
         $userToCreate->setPassword($body['password']);
         $userToCreate->save();
@@ -53,19 +53,24 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->put('/{id}', function($req, $res, $args) {
     $currentUser = \User::getAuthenticated();
+    $body = $req->getParsedBody();
     if($currentUser->can('user.update') || $currentUser->id == $args['id']) {
       if($currentUser->isAdmin()) {
         if($currentUser->id == $args['id']) {
-          $fields = ['email','description','pretty_name','role'];
+          $fields = ['email','description','pretty_name'];
         } else {
-          $fields = ['email','description','enabled','pretty_name','role'];
+          if($body['role'] === 'admin') {
+            return $res->withStatus(400);
+          } else {
+            $fields = ['email','description','enabled','pretty_name','role'];
+          }
         }
       } else {
         $fields = ['email','description','pretty_name'];
       }
       $userToUpdate = new User($args['id']);
       if($userToUpdate) {
-        $userToUpdate->import($req->getParsedBody(), $fields);
+        $userToUpdate->import($body, $fields);
         $userToUpdate->save();
         if($currentUser->id == $userToUpdate->id) {
           $userToUpdate->saveInSession();

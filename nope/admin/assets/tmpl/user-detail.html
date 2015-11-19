@@ -29,7 +29,7 @@
     <div class="form-group">
       <label>Role</label>
       <select name="role" class="form-control" ng-model="user.role" required ng-if="currentUser.isAdmin() && !currentUser.itsMe(user)" nope-can="user.update" ng-disabled="!currentUser.isAdmin() || currentUser.itsMe(user)">
-        <option ng-repeat="r in rolesList" value="{{r.key}}">{{r.label}}</option>
+        <option ng-repeat="r in rolesList" value="{{r.key}}" ng-if="r.key!=='admin'">{{r.label}}</option>
       </select>
       <p class="form-control-static" ng-repeat="r in rolesList" ng-if="(!currentUser.isAdmin() || currentUser.isAdmin() && currentUser.itsMe(user)) && user.is(r.key)">{{r.label}}</p>
     </div>

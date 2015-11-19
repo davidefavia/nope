@@ -53,7 +53,7 @@
       template : '<div class="modal" nope-modal-close>\
        <div class="modal-dialog">\
          <div class="modal-content">\
-           <div class="modal-header">\
+           <div class="modal-header" ng-if="title">\
              <a class="close" nope-modal-close><span>&times;</span></a>\
              <h4 class="modal-title">{{title}}</h4>\
            </div>\
