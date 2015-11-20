@@ -7,12 +7,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class View {
 
-  private $templatesPath;
-  private $adminTemplatesPath;
+  private $list;
 
-  function __construct($templatesPath, $adminTemplatesPath, $options = null) {
-    $this->templatesPath = $templatesPath;
-    $this->adminTemplatesPath = $adminTemplatesPath;
+  function __construct($list, $options = null) {
+    $this->list = Utils::mergeDirectories($list);
+    #var_dump($this->list);
   }
 
   /**
@@ -45,22 +44,8 @@ class View {
    */
   public function render(ResponseInterface $response, $template, $data = [])
   {
-     $response->getBody()->write($this->fetch($this->templatesPath . $template, $data));
-     return $response;
-  }
-
-  /**
-   * Output rendered template
-   *
-   * @param ResponseInterface $response
-   * @param  string $template Template pathname relative to templates directory
-   * @param  array $data Associative array of template variables
-   * @return ResponseInterface
-   */
-  public function adminRender(ResponseInterface $response, $template, $data = [])
-  {
-     $response->getBody()->write($this->fetch($this->adminTemplatesPath . $template, $data));
-     return $response;
+    $response->getBody()->write($this->fetch($this->list[$template], $data));
+    return $response;
   }
 
 }

@@ -29,7 +29,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         }
       }
     }
-    return $this->view->adminRender($res, 'index.php', ['request' => $req, 'roles' => $roles, 'js' => $jsFiles]);
+    return $this->view->render($res, 'admin/index.php', ['request' => $req, 'roles' => $roles, 'js' => $jsFiles]);
   });
 
   $this->map(['GET', 'POST'], '/install', function ($req, $res) {
@@ -104,7 +104,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     }
 
 
-    return $this->view->adminRender($res, 'install.php', $data);
+    return $this->view->render($res, 'admin/install.php', $data);
   });
 
 });

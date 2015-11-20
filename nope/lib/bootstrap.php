@@ -11,8 +11,9 @@ use RedBeanPHP\R as R;
 
 date_default_timezone_set(NOPE_DATETIME_TIMEZONE);
 
-define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . '/theme/'. NOPE_THEME .'/');
-define('NOPE_ADMIN_VIEWS_PATH', NOPE_LIB_DIR . '/views/');
+define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . 'theme/'. NOPE_THEME .'/');
+define('NOPE_APP_VIEWS_PATH', NOPE_DIR . 'app/views/');
+define('NOPE_LIB_VIEWS_PATH', NOPE_LIB_DIR . 'views/');
 
 $configuration = [
   'settings' => [
@@ -25,8 +26,12 @@ $container = new \Slim\Container($configuration);
 
 // Register component on container
 $container['view'] = function ($c) {
-    $view = new \Nope\View(NOPE_THEME_DEFAULT_PATH, NOPE_ADMIN_VIEWS_PATH);
-    return $view;
+  $view = new \Nope\View([
+    NOPE_LIB_VIEWS_PATH,
+    NOPE_APP_VIEWS_PATH,
+    NOPE_THEME_DEFAULT_PATH
+  ]);
+  return $view;
 };
 
 // Database

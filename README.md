@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <img src="nope/admin/assets/img/nope.png" alt="nope!" title="nope!" />
+  <img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
 </div>
 
 ### :shit: Crapware warning! :shit:
