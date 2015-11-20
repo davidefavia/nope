@@ -4,7 +4,7 @@ var livereload = require('gulp-livereload');
 var minifycss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 
-var adminFolder = 'nope/admin/';
+var adminFolder = 'nope/lib/';
 
 gulp.task('less', function() {
   gulp.src(adminFolder + 'assets/less/app.less')
@@ -27,11 +27,12 @@ gulp.task('watch', function() {
     adminFolder + 'assets/less/**/*.less'
   ], ['less']);
   gulp.watch([
+    'index.php',
     'nope/*.*',
     'nope/**/*.*',
     'nope/*.*',
     '!nope/**/*.less',
     '!nope/**/*.css',
-    '!nope/vendor/**'
+    '!nope/lib/vendor/**'
   ], ['else']);
 });

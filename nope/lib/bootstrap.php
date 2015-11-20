@@ -1,8 +1,8 @@
 <?php
 
-require NOPE_DIR . 'vendor/autoload.php';
-require NOPE_DIR . 'lib/Nope.php';
-require NOPE_DIR . 'lib/functions.php';
+require NOPE_LIB_DIR . 'vendor/autoload.php';
+require NOPE_LIB_DIR . 'nope/Nope.php';
+require NOPE_LIB_DIR . 'functions.php';
 require NOPE_DIR . 'config.php';
 
 session_start();
@@ -12,7 +12,7 @@ use RedBeanPHP\R as R;
 date_default_timezone_set(NOPE_DATETIME_TIMEZONE);
 
 define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . '/theme/'. NOPE_THEME .'/');
-define('NOPE_ADMIN_VIEWS_PATH', NOPE_DIR . '/admin/views/');
+define('NOPE_ADMIN_VIEWS_PATH', NOPE_LIB_DIR . '/views/');
 
 $configuration = [
   'settings' => [
@@ -44,20 +44,20 @@ $app = new \Slim\App($container);
 
 // register models
 \Nope::registerModel('user', [
-  'model' => NOPE_DIR . 'admin/models/User.php',
+  'model' => NOPE_LIB_DIR . 'models/User.php',
   'route' => [
-    NOPE_DIR . 'admin/routes/index.php',
-    NOPE_DIR . 'admin/routes/auth.php',
-    NOPE_DIR . 'admin/routes/user.php'
+    NOPE_LIB_DIR . 'routes/index.php',
+    NOPE_LIB_DIR . 'routes/auth.php',
+    NOPE_LIB_DIR . 'routes/user.php'
   ],
   'js' => [
-    'admin/assets/js/app.js',
-    'admin/assets/js/ui.js'
+    'lib/assets/js/app.js',
+    'lib/assets/js/ui.js'
   ]
 ]);
 \Nope::registerModel('setting', [
-  'model' => NOPE_DIR . 'admin/models/Setting.php',
-  'route' => NOPE_DIR . 'admin/routes/setting.php'
+  'model' => NOPE_LIB_DIR . 'models/Setting.php',
+  'route' => NOPE_LIB_DIR . 'routes/setting.php'
 ]);
 
 // register roles
@@ -66,7 +66,7 @@ $app = new \Slim\App($container);
   'permissions' => ['*.*']
 ]);
 
-require NOPE_DIR . 'admin/models/Content.php';
+require NOPE_LIB_DIR . 'models/Content.php';
 require NOPE_DIR . 'app/register.php';
 
 

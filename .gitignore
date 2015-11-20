@@ -1,5 +1,5 @@
 composer.phar
-nope/vendor/
+nope/lib/vendor/
 bower_components/
 node_modules/
 npm-debug.log

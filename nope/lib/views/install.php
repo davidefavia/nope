@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
-    <link href="<?php echo path('admin/assets/css/app.min.css'); ?>" rel="stylesheet" />
+    <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
