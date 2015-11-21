@@ -28,7 +28,8 @@ $container = new \Slim\Container($configuration);
 $container['view'] = function ($c) {
   $view = new \Nope\View([
     NOPE_LIB_VIEWS_PATH,
-    NOPE_APP_VIEWS_PATH,
+    NOPE_APP_VIEWS_PATH
+  ], [
     NOPE_THEME_DEFAULT_PATH
   ]);
   return $view;
@@ -71,6 +72,7 @@ $app = new \Slim\App($container);
   'permissions' => ['*.*']
 ]);
 
+require NOPE_LIB_DIR . 'routes/view.php';
 require NOPE_LIB_DIR . 'models/Content.php';
 require NOPE_DIR . 'app/register.php';
 

@@ -7,10 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class View {
 
-  private $list;
+  private $adminViewPathsList;
+  private $themeViewPathsList;
 
-  function __construct($list, $options = null) {
-    $this->list = Utils::mergeDirectories($list);
+  function __construct($adminViewPaths, $themeViewPaths, $options = null) {
+    $this->adminViewPathsList = Utils::mergeDirectories($adminViewPaths);
+    $this->themeViewPathsList = Utils::mergeDirectories($themeViewPaths);
     #var_dump($this->list);
   }
 
@@ -25,8 +27,10 @@ class View {
   public function fetch($template, $data = [])
   {
     ob_start();
-    foreach($data as $key => $value) {
-      $$key = $value;
+    if(is_array($data)) {
+      foreach($data as $key => $value) {
+        $$key = $value;
+      }
     }
     require_once $template;
     $renderedTemplate = ob_get_contents();
@@ -44,7 +48,21 @@ class View {
    */
   public function render(ResponseInterface $response, $template, $data = [])
   {
-    $response->getBody()->write($this->fetch($this->list[$template], $data));
+    $response->getBody()->write($this->fetch($this->themeViewPathsList[$template], $data));
+    return $response;
+  }
+
+  /**
+   * Output rendered template
+   *
+   * @param ResponseInterface $response
+   * @param  string $template Template pathname relative to templates directory
+   * @param  array $data Associative array of template variables
+   * @return ResponseInterface
+   */
+  public function adminRender(ResponseInterface $response, $template, $data = [])
+  {
+    $response->getBody()->write($this->fetch($this->adminViewPathsList[$template], $data));
     return $response;
   }
 

@@ -12,7 +12,7 @@
     .state('app', {
       url : '/',
       abstract: true,
-      templateUrl : 'assets/tmpl/app.html',
+      templateUrl : 'view/app.html',
       controller: 'AppController',
       resolve : {
         isLoggedIn : function(User) {
@@ -22,14 +22,14 @@
     })
     .state('login', {
       url :'/login',
-      templateUrl : 'assets/tmpl/login.html',
+      templateUrl : 'view/login.html',
       controller : 'LoginController'
     })
     .state('app.user', {
       url : 'user',
       views : {
         'content@app' : {
-          templateUrl : 'assets/tmpl/user.html',
+          templateUrl : 'view/user.html',
           controller: 'UserController'
         }
       },
@@ -43,7 +43,7 @@
       url : '/create',
       views : {
         'content@app.user' : {
-          templateUrl : 'assets/tmpl/user-detail.html',
+          templateUrl : 'view/user-detail.html',
           controller : 'UserCreateController'
         }
       }
@@ -52,7 +52,7 @@
       url : '/:id',
       views : {
         'content@app.user' : {
-          templateUrl : 'assets/tmpl/user-detail.html',
+          templateUrl : 'view/user-detail.html',
           controller : 'UserDetailController'
         }
       }
@@ -214,7 +214,9 @@
            }
            request.params.__t__ = (new Date()).getTime();
          }
-         if(request.url.indexOf('.html')!==-1) {
+         if(/^view\/(.+).html/.test(request.url)) {
+           request.url = window.BASE_PATH + request.url;
+         } else if(request.url.indexOf('.html')!==-1) {
            request.url = window.TEMPLATES_PATH + request.url;
          } else {
            request.url = window.BASE_PATH + request.url;
