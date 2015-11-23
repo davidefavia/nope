@@ -4,7 +4,6 @@
 \Nope::registerModel('user', [
   'model' => NOPE_LIB_DIR . 'models/User.php',
   'route' => [
-    NOPE_LIB_DIR . 'routes/index.php',
     NOPE_LIB_DIR . 'routes/auth.php',
     NOPE_LIB_DIR . 'routes/user.php'
   ],

@@ -15,12 +15,16 @@ class Install
      */
     public function __invoke($request, $response, $next)
     {
-      $installationPath = NOPE_ADMIN_ROUTE . '/install';
-      $alreadyInstalled = \Nope::isAlredyInstalled();
-      if(!$alreadyInstalled && '/'. $request->getUri()->getPath() != $installationPath) {
-        return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . $installationPath);
+      if(defined('NOPE_EMBEDDED') && NOPE_EMBEDDED === true) {
+        $response = $next($request, $response);
+      } else {
+        $installationPath = NOPE_ADMIN_ROUTE . '/install';
+        $alreadyInstalled = \Nope::isAlredyInstalled();
+        if(!$alreadyInstalled && '/'. $request->getUri()->getPath() != $installationPath) {
+          return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . $installationPath);
+        }
+        $response = $next($request, $response);
       }
-      $response = $next($request, $response);
       return $response;
     }
 }

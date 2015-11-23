@@ -1,8 +1,13 @@
 <?php
 
+define('NOPE_PATH', '/' . basename(dirname($_SERVER['SCRIPT_NAME'])) . '/nope/');
+define('NOPE_DIR', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
+define('NOPE_LIB_DIR', NOPE_DIR . 'lib' . DIRECTORY_SEPARATOR);
+define('NOPE_APP_DIR', NOPE_DIR . 'app' . DIRECTORY_SEPARATOR);
+
 require NOPE_LIB_DIR . 'vendor/autoload.php';
 require NOPE_LIB_DIR . 'nope/Nope.php';
-require NOPE_LIB_DIR . 'functions.php';
+require NOPE_LIB_DIR . 'nope/functions.php';
 require NOPE_DIR . 'config.php';
 
 session_start();
@@ -21,20 +26,6 @@ $configuration = [
   ],
 ];
 
-// Create container
-$container = new \Slim\Container($configuration);
-
-// Register component on container
-$container['view'] = function ($c) {
-  $view = new \Nope\View([
-    NOPE_LIB_VIEWS_PATH,
-    NOPE_APP_VIEWS_PATH
-  ], [
-    NOPE_THEME_DEFAULT_PATH
-  ]);
-  return $view;
-};
-
 // Database
 try {
   $db = new SQLite3(NOPE_DATABASE_PATH, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
@@ -45,14 +36,34 @@ try {
 }
 
 
+$isNopeEmbedded = (defined('NOPE_EMBEDDED') && NOPE_EMBEDDED===true);
 
-$app = new \Slim\App($container);
+if(!$isNopeEmbedded) {
+  // Create container
+  $container = new \Slim\Container($configuration);
 
+  // Register component on container
+  $container['view'] = function ($c) {
+    $view = new \Nope\View([
+      NOPE_LIB_VIEWS_PATH,
+      NOPE_APP_VIEWS_PATH
+    ], [
+      NOPE_THEME_DEFAULT_PATH
+    ]);
+    return $view;
+  };
+  $app = new \Slim\App($container);
+}
 \Nope\Utils::mergeDirectories([NOPE_LIB_DIR . 'register'], true);
 
-require NOPE_LIB_DIR . 'routes/view.php';
-require NOPE_LIB_DIR . 'models/Content.php';
+if(!$isNopeEmbedded) {
+  \Nope::registerRoute(NOPE_LIB_DIR . 'routes/install.php');
+  \Nope::registerRoute(NOPE_LIB_DIR . 'routes/index.php');
+  \Nope::registerRoute(NOPE_LIB_DIR . 'routes/view.php');
+}
 
+
+require NOPE_LIB_DIR . 'models/Content.php';
 require NOPE_APP_DIR . 'bootstrap.php';
 
 $models = \Nope::getConfig('nope.models');
@@ -68,7 +79,7 @@ foreach($models as $name => $definition) {
       require $definition['model'];
     }
   }
-  if($definition['route']) {
+  if($definition['route'] && !$isNopeEmbedded) {
     if(is_array($definition['route'])) {
       foreach($definition['route'] as $file) {
         if(file_exists($file)) {
@@ -81,12 +92,12 @@ foreach($models as $name => $definition) {
   }
 }
 
-foreach(\Nope::getConfig('nope.routes') as $file) {
-  if(file_exists($file)) {
-    require $file;
+if(!$isNopeEmbedded) {
+  foreach(\Nope::getConfig('nope.routes') as $file) {
+    if(file_exists($file)) {
+      require $file;
+    }
   }
+  $app->add(new Nope\Middleware\Install());
+  $app->run();
 }
-
-$app->add(new Nope\Middleware\Install());
-
-$app->run();
