@@ -1,7 +1,6 @@
 <?php
 
-// Routing
-\Nope::registerRoute(NOPE_DIR . 'app/routes/index.php');
+// Register user roles here.
 
 \Nope::registerRole('editor', [
   'label' => 'Editor',

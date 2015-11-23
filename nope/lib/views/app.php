@@ -6,15 +6,11 @@
         <p><a ng-href="#/user/{{currentUser.id}}">{{currentUser.getFullName()}}</a></p>
       </div>
       <ul class="nav">
-        <li ng-class="{active:selectedPath.indexOf('/user')!==-1}">
-          <a href="#/user"><i class="fa fa-user"></i> User</a>
-        </li>
-        <li ng-class="{active:selectedPath.indexOf('/setting')!==-1}" nope-can="setting.*">
-          <a href="#/setting"><i class="fa fa-gear"></i> Setting</a>
-        </li>
-        <li>
-          <a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> Logout</a>
-        </li>
+        <?php foreach ($menuItems as $key => $item) { ?>
+          <li id="menu-item-<?php echo $item['id']; ?>" <?php if($item['activeWhen']) { ?>ng-class="{active:<?php echo $item['activeWhen']; ?>}"<?php }?> <?php if($item['permission']) { echo 'nope-can="'.$item['permission'].'"';} ?> <?php if($item['role']) { echo 'nope-role="'.$item['role'].'"';} ?>>
+            <a <?php foreach($item['attrs'] as $key => $attr) { echo "$key=\"$attr\" ";} ?>><i class="<?php echo $item['icon']; ?>"></i> <?php echo $item['label']; ?></a>
+          </li>
+        <?php } ?>
       </ul>
     </div>
     <div id="main" class="col col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3" ui-view="content"></div>

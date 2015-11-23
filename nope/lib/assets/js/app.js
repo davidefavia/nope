@@ -25,6 +25,20 @@
       templateUrl : 'view/login.html',
       controller : 'LoginController'
     })
+    .state('app.dashboard', {
+      url : 'dashboard',
+      views : {
+        'content@app' : {
+          templateUrl : 'view/dashboard.html',
+          //controller: 'DashboardController'
+        }
+      },
+      resolve : {
+        UsersList : function(User) {
+          return User.getAll().$promise;
+        }
+      }
+    })
     .state('app.user', {
       url : 'user',
       views : {
@@ -78,7 +92,7 @@
 
      $scope.login = function() {
        User.login($scope.user, function() {
-         $state.go('app.user');
+         $state.go('app.dashboard');
        });
      }
 
@@ -142,7 +156,8 @@
 
      $scope.save = function() {
        User.update($scope.user, function(data) {
-         $scope.user = data;
+         $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
+         //$scope.user = data;
          $timeout(function() {
            $scope.changed = false;
          }, 100);

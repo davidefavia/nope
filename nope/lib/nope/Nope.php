@@ -110,4 +110,9 @@ class Nope {
     self::getInstance()->addConfigWithException('nope.roles', $key, $item, 'Role "'.$key.'" already exists');
   }
 
+  static function registerMenuItem($item, $priority) {
+    self::getInstance()->addConfigWithException('nope.admin.menu', $priority, $item, 'Menu item size already exists at priority '.$priority);
+    ksort(self::getInstance()->config['nope.admin.menu']);
+  }
+
 }

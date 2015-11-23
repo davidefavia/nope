@@ -12,7 +12,7 @@ use RedBeanPHP\R as R;
 date_default_timezone_set(NOPE_DATETIME_TIMEZONE);
 
 define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . 'theme/'. NOPE_THEME .'/');
-define('NOPE_APP_VIEWS_PATH', NOPE_DIR . 'app/views/');
+define('NOPE_APP_VIEWS_PATH', NOPE_APP_DIR . 'views/');
 define('NOPE_LIB_VIEWS_PATH', NOPE_LIB_DIR . 'views/');
 
 $configuration = [
@@ -48,34 +48,12 @@ try {
 
 $app = new \Slim\App($container);
 
-// register models
-\Nope::registerModel('user', [
-  'model' => NOPE_LIB_DIR . 'models/User.php',
-  'route' => [
-    NOPE_LIB_DIR . 'routes/index.php',
-    NOPE_LIB_DIR . 'routes/auth.php',
-    NOPE_LIB_DIR . 'routes/user.php'
-  ],
-  'js' => [
-    'lib/assets/js/app.js',
-    'lib/assets/js/ui.js'
-  ]
-]);
-\Nope::registerModel('setting', [
-  'model' => NOPE_LIB_DIR . 'models/Setting.php',
-  'route' => NOPE_LIB_DIR . 'routes/setting.php'
-]);
-
-// register roles
-\Nope::registerRole('admin', [
-  'label' => 'Admin',
-  'permissions' => ['*.*']
-]);
+\Nope\Utils::mergeDirectories([NOPE_LIB_DIR . 'register'], true);
 
 require NOPE_LIB_DIR . 'routes/view.php';
 require NOPE_LIB_DIR . 'models/Content.php';
-require NOPE_DIR . 'app/register.php';
 
+require NOPE_APP_DIR . 'bootstrap.php';
 
 $models = \Nope::getConfig('nope.models');
 foreach($models as $name => $definition) {
