@@ -1,13 +1,38 @@
 <?php
 
+/**
+ * Main Nope class. It is used mainly as a way to store configurations and transport global data.
+ *
+ * @author Davide Favia <davide.favia@gmail.com>
+ * @package Nope
+ */
+
 use RedBeanPHP\R as R;
 
 class Nope {
 
+  /**
+   * @access private
+   * @var object $instance Nope singleton instance.
+   */
   private static $instance ;
+  /**
+   * @access private
+   * @var array $data Global data transportation array.
+   */
   private $data = [] ;
+  /**
+   * @access private
+   * @var array $config Global configurations transportation array.
+   */
   private $config = [];
 
+  /**
+   * @uses RedBeanPHP\R::testConnection to test database connection.
+   * @uses Nope\Settings::getByKey to retrieve installation flag inside settings table.
+
+   * @return boolean Whether Nope is already installed or not.
+   */
   static function isAlredyInstalled() {
     if(R::testConnection()) {
       $setting = \Nope\Setting::getByKey('installation');
@@ -19,6 +44,8 @@ class Nope {
 
   /**
    * Get singleton instance
+   *
+   * @return object Nope singleton instance.
    */
   static function getInstance() {
     if( ! self::$instance ) {
@@ -29,13 +56,10 @@ class Nope {
   }
 
   /**
-   * Get global data item
+   * Get global data items.
    *
-   * @param  mixed $key global data array key
-   * @return mixed global data array value
-
-   * @return null
-   *
+   * @param  mixed $key Global data array key.
+   * @return mixed Global data array value or the whole data array if key is not setted.
    */
   static function get($key = null) {
     if(isset($key)) {
@@ -45,6 +69,12 @@ class Nope {
     }
   }
 
+  /**
+   * Get global configuration items.
+   *
+   * @param  mixed $key Global configuration array key.
+   * @return mixed Global configuration array value or the whole configuration array if key is not setted.
+   */
   static function getConfig($key = null) {
     if(isset($key)) {
       return self::getInstance()->config[$key] ;
@@ -56,15 +86,21 @@ class Nope {
   /**
    * Set global data item
    *
-   * @param  string key string for global data storage
-   * @param  mixed  value for global data storage
-   * @return null
-   *
+   * @param  string Key string for global data storage.
+   * @param  mixed Value for global data storage.
+   * @return void
    */
   static function set($key , $value) {
     self::getInstance()->data[$key] = $value ;
   }
 
+  /**
+   * Set global configuration item
+   *
+   * @param  string Key string for global configuration storage.
+   * @param  mixed Value for global configuration storage.
+   * @return void
+   */
   static function setConfig($key , $value) {
     self::getInstance()->config[$key] = $value ;
   }
