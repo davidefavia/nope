@@ -1,5 +1,7 @@
 <?php
 
+namespace Nope;
+
 use Respect\Validation\Validator as v;
 
 class Content extends \Nope\Model {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Nope;
+
 use RedBeanPHP\R as R;
 use Respect\Validation\Validator as v;
 

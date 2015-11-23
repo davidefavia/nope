@@ -1,8 +1,10 @@
 <?php
 
+namespace Nope;
+
 use RedBeanPHP\R as R;
 
-class Setting extends Nope\Model {
+class Setting extends \Nope\Model {
 
   const MODELTYPE = 'setting';
 

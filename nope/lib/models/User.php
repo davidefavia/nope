@@ -1,10 +1,12 @@
 <?php
 
+namespace Nope;
+
 use RedBeanPHP\R as R;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
 
-class User extends Nope\Model {
+class User extends \Nope\Model {
 
   const MODELTYPE = 'user';
 

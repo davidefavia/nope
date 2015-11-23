@@ -1,13 +1,15 @@
 <?php
 
+namespace Nope;
+
 use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->get('', function($req, $res) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     if($currentUser->can('user.read')) {
-      $usersList = \User::findAll();
+      $usersList = User::findAll();
     } else {
       $usersList = [$currentUser];
     }
@@ -17,7 +19,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   });
 
   $this->post('', function($req, $res, $args) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     if($currentUser->can('user.create')) {
       $fields = ['username','email','description','enabled','pretty_name','role'];
       $userToCreate = new User();
@@ -42,9 +44,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   });
 
   $this->get('/{id}', function($req, $res, $args) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     if($currentUser->can('user.read') || $currentUser->id === $args['id']) {
-      $user = \User::findById($args['id']);
+      $user = User::findById($args['id']);
     }
     $body = $res->getBody();
     $body->write(json_encode(['currentUser' => $currentUser, "data" => $user]));
@@ -52,7 +54,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   });
 
   $this->put('/{id}', function($req, $res, $args) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     $body = $req->getParsedBody();
     if($currentUser->can('user.update') || $currentUser->id == $args['id']) {
       if($currentUser->isAdmin()) {
@@ -88,7 +90,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   });
 
   $this->delete('/{id}', function($req, $res, $args) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     if($currentUser->can('user.delete')) {
       $userToDelete = new User($args['id']);
       if($userToDelete && $currentUser->id === $userToDelete->id) {

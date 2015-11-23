@@ -1,10 +1,12 @@
 <?php
 
+namespace Nope;
+
 use RedBeanPHP\R as R;
 use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE, function() {
-  
+
 
   $this->map(['GET', 'POST'], '/install', function ($req, $res) {
 
