@@ -16,7 +16,7 @@ class Page extends Content {
   }
 
   function validate() {
-    $contentValidator = v::attribute('title', v::alnum()->noWhitespace()->length(1,255));
+    $contentValidator = v::attribute('title', v::length(1,255));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {

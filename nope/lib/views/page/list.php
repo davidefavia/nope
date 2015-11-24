@@ -6,10 +6,13 @@
       </div>
       <div class="list-group">
         <div class="list-group-item ng-cloak" ng-show="!filteredContentsList.length && q.title">No {{contentType}} found with filter "{{q.title}}".</div>
-        <div class="list-group-item clearfix" ng-repeat="p in filteredContentsList = (contentsList | filter : q)" ng-show="filteredContentsList.length">
-          <h4 class="list-group-item-heading">{{p.title}}</h4>
+        <div class="list-group-item clearfix" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in filteredContentsList = (contentsList | filter : q)" ng-show="filteredContentsList.length">
+          <a ng-href="#/content/{{contentType}}/view/{{p.id}}"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+          <p class="list-group-item-text">Modified on: {{p.last_modification_date}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
+            <a ng-href="#/content/{{contentType}}/view/{{p.id}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
             <a ng-href="#/content/{{contentType}}/edit/{{p.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+            <a href="" ng-click="deleteContent(p);" class="btn btn-default" nope-can="page.delete"><i class="fa fa-trash text-danger"></i></a>
           </div>
         </div>
       </div>

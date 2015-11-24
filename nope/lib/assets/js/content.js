@@ -44,7 +44,7 @@
       }
     })
     .state('app.content.detail', {
-      url : '/:id',
+      url : '/view/:id',
       views : {
         'content@app.content' : {
           templateUrl : function($stateParams) {
@@ -59,9 +59,35 @@
   /**
    * Controller
    */
-  .controller('ContentsListController', ['$scope', '$stateParams', 'ContentsList', function($scope, $stateParams, ContentsList) {
+  .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', 'ContentsList', function($scope, $state, $stateParams, $nopeModal, Content, ContentsList) {
     $scope.contentType = $stateParams.contentType;
     $scope.contentsList = ContentsList;
+
+    $scope.deleteContentOnClick = function() {
+      Content.delete({
+        type : $stateParams.contentType,
+        id:$scope.contentToDelete.id
+      }, function() {
+        $state.go('app.content', {
+          type : $stateParams.contentType
+        }, {
+          reload: true
+        });
+      });
+    }
+
+    $scope.deleteContent = function(c) {
+      $scope.contentToDelete = c;
+      $nopeModal.fromTemplate('<nope-modal title="Delete content">\
+      <nope-modal-body><p>Are you sure to delete content "{{contentToDelete.title}}"?</p></nope-modal-body>\
+      <nope-modal-footer>\
+        <a class="btn btn-default" nope-modal-close>Close</a>\
+        <a class="btn btn-danger" ng-click="deleteContentOnClick();">Yes, delete</a>\
+      </nope-modal-footer>\
+     </nope-modal>', $scope).then(function(modal) {
+       modal.show();
+     });
+    };
   }])
   .controller('ContentCreateController', ['$scope', '$state', '$stateParams', 'Content', function($scope, $state, $stateParams, Content) {
     $scope.content = new Content();
@@ -94,8 +120,14 @@
     }
 
   }])
-  .controller('ContentDetailController', ['$scope', function($scope) {
-
+  .controller('ContentDetailController', ['$scope', '$stateParams', 'Content', function($scope, $stateParams, Content) {
+    Content.get({
+      type : $stateParams.contentType,
+      id : $stateParams.id
+    }, function(data) {
+      $scope.content = data;
+      $scope.$parent.selectedContent = $scope.content;
+    });
   }])
   /**
    * Services

@@ -43,7 +43,7 @@
       url : 'user',
       views : {
         'content@app' : {
-          templateUrl : 'view/user.html',
+          templateUrl : 'view/user/list.html',
           controller: 'UserController'
         }
       },
@@ -57,7 +57,7 @@
       url : '/create',
       views : {
         'content@app.user' : {
-          templateUrl : 'view/user-detail.html',
+          templateUrl : 'view/user/form.html',
           controller : 'UserCreateController'
         }
       }
@@ -66,7 +66,7 @@
       url : '/:id',
       views : {
         'content@app.user' : {
-          templateUrl : 'view/user-detail.html',
+          templateUrl : 'view/user/form.html',
           controller : 'UserDetailController'
         }
       }

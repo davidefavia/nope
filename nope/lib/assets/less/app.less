@@ -78,6 +78,14 @@
 }
 
 .list-group-item {
+  &.active, &.active:hover {
+    a {
+      text-decoration:none;
+      .list-group-item-heading {
+        color: #fff;
+      }
+    }
+  }
   .list-group-item-heading {
     i {
       &.text-success {
@@ -112,4 +120,10 @@
 
 .reset {
   margin-right: 10px;
+}
+
+#content-detail {
+  h2:first-child {
+    margin-top: 0;
+  }
 }

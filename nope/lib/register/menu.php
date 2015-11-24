@@ -14,7 +14,7 @@
 
 \Nope::registerMenuItem([
   'id' => 'page',
-  'label' => 'Page',
+  'label' => 'Pages',
   'permission' => 'page.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/page\')!==-1',
@@ -28,7 +28,7 @@
 
 \Nope::registerMenuItem([
   'id' => 'user',
-  'label' => 'User',
+  'label' => 'Users',
   'permission' => 'user.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/user\')!==-1',
@@ -42,7 +42,7 @@
 
 \Nope::registerMenuItem([
   'id' => 'setting',
-  'label' => 'Setting',
+  'label' => 'Settings',
   'permission' => '',
   'role' => 'admin',
   'activeWhen' => 'selectedPath.indexOf(\'/setting\')!==-1',
