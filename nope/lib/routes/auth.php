@@ -20,7 +20,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   });
 
   $this->get('/loginstatus', function($req, $res) {
-    $currentUser = \User::getAuthenticated();
+    $currentUser = User::getAuthenticated();
     if(is_null($currentUser)) {
       return $res->withStatus(401);
     }

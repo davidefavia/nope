@@ -13,6 +13,20 @@
 ], 0);
 
 \Nope::registerMenuItem([
+  'id' => 'page',
+  'label' => 'Page',
+  'permission' => 'page.read',
+  'role' => '',
+  'activeWhen' => 'selectedPath.indexOf(\'/page\')!==-1',
+  'icon' => 'fa fa-file-text-o',
+  'attrs' => [
+    'href' => '',
+    'ui-sref' => 'app.content({contentType:\'page\'})',
+    'ui-sref-opts' => '{reload: true}'
+  ]
+], 50);
+
+\Nope::registerMenuItem([
   'id' => 'user',
   'label' => 'User',
   'permission' => 'user.read',
@@ -20,7 +34,9 @@
   'activeWhen' => 'selectedPath.indexOf(\'/user\')!==-1',
   'icon' => 'fa fa-user',
   'attrs' => [
-    'href' => '#/user'
+    'href' => '',
+    'ui-sref' => 'app.user',
+    'ui-sref-opts' => '{reload: true}'
   ]
 ], 100);
 
