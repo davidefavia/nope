@@ -25,6 +25,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       $contentToCreate = new Page();
       $body = $req->getParsedBody();
       $contentToCreate->import($body, $fields);
+      $contentToCreate->setAuthor($currentUser);
       $contentToCreate->save();
       $body = $res->getBody();
       $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToCreate]));

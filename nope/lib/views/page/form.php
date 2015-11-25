@@ -19,6 +19,10 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="form-group">
+              <label>Author</label>
+              <p class="form-control-static">{{content.author.pretty_name || content.author.username}}</p>
+            </div>
+            <div class="form-group">
               <label>Slug</label>
               <input type="text" name="slug" class="form-control" ng-model="content.slug" required ng-pattern="/^[a-zA-Z0-9-_\/]+$/" ng-trim="false" />
             </div>

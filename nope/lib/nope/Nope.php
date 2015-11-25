@@ -136,6 +136,13 @@ class Nope {
 
   static function registerModel($key, $item) {
     self::getInstance()->addConfigWithException('nope.models', $key, $item, 'Model "'.$key.'" already exists');
+    if(is_array($item['route'])) {
+      foreach($item['route'] as $file) {
+        self::registerRoute($file);
+      }
+    } else {
+      self::registerRoute($item['route']);
+    }
   }
 
   static function registerRoute($route) {

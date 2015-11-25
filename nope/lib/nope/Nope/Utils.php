@@ -38,4 +38,8 @@ class Utils {
     }
   }
 
+  static public function scanAndInclude($paths) {
+    self::mergeDirectories($paths, true);
+  }
+
 }

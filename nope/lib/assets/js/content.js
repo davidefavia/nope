@@ -21,8 +21,19 @@
         }
       }
     })
-    .state('app.content.create', {
-      url : '/create',
+    .state('app.content.detail', {
+      url : '/view/:id',
+      views : {
+        'content@app.content' : {
+          templateUrl : function($stateParams) {
+            return 'view/' + $stateParams.contentType + '/detail.html'
+          },
+          controller : 'ContentDetailController'
+        }
+      }
+    })
+    .state('app.contentcreate', {
+      url : 'content/:contentType/create',
       views : {
         'content@app' : {
           templateUrl : function($stateParams) {
@@ -32,25 +43,14 @@
         }
       }
     })
-    .state('app.content.edit', {
-      url : '/edit/:id',
+    .state('app.contentedit', {
+      url : 'content/:contentType/edit/:id',
       views : {
         'content@app' : {
           templateUrl : function($stateParams) {
             return 'view/' + $stateParams.contentType + '/form.html'
           },
           controller : 'ContentEditController'
-        }
-      }
-    })
-    .state('app.content.detail', {
-      url : '/view/:id',
-      views : {
-        'content@app.content' : {
-          templateUrl : function($stateParams) {
-            return 'view/' + $stateParams.contentType + '/detail.html'
-          },
-          controller : 'ContentDetailController'
         }
       }
     })
@@ -96,8 +96,8 @@
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        $state.go('app.content.edit', {
-          type : $stateParams.contentType,
+        $state.go('app.contentedit', {
+          contentType : $stateParams.contentType,
           id : data.id
         });
       });

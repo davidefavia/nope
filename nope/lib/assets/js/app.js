@@ -289,6 +289,10 @@
        $rootScope.selectedPath = $location.path();
      });
 
+     $rootScope.$on('$stateChangeError', function() {
+       console.log(arguments)
+     });
+
      $rootScope.$on('nope.error', function(e, reason) {
        $rootScope.errorReason = reason;
        $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}">\

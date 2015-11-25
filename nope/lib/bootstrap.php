@@ -54,14 +54,14 @@ if(!$isNopeEmbedded) {
   };
   $app = new \Slim\App($container);
 }
-\Nope\Utils::mergeDirectories([NOPE_LIB_DIR . 'register'], true);
+
+\Nope\Utils::scanAndInclude([NOPE_LIB_DIR . 'register']);
 
 if(!$isNopeEmbedded) {
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/install.php');
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/index.php');
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/view.php');
 }
-
 
 require NOPE_LIB_DIR . 'models/Content.php';
 require NOPE_APP_DIR . 'bootstrap.php';
@@ -77,17 +77,6 @@ foreach($models as $name => $definition) {
       }
     } else {
       require $definition['model'];
-    }
-  }
-  if($definition['route'] && !$isNopeEmbedded) {
-    if(is_array($definition['route'])) {
-      foreach($definition['route'] as $file) {
-        if(file_exists($file)) {
-          require $file;
-        }
-      }
-    } else {
-      require $definition['route'];
     }
   }
 }

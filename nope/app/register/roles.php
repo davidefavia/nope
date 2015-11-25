@@ -5,5 +5,6 @@
 \Nope::registerRole('editor', [
   'label' => 'Editor',
   'permissions' => [
+    'page.*'
   ]
 ]);

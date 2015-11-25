@@ -56,7 +56,7 @@ abstract class Model implements \JsonSerializable {
   abstract public function validate();
 
   public function jsonSerialize() {
-      return (object) $this->model->export();
+    return (object) $this->model->export();
   }
 
   public function save() {
