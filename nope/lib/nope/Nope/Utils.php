@@ -42,4 +42,18 @@ class Utils {
     self::mergeDirectories($paths, true);
   }
 
+  static public function getUniqueFilename($filename,$path,$suffix = 0) {
+    $completeFilePath = $path . $filename;
+    if(!file_exists($completeFilePath)) {
+      return $filename;
+    } else {
+      $suffix++;
+      $p = explode('.',$filename);
+      $ext = $p[count($p)-1];
+      array_pop($p);
+      $filename = implode('.',$p).$suffix.'.'.$ext;
+      return self::getUniqueFilename($filename,$path,$suffix);
+    }
+  }
+
 }

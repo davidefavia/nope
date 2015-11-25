@@ -2,7 +2,8 @@
   angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'nope.app']);
 
   angular.module('nope.app', [
-    'nope.ui'
+    'nope.ui',
+    'ngFileUpload'
   ])
   .constant('BasePath', window.BASE_PATH)
   .constant('AssetsPath', window.TEMPLATES_PATH)

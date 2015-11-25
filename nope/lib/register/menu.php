@@ -27,6 +27,20 @@
 ], 50);
 
 \Nope::registerMenuItem([
+  'id' => 'media',
+  'label' => 'Media',
+  'permission' => 'media.read',
+  'role' => '',
+  'activeWhen' => 'selectedPath.indexOf(\'/media\')!==-1',
+  'icon' => 'fa fa-picture-o',
+  'attrs' => [
+    'href' => '',
+    'ui-sref' => 'app.media',
+    'ui-sref-opts' => '{reload: true}'
+  ]
+], 75);
+
+\Nope::registerMenuItem([
   'id' => 'user',
   'label' => 'Users',
   'permission' => 'user.read',
@@ -57,7 +71,7 @@
   'label' => 'Logout',
   'permissions' => '',
   'role' => '',
-  'icon' => 'fa fa-sign-out',
+  'icon' => 'fa fa-unlock',
   'attrs' => [
     'href' => '',
     'ng-click' => 'logout();'
