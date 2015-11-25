@@ -16,7 +16,8 @@ class Page extends Content {
   }
 
   function validate() {
-    $contentValidator = v::attribute('title', v::length(1,255));
+    $contentValidator = v::attribute('title', v::length(1,255))
+      ->attribute('slug', v::regex('/[A-Za-z0-9-_\/]/')->length(1,255));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
@@ -29,7 +30,11 @@ class Page extends Content {
     return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
   }
 
-  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
+  static public function findBySlug($slug) {
+    return self::__to(R::findOne(self::MODELTYPE, 'slug = ?', [$slug]));
+  }
+
+  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
     $filters = (object) $filters;
     $params = [];
     /*if($filters->role) {

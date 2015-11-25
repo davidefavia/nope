@@ -1,6 +1,15 @@
 (function() {
   angular.module('nope.ui', [])
   /**
+   * Filters
+   */
+  .filter('nopeDate', ['$filter', function($filter) {
+    return function(input, format, timezone) {
+      input = input.split(' ').join('T') + 'Z';
+      return $filter('date')(input, format, timezone);
+    }
+  }])
+  /**
    * Services
    */
   .provider('$nopeModal', [function() {

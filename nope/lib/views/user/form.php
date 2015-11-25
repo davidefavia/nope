@@ -37,7 +37,7 @@
       <label>Description</label>
       <textarea name="description" class="form-control" ng-model="user.description"></textarea>
     </div>
-    <div class="form-grop clearfix">
+    <div class="form-group clearfix">
       <div class="pull-right">
         <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
         <button class="btn" ng-disabled="userForm.$invalid" ng-class="{'btn-success':!userForm.$invalid}">Save</button>
