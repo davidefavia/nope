@@ -10,8 +10,10 @@ Almost badly written, badly commented and documented, not tested. I'm working on
 
 ## Requirements
 
-- PHP >= 5.5.x (with _PDO_ and _SQLite_)
-- Apache2 >= 2.4.x (with *mod_rewrite*)
+- PHP >= 5.5.x with:
+  - *PDO* with *SQLite* extension,
+  - *GD* image processing library
+- Apache2 >= 2.4.x with *mod_rewrite*
 - [composer][composer]
 
 ## Install
@@ -39,13 +41,13 @@ Simple installation process will drive you through requirements and folder permi
 - [Slim framework][slim]
 - [RedbeanPHP][redbeanphp]
 - [Respect\Validation][validation]
-- Intervention
+- [Intervention\Image][image]
 - League\Event
 
 Administration interface is built on top of:
 
 - [AngularJS][angular]
-- [Bootstrap 3][bootstrap] (without jQuery, of course)
+- [Bootstrap 3][bootstrap]
 - [Font Awesome][fontawesome]
 
 ## Why (if anyone is interested)?
@@ -95,6 +97,7 @@ See [LICENSE](LICENSE) file.
 [bootstrap]: https://getcomposer.org/
 [composer]: http://getcomposer.org
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
+[image]: http://image.intervention.io/
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
 [validation]: https://github.com/Respect/Validation
