@@ -10,8 +10,37 @@ class Media extends Content {
 
   const MODELTYPE = 'media';
 
+  function getPath() {
+    return NOPE_UPLOADS_DIR . $this->model->filename;
+  }
+
+  function getUrl($cache=true) {
+    $t = ($cache?'':'?_='.time());
+    return NOPE_UPLOADS_PATH . $this->filename . $t;
+  }
+
+  function isImage() {
+    $needle = 'image/';
+    $length = strlen($needle);
+    return (substr($this->mimetype, 0, $length) === $needle);
+  }
+
+  function getPreview($type='thumb', $cache=true) {
+    $extension = Utils::getFileExtension($this->filename);
+    $filename = implode('-',[$type, $this->id]).'.'.$extension;
+    $t = ($cache?'':'?_='.time());
+    if(file_exists(NOPE_CACHE_DIR . 'uploads/' . $filename)) {
+      return NOPE_CACHE_PATH.'uploads/'.$filename . $t;
+    } else {
+      return NOPE_BASE_PATH . ltrim(NOPE_ADMIN_ROUTE, '/') .'/service/preview/'.$type.'/'.$this->id . $t;
+    }
+  }
+
   function jsonSerialize() {
     $obj = parent::jsonSerialize();
+    $obj->url = $this->getUrl();
+    $obj->preview = $this->getPreview('thumb');
+    $obj->isimage = $this->isImage();
     return $obj;
   }
 

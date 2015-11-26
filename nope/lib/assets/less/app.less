@@ -17,6 +17,12 @@
   }
 }
 
+.bg-cover() {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 #login {
   margin-top: 20px;
   .logo {
@@ -74,6 +80,38 @@
     min-height: 120px;
   }
   #model {
+    .row-span {
+      margin-bottom: @gutter;
+      .col {
+        margin-bottom: @gutter;
+        .list-group-item {
+          opacity: .85;
+          height: 100px;
+          overflow: hidden;
+          .bg-cover();
+          a {
+            position: absolute;
+            bottom:0;
+            right:0;
+            left:0;
+            top:0;
+            color: #fff;
+            h4 {
+              background-color: rgba(0,0,0,.3);
+              padding: 7px;
+              position: absolute;
+              bottom:0;
+              left:0;
+              right:0;
+              margin:0;
+            }
+          }
+          &.active, &:hover {
+            opacity:1;
+          }
+        }
+      }
+    }
   }
 }
 

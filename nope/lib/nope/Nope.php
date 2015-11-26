@@ -134,6 +134,10 @@ class Nope {
     }
   }
 
+  static function registerImageSize($key, $item) {
+    self::getInstance()->addConfigWithException('nope.media.size', $key, $item, 'Image size "'.$key.'" already exists');
+  }
+
   static function registerModel($key, $item) {
     self::getInstance()->addConfigWithException('nope.models', $key, $item, 'Model "'.$key.'" already exists');
     if(is_array($item['route'])) {

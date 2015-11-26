@@ -35,10 +35,11 @@
    */
   .controller('MediaListController', ['$scope', '$state', '$stateParams', 'Upload', '$nopeModal', 'Content', 'MediaList', function($scope, $state, $stateParams, Upload, $nopeModal, Content, MediaList) {
     $scope.contentsList = MediaList;
+    $scope.contentType = 'media';
 
     $scope.deleteContentOnClick = function() {
       Content.delete({
-        type : 'media',
+        type : $scope.contentType,
         id:$scope.contentToDelete.id
       }, function() {
         $state.go('app.media', null, {
@@ -66,7 +67,9 @@
           url : 'content/media/upload',
           data : {file: file}
         }).then(function(data) {
-          MediaList.push(data);
+          $state.go('app.media', null, {
+            reload: true
+          });
         });
       });
     }

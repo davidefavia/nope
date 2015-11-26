@@ -56,4 +56,13 @@ class Utils {
     }
   }
 
+  static public function getFileExtension($filename) {
+    try {
+      return pathinfo($filename, PATHINFO_EXTENSION);
+    } catch(\Exception $e) {
+      $p = explode('.',$filename);
+      return array_pop($p);
+    }
+  }
+
 }

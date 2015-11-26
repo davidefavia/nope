@@ -1,9 +1,20 @@
 <?php
 
+define('NOPE_DIR', realpath(__DIR__ . '/../') . '/');
+define('NOPE_BASE_PATH', '/' . basename(dirname($_SERVER['SCRIPT_NAME'])) . '/');
 define('NOPE_PATH', '/' . basename(dirname($_SERVER['SCRIPT_NAME'])) . '/nope/');
-define('NOPE_DIR', realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR);
-define('NOPE_LIB_DIR', NOPE_DIR . 'lib' . DIRECTORY_SEPARATOR);
-define('NOPE_APP_DIR', NOPE_DIR . 'app' . DIRECTORY_SEPARATOR);
+
+define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
+define('NOPE_LIB_PATH', NOPE_PATH . 'lib/');
+define('NOPE_APP_DIR', NOPE_DIR . 'app/');
+define('NOPE_LIB_PATH', NOPE_PATH . 'app/');
+define('NOPE_STORAGE_DIR', NOPE_DIR . 'storage/');
+define('NOPE_STORAGE_PATH', NOPE_PATH . 'storage/');
+define('NOPE_UPLOADS_DIR', NOPE_STORAGE_DIR . 'uploads/');
+define('NOPE_UPLOADS_PATH', NOPE_STORAGE_PATH . 'uploads/');
+define('NOPE_CACHE_DIR', NOPE_STORAGE_DIR . 'cache/');
+define('NOPE_CACHE_PATH', NOPE_STORAGE_PATH . 'cache/');
+
 
 require NOPE_LIB_DIR . 'vendor/autoload.php';
 require NOPE_LIB_DIR . 'nope/Nope.php';
@@ -61,6 +72,7 @@ if(!$isNopeEmbedded) {
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/install.php');
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/index.php');
   \Nope::registerRoute(NOPE_LIB_DIR . 'routes/view.php');
+  \Nope::registerRoute(NOPE_LIB_DIR . 'routes/service.php');
 }
 
 require NOPE_LIB_DIR . 'models/Content.php';
@@ -80,6 +92,14 @@ foreach($models as $name => $definition) {
     }
   }
 }
+
+// import the Intervention Image Manager Class
+use Intervention\Image\ImageManagerStatic as Image;
+Image::configure([
+  'cache' => [
+    'path' => NOPE_CACHE_DIR . 'uploads'
+  ]
+]);
 
 if(!$isNopeEmbedded) {
   foreach(\Nope::getConfig('nope.routes') as $file) {
