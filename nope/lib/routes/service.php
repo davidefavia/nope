@@ -12,7 +12,13 @@ $app->group(NOPE_ADMIN_ROUTE . '/service', function() {
     if($media->isImage()) {
       $path = $media->getPath();
     } else {
-      $path = NOPE_LIB_DIR . 'assets/img/icon-200.png';
+      $f = 'icon-200';
+      $extension = 'png';
+      $icon = 'icon-'. str_replace('/','-',$media->mimetype);
+      if(file_exists(NOPE_LIB_DIR . 'assets/img/'.$icon.'.'.$extension)) {
+        $f = $icon;
+      }
+      $path = NOPE_LIB_DIR . 'assets/img/'.$f.'.'.$extension;
     }
     $img = Image::cache(function($image) use ($path, $filter) {
       $image->make($path)->filter($filter);

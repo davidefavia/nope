@@ -10,13 +10,6 @@
           templateUrl : 'view/media/list.html',
           controller: 'MediaListController'
         }
-      },
-      resolve : {
-        MediaList : function(Content) {
-          return Content.getAll({
-            type : 'media'
-          });
-        }
       }
     })
     .state('app.media.detail', {
@@ -33,18 +26,14 @@
   /**
    * Controller
    */
-  .controller('MediaListController', ['$scope', '$state', '$stateParams', 'Upload', '$nopeModal', 'Content', 'MediaList', function($scope, $state, $stateParams, Upload, $nopeModal, Content, MediaList) {
-    $scope.contentsList = MediaList;
+  .controller('MediaListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Media', function($scope, $state, $stateParams, $nopeModal, Media) {
     $scope.contentType = 'media';
 
     $scope.deleteContentOnClick = function() {
-      Content.delete({
-        type : $scope.contentType,
+      Media.delete({
         id:$scope.contentToDelete.id
       }, function() {
-        $state.go('app.media', null, {
-          reload: true
-        });
+        $scope.getAllContents();
       });
     }
 
@@ -61,19 +50,34 @@
      });
     };
 
-    $scope.uploadFiles = function(files) {
-      angular.forEach(files, function(file, i) {
-        Upload.upload({
-          url : 'content/media/upload',
-          data : {file: file}
-        }).then(function(data) {
-          $state.go('app.media', null, {
-            reload: true
-          });
-        });
+    $scope.onUploadDone = function() {
+      $scope.getAllContents();
+    }
+
+    $scope.getAllContents = function() {
+      Media.getAll(function(data) {
+        $scope.contentsList = data;
       });
     }
 
+    $scope.getAllContents();
+
+  }])
+  .controller('MediaDetailController', ['$scope', '$state', '$stateParams', 'Media', function($scope, $state, $stateParams, Media) {
+
+  }])
+  /**
+   * Services
+   */
+  .service('Media', ['$resource', function($resource) {
+    return $resource('content/media/:id', {id:'@id'}, {
+      getAll : {
+        isArray : true
+      },
+      update: {
+        method: 'PUT'
+      }
+    });
   }])
   ;
 })();

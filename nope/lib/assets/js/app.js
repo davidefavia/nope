@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'nope.app']);
 
   angular.module('nope.app', [
@@ -268,26 +270,13 @@
      $httpProvider.interceptors.push('NopeHttpInterceptor');
    }])
    /**
-    * Directives
-    */
-   .directive('noEmpty', [function() {
-     return {
-       restrict : 'E',
-       transclude : true,
-       replace: true,
-       template : '<div class="empty"><i class="fa fa-{{icon}}"><h3 ng-transclude></h3></div>',
-       scope : {
-         icon : '@'
-       }
-     }
-   }])
-   /**
     * Run!
     */
    .run(['$rootScope', '$location', '$nopeModal', function($rootScope, $location, $nopeModal) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
+       console.log(arguments);
      });
 
      $rootScope.$on('$stateChangeError', function() {
@@ -296,7 +285,7 @@
 
      $rootScope.$on('nope.error', function(e, reason) {
        $rootScope.errorReason = reason;
-       $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}">\
+       $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}" nope-modal-close>\
        <nope-modal-body>\
         <p ng-if="!errorReason.data.exception.length">{{errorReason.statusText}}</p>\
         <p ng-if="errorReason.data.exception.length">{{errorReason.data.exception[0].message}}</p>\

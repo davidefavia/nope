@@ -57,8 +57,6 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       }
     } else {
       @unlink($uploadfile);
-      var_dump($req->getBody());
-      die();
       throw new \Exception();
     }
     $body = $res->getBody();

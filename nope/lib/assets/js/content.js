@@ -8,17 +8,17 @@
       views : {
         'content@app' : {
           templateUrl : function($stateParams) {
-            return 'view/' + $stateParams.contentType + '/list.html'
+            return 'view/' + $stateParams.contentType + '/list.html';
           },
           controller: 'ContentsListController'
         }
       },
       resolve : {
-        ContentsList : function($stateParams, Content) {
+        ContentsList : ['$stateParams', 'Content', function($stateParams, Content) {
           return Content.getAll({
             type : $stateParams.contentType
           });
-        }
+        }]
       }
     })
     .state('app.content.detail', {
@@ -68,6 +68,7 @@
         type : $stateParams.contentType,
         id:$scope.contentToDelete.id
       }, function() {
+        return;
         $state.go('app.content', {
           type : $stateParams.contentType
         }, {
@@ -96,6 +97,7 @@
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
+        return;
         $state.go('app.contentedit', {
           contentType : $stateParams.contentType,
           id : data.id

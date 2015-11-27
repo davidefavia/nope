@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   angular.module('nope.ui', [])
   /**
    * Filters
@@ -54,6 +56,17 @@
   /**
    * Directives
    */
+  .directive('noEmpty', [function() {
+    return {
+      restrict : 'E',
+      transclude : true,
+      replace: true,
+      template : '<div class="empty"><i class="fa fa-{{icon}}"><h3 ng-transclude></h3></div>',
+      scope : {
+        icon : '@'
+      }
+    }
+  }])
   .directive('nopeModal', [function() {
     return {
       restrict : 'E',
@@ -73,11 +86,11 @@
       scope : {
         title : '@'
       },
-      controller : function($scope, $element, $attrs) {
+      controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
         this.close = function() {
           $element.remove();
         }
-      }
+      }]
     }
   }])
   .directive('nopeModalBody', [function() {
@@ -100,11 +113,11 @@
     return {
       restrict : 'A',
       require : '^nopeModal',
-      link : function($scope, $element, $attrs, nopeModalCtrl) {
+      link : ['$scope', '$element', '$attrs', 'nopeModalCtrl', function($scope, $element, $attrs, nopeModalCtrl) {
         $element.on('click', function() {
           nopeModalCtrl.close();
         });
-      }
+      }]
     }
   }])
   .directive('nopeRole', ['$rootScope', function($rootScope) {
@@ -113,12 +126,12 @@
       scope : {
         role : '@nopeRole'
       },
-      link : function($scope, $element, $attrs) {
+      link : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
         var roles = $scope.role.split(',');
         if(roles.indexOf($rootScope.currentUser.role)===-1) {
           $element.remove();
         }
-      }
+      }]
     }
   }])
   .directive('nopeCan', ['$rootScope', function($rootScope) {
@@ -127,10 +140,45 @@
       scope : {
         permission : '@nopeCan'
       },
-      link : function($scope, $element, $attrs) {
+      link : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
         if(!$rootScope.currentUser.can($scope.permission)) {
           $element.remove();
         }
+      }]
+    }
+  }])
+  .directive('nopeUpload', ['$compile', '$q', 'Upload', function($compile, $q, Upload) {
+    return {
+      restrict : 'A',
+      terminal: true,
+      priority: 1000,
+      scope : {
+        onDone : '&nopeUpload'
+      },
+      controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+        $scope.uploadFiles = function(files) {
+          var promises = [];
+          angular.forEach(files, function(file, i) {
+            var q = Upload.upload({
+              url : 'content/media/upload',
+              data : {
+                file: file
+              }
+            });
+            promises.push(q);
+          });
+          $q.all(promises).then(function() {
+            console.log(arguments);
+            debugger;
+            $scope.onDone();
+          });
+        }
+      }],
+      link : function($scope, $element, $attrs) {
+        $element.attr('ngf-select','uploadFiles($files)');
+        $element.attr('multiple','multiple');
+        $element.removeAttr('nope-upload');
+        $compile($element)($scope);
       }
     }
   }])
