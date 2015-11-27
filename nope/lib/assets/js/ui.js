@@ -113,11 +113,11 @@
     return {
       restrict : 'A',
       require : '^nopeModal',
-      link : ['$scope', '$element', '$attrs', 'nopeModalCtrl', function($scope, $element, $attrs, nopeModalCtrl) {
+      link : function($scope, $element, $attrs, nopeModalCtrl) {
         $element.on('click', function() {
           nopeModalCtrl.close();
         });
-      }]
+      }
     }
   }])
   .directive('nopeRole', ['$rootScope', function($rootScope) {
@@ -126,12 +126,12 @@
       scope : {
         role : '@nopeRole'
       },
-      link : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+      link : function($scope, $element, $attrs) {
         var roles = $scope.role.split(',');
         if(roles.indexOf($rootScope.currentUser.role)===-1) {
           $element.remove();
         }
-      }]
+      }
     }
   }])
   .directive('nopeCan', ['$rootScope', function($rootScope) {
@@ -140,11 +140,11 @@
       scope : {
         permission : '@nopeCan'
       },
-      link : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+      link :function($scope, $element, $attrs) {
         if(!$rootScope.currentUser.can($scope.permission)) {
           $element.remove();
         }
-      }]
+      }
     }
   }])
   .directive('nopeUpload', ['$compile', '$q', 'Upload', function($compile, $q, Upload) {
@@ -168,8 +168,6 @@
             promises.push(q);
           });
           $q.all(promises).then(function() {
-            console.log(arguments);
-            debugger;
             $scope.onDone();
           });
         }

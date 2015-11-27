@@ -26,16 +26,21 @@ class View {
    */
   public function fetch($template, $data = [])
   {
-    ob_start();
-    if(is_array($data)) {
-      foreach($data as $key => $value) {
-        $$key = $value;
+    if(file_exists($template)) {
+      ob_start();
+      if(is_array($data)) {
+        foreach($data as $key => $value) {
+          $$key = $value;
+        }
       }
+      require_once $template;
+      $renderedTemplate = ob_get_contents();
+      ob_end_clean();
+      return $renderedTemplate;
+    } else {
+      throw new \Exception("Error Processing Request", 1);
+
     }
-    require_once $template;
-    $renderedTemplate = ob_get_contents();
-    ob_end_clean();
-    return $renderedTemplate;
   }
 
   /**

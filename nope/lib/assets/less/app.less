@@ -75,6 +75,9 @@
 
 // main
 #main {
+  &>.row {
+    margin:0;
+  }
   padding: @gutter;
   textarea {
     min-height: 120px;
@@ -86,7 +89,7 @@
         margin-bottom: @gutter;
         .list-group-item {
           opacity: .85;
-          height: 100px;
+          height: 120px;
           overflow: hidden;
           .bg-cover();
           a {
@@ -168,5 +171,14 @@
 #content-form {
   textarea {
     min-height: 240px;
+  }
+}
+
+#media-detail {
+  .preview {
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% auto;
   }
 }

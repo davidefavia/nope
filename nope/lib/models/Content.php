@@ -24,6 +24,7 @@ class Content extends Model {
     $author = $this->getAuthor();
     unset($this->model->author_id);
     $this->author = $author;
+    $this->id = (int) $this->id;
     return (object) $this->model->export();
   }
 
