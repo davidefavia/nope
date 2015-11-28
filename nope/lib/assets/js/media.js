@@ -39,6 +39,9 @@
         Media.delete({
           id: $scope.contentToDelete.id
         }, function() {
+          if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
+            $scope.selectedMedia = null;
+          }
           $scope.getAllContents();
         });
       }
@@ -68,11 +71,18 @@
       }
 
     }])
-    .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', 'MediaList', function($scope, $filter, $state, $stateParams, Media, MediaList) {
-      $scope.media = $filter('filter')(MediaList, {
+    .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
+      $scope.media = $filter('filter')($scope.$parent.contentsList, {
         id: parseInt($stateParams.id,10)
       }, true)[0];
       $scope.$parent.selectedMedia = $scope.media;
+
+      $scope.save = function() {
+        Media.update($scope.media, function(data) {
+          $scope.media = data;
+          $scope.$parent.selectedMedia = $scope.media;
+        });
+      }
     }])
     /**
      * Services

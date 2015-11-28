@@ -64,23 +64,6 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     return $res->withBody($body)->withHeader('Content-Type', 'application/json');
   });
 
-  $this->post('', function($req, $res, $args) {
-    $currentUser = User::getAuthenticated();
-    if($currentUser->can('media.create')) {
-      $fields = ['title'];
-      $contentToCreate = new Media();
-      $body = $req->getParsedBody();
-      $contentToCreate->import($body, $fields);
-      $contentToCreate->setAuthor($currentUser);
-      $contentToCreate->save();
-      $body = $res->getBody();
-      $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToCreate]));
-      return $res->withBody($body);
-    } else {
-      return $res->withStatus(403);
-    }
-  });
-
   $this->get('/{id}', function($req, $res, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.read')) {
@@ -95,7 +78,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $currentUser = User::getAuthenticated();
     $body = $req->getParsedBody();
     if($currentUser->can('media.update')) {
-      $fields = ['title'];
+      $fields = ['title', 'description', 'tags'];
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
@@ -115,7 +98,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.delete')) {
       $contentToDelete = new Media($args['id']);
+      $path = $contentToDelete->getPath();
       $contentToDelete->delete();
+      @unlink();
     }
     $body = $res->getBody();
     $body->write(json_encode(['currentUser' => $currentUser]));

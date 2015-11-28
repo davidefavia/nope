@@ -23,7 +23,7 @@
       modal.css({
         opacity: 1,
         display: 'block',
-        background : 'rgba(0,0,0,.3)'
+        background : 'rgba(0,0,0,.75)'
       });
     }
 
@@ -178,6 +178,25 @@
         $element.removeAttr('nope-upload');
         $compile($element)($scope);
       }
+    }
+  }])
+  .directive('nopeZoom', ['$nopeModal', function($nopeModal) {
+    return {
+      restrict : 'A',
+      scope : {
+        path : '=nopeZoom'
+      },
+      controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+        $element.addClass('nope-zoom');
+        $element.on('click', function(e) {
+          e.preventDefault();
+          $nopeModal.fromTemplate('<nope-modal class="zoom">\
+          <nope-modal-body><img class="img-responsive" ng-src="{{path}}" /></nope-modal-body>\
+          </nope-modal>', $scope).then(function(modal) {
+            modal.show();
+          })
+        })
+      }]
     }
   }])
 })()

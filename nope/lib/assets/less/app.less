@@ -92,21 +92,35 @@
           height: 120px;
           overflow: hidden;
           .bg-cover();
-          a {
+          .btn-group {
+            bottom:auto;
+            right: 5px;
+            left:auto;
+            top: 5px;
             position: absolute;
+            z-index: 1000;
+            .nope-zoom {
+              color: #fff;
+              background-color: rgba(0,0,0,.75);
+            }
+          }
+          a.btn-select {
             bottom:0;
-            right:0;
+            right: 0;
             left:0;
-            top:0;
-            color: #fff;
+            top: 0;
+            position: absolute;
             h4 {
-              background-color: rgba(0,0,0,.3);
+              background-color: rgba(0,0,0,.75);
               padding: 7px;
               position: absolute;
               bottom:0;
               left:0;
               right:0;
               margin:0;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
           &.active, &:hover {
@@ -175,10 +189,25 @@
 }
 
 #media-detail {
+  margin-top: -@gutter;
   .preview {
     height: 200px;
+    margin: -@gutter -@gutter @gutter -@gutter;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
+  }
+}
+
+.modal {
+  &.zoom {
+    .modal-dialog {
+      max-height: 75%;
+      overflow: auto;
+    }
+    .modal-body {
+      margin:0;
+      padding:0;
+    }
   }
 }

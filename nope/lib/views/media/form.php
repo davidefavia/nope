@@ -10,6 +10,10 @@
       <label>Description</label>
       <textarea name="description" class="form-control" ng-model="media.description"></textarea>
     </div>
+    <div class="form-group">
+      <label>Tags (comma separated)</label>
+      <input type="text" name="tags" class="form-control" ng-model="media.tags" />
+    </div>
     <div class="form-group clearfix">
       <div class="pull-right">
         <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>

@@ -25,6 +25,20 @@ class Media extends Content {
     return (substr($this->mimetype, 0, $length) === $needle);
   }
 
+  function delete() {
+    parent::delete();
+    @unlink($this->getPath());
+    $this->deleteCache();
+  }
+
+  function deleteCache() {
+    try {
+
+    } catch(\Exception $e) {
+
+    }
+  }
+
   function getPreview($type='thumb', $cache=true) {
     $extension = Utils::getFileExtension($this->filename);
     $filename = implode('-',[$type, $this->id]).'.'.$extension;
