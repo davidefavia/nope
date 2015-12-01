@@ -68,7 +68,6 @@
         type : $stateParams.contentType,
         id:$scope.contentToDelete.id
       }, function() {
-        return;
         $state.go('app.content', {
           type : $stateParams.contentType
         }, {
@@ -97,7 +96,6 @@
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        return;
         $state.go('app.contentedit', {
           contentType : $stateParams.contentType,
           id : data.id

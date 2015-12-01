@@ -42,6 +42,7 @@ try {
   $db = new SQLite3(NOPE_DATABASE_PATH, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
   R::setup('sqlite:'.NOPE_DATABASE_PATH);
   R::freeze(false);
+  R::exec('PRAGMA foreign_keys = 1;');
   R::debug(false);
 } catch(\Exception $e) {
 }

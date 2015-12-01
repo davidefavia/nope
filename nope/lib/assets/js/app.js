@@ -276,7 +276,7 @@
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
-       console.log(arguments);
+       //console.log(arguments);
      });
 
      $rootScope.$on('$stateChangeError', function() {

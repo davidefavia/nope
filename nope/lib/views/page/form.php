@@ -18,7 +18,7 @@
       <div class="col col-md-3">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="form-group">
+            <div class="form-group" ng-if="content.author">
               <label>Author</label>
               <p class="form-control-static">{{content.author.pretty_name || content.author.username}}</p>
             </div>

@@ -29,7 +29,9 @@ class Content extends Model {
     $json->tags = $this->getTags();
     if($json->cover_id) {
       $cover = Media::findById($json->cover_id);
-      unset($cover->model->author_id);
+      if($cover) {
+        unset($cover->model->author_id);
+      }
     }
     $json->cover = $cover;
     $a = (object) $json;

@@ -30,7 +30,9 @@ class User extends \Nope\Model {
     $obj->permissions = $this->getPermissions();
     if($obj->cover_id) {
       $cover = Media::findById($obj->cover_id);
-      unset($cover->model->author_id);
+      if($cover) {
+        unset($cover->model->author_id);
+      }
     }
     $obj->cover = $cover;
     unset($obj->password);

@@ -20,7 +20,7 @@
             <p>SQLite path writeable: <?php echo $sqlite->isDbPathWriteable; ?></p>
           </div>
           <div class="list-group-item list-group-item-<?php echo ($folders->passed?'success':'warning'); ?>">
-            <p><?php echo NOPE_STORAGE_PATH; ?> writeable: <?php echo $folders->passed; ?></p>
+            <p><?php echo NOPE_STORAGE_DIR; ?> writeable: <?php echo $folders->passed; ?></p>
           </div>
           <div class="list-group-item list-group-item-<?php echo ($nope->passed?'success':'danger'); ?>">
             <p>Security salt</p>

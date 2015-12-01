@@ -41,7 +41,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'passed' => $passedSalt
     ];
     // Folders
-    $isDataPathWriteable = is_writable(NOPE_STORAGE_PATH);
+    $isDataPathWriteable = is_writable(NOPE_STORAGE_DIR);
     $data['folders'] = (object) [
       'passed' => $isDataPathWriteable
     ];
@@ -70,7 +70,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $setting = new Setting();
         $setting->group = 'nope';
         $setting->key = 'installation';
-        $setting->value = new DateTime();
+        $setting->value = new \DateTime();
         $setting->save();
 
         return redirect($req, $res, NOPE_ADMIN_ROUTE);
