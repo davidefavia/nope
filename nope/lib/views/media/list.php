@@ -15,7 +15,7 @@
         <div class="list-group-item ng-cloak" ng-show="!filteredContentsList.length && q.title">No {{contentType}} found with filter "{{q.title}}".</div>
         <div class="row row-span clearfix">
           <div class="col col-md-3" ng-repeat="p in filteredContentsList = (contentsList | filter : q)" ng-show="filteredContentsList.length">
-            <div class="list-group-item clearfix" style="{{'background-image:url('+p.preview+')'}}" ng-class="{active:p.id===selectedMedia.id}">
+            <div class="list-group-item clearfix" style="{{'background-image:url('+p.preview.thumb+')'}}" ng-class="{active:p.id===selectedMedia.id}">
               <div class="btn-group btn-group-xs">
                 <a href="" nope-zoom="p.url" class="btn" ng-if="p.isimage"><i class="fa fa-arrows-alt"></i></a>
                 <a href="" class="btn btn-danger" ng-click="deleteContent(p);"><i class="fa fa-trash"></i></a>

@@ -151,6 +151,11 @@
       }
     }
   }
+  img {
+    &.preview {
+      margin-right: @gutter;
+    }
+  }
 }
 .toolbar {
   .btn {
@@ -208,6 +213,17 @@
     .modal-body {
       margin:0;
       padding:0;
+    }
+  }
+  &.contents {
+    .modal-body {
+      padding:0;
+      max-height: 300px;
+      overflow: auto;
+      .list-group {
+        border:0;
+        margin:0;
+      }
     }
   }
 }

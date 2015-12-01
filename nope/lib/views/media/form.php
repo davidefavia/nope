@@ -1,6 +1,6 @@
 <div id="media-detail">
   <form name="mediaForm" ng-submit="save()">
-    <div class="preview" style="{{'background-image: url('+media.preview+');'}}" />
+    <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}" />
     </div>
     <div class="form-group">
       <label>Title</label>
