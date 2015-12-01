@@ -11,8 +11,8 @@ class Page extends Content {
   const MODELTYPE = 'page';
 
   function jsonSerialize() {
-    $obj = parent::jsonSerialize();
-    return $obj;
+    $json = parent::jsonSerialize();
+    return $json;
   }
 
   function validate() {

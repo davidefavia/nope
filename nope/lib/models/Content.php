@@ -21,14 +21,40 @@ class Content extends Model {
   }
 
   function jsonSerialize() {
+    $json = parent::jsonSerialize();
     $author = $this->getAuthor();
-    unset($this->model->author_id);
-    $this->author = $author;
-    $this->id = (int) $this->id;
-    $this->tags = $this->getTags();
-    $a = (object) $this->model->export();
+    unset($json->author_id);
+    $json->author = $author;
+    $json->id = (int) $json->id;
+    $json->tags = $this->getTags();
+    if($json->cover_id) {
+      $cover = Media::findById($json->cover_id);
+      unset($cover->model->author_id);
+    }
+    $json->cover = $cover;
+    $a = (object) $json;
     unset($a->sharedTag);
     return $a;
+  }
+
+  function getCover() {
+    if($this->model->cover_id) {
+      return $this->model->fetchAs('media')->cover;
+    }
+    return null;
+  }
+
+  private function setCover($value) {
+    if($value['id']) {
+      $media = new Media($value['id']);
+      if($media) {
+        $this->model->cover = $media->model;
+      } else {
+        $this->model->cover = null;
+      }
+    } else {
+      $this->model->cover_id = null;
+    }
   }
 
   function setAuthor($user) {
@@ -78,6 +104,8 @@ class Content extends Model {
       foreach($fields as $f) {
         if($f === 'tags' && array_key_exists($f, $body)) {
           $this->setTags($body[$f]);
+        } elseif($f === 'cover') {
+          $this->setCover($body[$f]);
         } else {
           if(array_key_exists($f, $body)) {
             $this->model->$f = $body[$f];

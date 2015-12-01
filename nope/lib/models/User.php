@@ -10,16 +10,55 @@ class User extends \Nope\Model {
 
   const MODELTYPE = 'user';
 
+  public function import($body, $fields) {
+    if(is_array($fields)) {
+      foreach($fields as $f) {
+        if($f === 'cover') {
+          $this->setCover($body[$f]);
+        } else {
+          if(array_key_exists($f, $body)) {
+            $this->model->$f = $body[$f];
+          }
+        }
+      }
+    }
+  }
+
   function jsonSerialize() {
     $obj = parent::jsonSerialize();
-    $obj->id = (int) $obj->id;
     $obj->enabled = (int) $obj->enabled;
     $obj->permissions = $this->getPermissions();
+    if($obj->cover_id) {
+      $cover = Media::findById($obj->cover_id);
+      unset($cover->model->author_id);
+    }
+    $obj->cover = $cover;
     unset($obj->password);
     unset($obj->salt);
     unset($obj->last_login_date);
     unset($obj->reset_code);
+    unset($obj->cover_id);
     return $obj;
+  }
+
+  function getCover() {
+    if($this->model->cover_id) {
+      return $this->model->fetchAs('media')->cover;
+    }
+    return null;
+  }
+
+  private function setCover($value) {
+    if($value['id']) {
+      $media = new Media($value['id']);
+      if($media) {
+        $this->model->cover = $media->model;
+      } else {
+        $this->model->cover = null;
+      }
+    } else {
+      $this->model->cover_id = null;
+    }
   }
 
   function validate() {

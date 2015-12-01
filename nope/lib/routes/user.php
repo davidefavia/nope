@@ -59,16 +59,20 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     if($currentUser->can('user.update') || $currentUser->id == $args['id']) {
       if($currentUser->isAdmin()) {
         if($currentUser->id == $args['id']) {
-          $fields = ['email','description','pretty_name'];
+          $fields = ['email','description','pretty_name','cover'];
         } else {
           if($body['role'] === 'admin') {
             return $res->withStatus(400);
           } else {
-            $fields = ['email','description','enabled','pretty_name','role'];
+            $fields = ['email','description','enabled','pretty_name','role','cover'];
           }
         }
       } else {
-        $fields = ['email','description','pretty_name'];
+        if($currentUser->can('media.read')) {
+          $fields = ['email','description','pretty_name','cover'];
+        } else {
+          $fields = ['email','description','pretty_name'];
+        }
       }
       $userToUpdate = new User($args['id']);
       if($userToUpdate) {

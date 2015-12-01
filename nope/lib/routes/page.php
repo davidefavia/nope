@@ -21,7 +21,11 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
   $this->post('', function($req, $res, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
-      $fields = ['title', 'body', 'slug'];
+      if($currentUser->can('media.read')) {
+        $fields = ['title', 'body', 'slug', 'cover'];
+      } else {
+        $fields = ['title', 'body', 'slug'];
+      }
       $contentToCreate = new Page();
       $body = $req->getParsedBody();
       $contentToCreate->import($body, $fields);
@@ -49,7 +53,11 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     $currentUser = User::getAuthenticated();
     $body = $req->getParsedBody();
     if($currentUser->can('page.update')) {
-      $fields = ['title', 'body', 'slug'];
+      if($currentUser->can('media.read')) {
+        $fields = ['title', 'body', 'slug', 'cover'];
+      } else {
+        $fields = ['title', 'body', 'slug'];
+      }
       $contentToUpdate = new Page($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);

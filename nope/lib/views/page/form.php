@@ -31,6 +31,10 @@
               <input type="text" name="title" class="form-control" ng-model="content.publishing_date" placeholder="yyyy-mm-dd hh:mm:ss" />
             </div>
             <div class="form-group">
+              <label>Cover</label>
+              <nope-model model="Media" ng-model="content.cover" preview="icon" multiple="false"></nope-model>
+            </div>
+            <div class="form-group">
               <button class="btn btn-block" ng-disabled="contentForm.$invalid" ng-class="{'btn-success':!contentForm.$invalid}">Save</button>
             </div>
           </div>

@@ -58,6 +58,7 @@ class Media extends Content {
       $obj->preview->$key = $this->getPreview($key);
     }
     $obj->isimage = $this->isImage();
+    unset($obj->cover);
     return $obj;
   }
 
