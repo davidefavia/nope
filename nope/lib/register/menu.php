@@ -41,6 +41,20 @@
 ], 75);
 
 \Nope::registerMenuItem([
+  'id' => 'gallery',
+  'label' => 'Galleries',
+  'permission' => 'gallery.read',
+  'role' => '',
+  'activeWhen' => 'selectedPath.indexOf(\'/gallery\')!==-1',
+  'icon' => 'fa fa-object-group',
+  'attrs' => [
+    'href' => '',
+    'ui-sref' => 'app.gallery',
+    'ui-sref-opts' => '{reload: true}'
+  ]
+], 100);
+
+\Nope::registerMenuItem([
   'id' => 'user',
   'label' => 'Users',
   'permission' => 'user.read',
@@ -52,7 +66,7 @@
     'ui-sref' => 'app.user',
     'ui-sref-opts' => '{reload: true}'
   ]
-], 100);
+], 150);
 
 \Nope::registerMenuItem([
   'id' => 'setting',

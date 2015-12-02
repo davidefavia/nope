@@ -28,3 +28,10 @@
     'lib/assets/js/media.js'
   ]
 ]);
+\Nope::registerModel('gallery', [
+  'model' => NOPE_LIB_DIR . 'models/Gallery.php',
+  'route' => NOPE_LIB_DIR . 'routes/gallery.php',
+  'js' => [
+    'lib/assets/js/gallery.js'
+  ]
+]);
