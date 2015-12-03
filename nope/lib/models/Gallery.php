@@ -12,8 +12,10 @@ class Gallery extends Content {
   const MODELTYPE = 'gallery';
 
   function jsonSerialize() {
-    $obj = parent::jsonSerialize();
-    return $obj;
+    $json = parent::jsonSerialize();
+    $json->media = $this->getMedia();
+    unset($json->sharedMedia);
+    return $json;
   }
 
   function validate() {
@@ -25,6 +27,39 @@ class Gallery extends Content {
     }
     return true;
   }
+
+  function import($body, $fields) {
+    if(in_array('media', $fields)) {
+      $this->setMedia($body['media']);
+      $fields = array_diff($fields, ['media']);
+    }
+    parent::import($body, $fields);
+  }
+
+  private function getMedia() {
+    $m = [];
+    $rows = R::getAll('SELECT m.* FROM media m LEFT JOIN gallery_media gm ON m.id=gm.media_id WHERE gm.gallery_id='.$this->id.' order by gm.id asc');
+    if(count($rows)) {
+      foreach ($rows as $media) {
+        $me = Media::findById($media['id']);
+        $m[] = $me;
+      }
+    }
+    return $m;
+  }
+
+    private function setMedia($value) {
+      R::exec('DELETE FROM gallery_media where gallery_id='.$this->id);
+      if(count($value)) {
+        foreach($value as $media) {
+          $me = R::load('media', $media['id']);
+          $this->model->sharedMedia[] = $me;
+          /*$this->bean->link('gallery_media', [
+            'excluded' => $media['excluded']
+          ])->media = $me;*/
+        }
+      }
+    }
 
   static public function findById($id) {
     return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));

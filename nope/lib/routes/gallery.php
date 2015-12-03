@@ -22,7 +22,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.create')) {
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'description', 'cover', 'tags'];
+        $fields = ['title', 'description', 'cover', 'tags', 'media'];
       } else {
         $fields = ['title', 'description', 'tags'];
       }
@@ -42,7 +42,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
   $this->get('/{id}', function($req, $res, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.read')) {
-      $content = Page::findById($args['id']);
+      $content = Gallery::findById($args['id']);
     }
     $body = $res->getBody();
     $body->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
@@ -54,7 +54,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     $body = $req->getParsedBody();
     if($currentUser->can('gallery.update')) {
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'description', 'tags', 'cover'];
+        $fields = ['title', 'description', 'tags', 'cover', 'media'];
       } else {
         $fields = ['title', 'description', 'tags'];
       }

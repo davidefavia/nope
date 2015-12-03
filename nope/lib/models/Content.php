@@ -33,6 +33,7 @@ class Content extends Model {
         unset($cover->model->author_id);
       }
     }
+    unset($json->cover_id);
     $json->cover = $cover;
     $a = (object) $json;
     unset($a->sharedTag);

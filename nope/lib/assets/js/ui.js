@@ -252,7 +252,7 @@
           </div>\
         </div>\
         <div class="list-group-item" ng-if="!multiple">\
-          <img class="img-circle preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
+          <img class="img-rounded preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
           {{ngModel.title}}\
           <a href="" class="btn btn-danger btn-xs pull-right" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
         </div>\

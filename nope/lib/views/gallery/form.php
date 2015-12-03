@@ -12,6 +12,10 @@
       <label>Cover</label>
       <nope-model model="Media" ng-model="gallery.cover" preview="icon" multiple="false"></nope-model>
     </div>
+    <div class="form-group">
+      <label>Media</label>
+      <nope-model model="Media" ng-model="gallery.media" preview="icon"></nope-model>
+    </div>
     <div class="form-group clearfix">
       <div class="pull-right">
         <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
