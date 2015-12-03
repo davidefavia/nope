@@ -49,6 +49,7 @@
         Gallery.delete({
           id: $scope.contentToDelete.id
         }, function() {
+          $scope.$emit('nope.toast.success', 'Gallery deleted.');
           if($scope.selectedGallery && $scope.selectedGallery.id === $scope.contentToDelete.id) {
             $scope.selectedGallery = null;
           }
@@ -89,6 +90,7 @@
 
       $scope.save = function() {
         Gallery.save($scope.gallery, function(data) {
+          $scope.$emit('nope.toast.success', 'Gallery created.');
           $state.go('app.gallery.detail', {id:data.id}, {reload:true});
         });
       }
@@ -101,6 +103,7 @@
 
       $scope.save = function() {
         Gallery.update($scope.gallery, function(data) {
+          $scope.$emit('nope.toast.success', 'Gallery updated.');
           $scope.gallery = data;
           $scope.$parent.selectedGallery = $scope.gallery;
         });

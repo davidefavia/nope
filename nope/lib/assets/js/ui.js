@@ -49,6 +49,44 @@
     /**
      * Services
      */
+    .service('$nopeToast', ['$rootScope', '$compile', function($rootScope, $compile) {
+
+      var bodyElement = angular.element(document.body);
+      bodyElement.append('<div id="notifications-container"></div>');
+      var container = angular.element(document.getElementById('notifications-container'));
+
+      function error(m,o) {
+        show('danger',m,o || {});
+      }
+
+      function success(m,o) {
+        show('success',m,o || {});
+      }
+
+      function warning(m,o) {
+        show('warning',m,o || {});
+      }
+
+      function info(m,o) {
+        show('info',m,o || {});
+      }
+
+      function buildToast(level, message, options) {
+        options.timeout = options.timeout || 2500;
+        return $compile('<div class="alert alert-'+level+'" nope-timeout="'+options.timeout+'">'+message+'</div>')($rootScope);
+      }
+
+      function show(level, message, options) {
+        container.prepend(buildToast(level, message, options));
+      }
+
+      return {
+        info : info,
+        error : error,
+        success : success,
+        warning : warning
+      }
+    }])
     .provider('$nopeModal', [function() {
 
       var modal;
@@ -300,5 +338,18 @@
 
         }]
       }
-    }]);
+    }])
+    .directive('nopeTimeout', ['$timeout', function($timeout) {
+      return {
+        restrict : 'A',
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          var t = parseInt($attrs.nopeTimeout, 10);
+          t = t || 1000;
+          $timeout(function() {
+            $element.remove();
+          }, t);
+        }]
+      }
+    }])
+    ;
 })()

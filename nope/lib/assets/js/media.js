@@ -39,6 +39,7 @@
         Media.delete({
           id: $scope.contentToDelete.id
         }, function() {
+          $scope.$emit('nope.toast.success', 'Media deleted.');
           if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
             $scope.selectedMedia = null;
           }
@@ -60,6 +61,7 @@
       };
 
       $scope.onUploadDone = function() {
+        $scope.$emit('nope.toast.success', 'Media created.');
         $scope.getAllContents();
       }
 
@@ -79,6 +81,7 @@
 
       $scope.save = function() {
         Media.update($scope.media, function(data) {
+          $scope.$emit('nope.toast.success', 'Media updated.');
           $scope.media = data;
           $scope.$parent.selectedMedia = $scope.media;
         });

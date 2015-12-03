@@ -83,7 +83,9 @@
    .controller('AppController', ['$scope', '$rootScope', 'AssetsPath', 'User', function($scope, $rootScope, AssetsPath, User) {
 
      $rootScope.logout = function() {
-       User.logout();
+       User.logout(function() {
+         $scope.$emit('nope.toast.success', 'Logged out.');
+       });
      }
 
      $rootScope.assetsPath = AssetsPath;
@@ -95,6 +97,7 @@
 
      $scope.login = function() {
        User.login($scope.user, function() {
+         $scope.$emit('nope.toast.success', 'Welcome!', {timeout:1000});
          $state.go('app.dashboard');
        });
      }
@@ -106,6 +109,7 @@
      $scope.deleteUserOnClick = function() {
        User.delete({id:$scope.userToDelete.id}, function() {
          User.getAll(function(data) {
+           $scope.$emit('nope.toast.success', 'User deleted.');
            UsersList = data;
            $scope.usersList = UsersList;
            $state.go('app.user');
@@ -126,7 +130,7 @@
       });
      };
    }])
-   .controller('UserCreateController', ['$scope', '$state', 'RolesList', 'User', 'UsersList', function($scope, $state, RolesList, User, UsersList) {
+   .controller('UserCreateController', ['$scope', '$state', '$nopeToast', 'RolesList', 'User', 'UsersList', function($scope, $state, $nopeToast, RolesList, User, UsersList) {
      $scope.user = new User();
      $scope.user.email = '';
      $scope.$parent.selectedUser = $scope.user;
@@ -134,12 +138,13 @@
 
      $scope.save = function() {
        User.save($scope.user, function(data) {
+         $scope.$emit('nope.toast.success', 'User created.');
          UsersList.push(data);
          $state.go('app.user.detail', {id:data.id});
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'RolesList', 'User', 'UsersList', function($scope, $filter, $timeout, $state, $stateParams, RolesList, User, UsersList) {
+   .controller('UserDetailController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$nopeToast', 'RolesList', 'User', 'UsersList', function($scope, $filter, $timeout, $state, $stateParams, $nopeToast, RolesList, User, UsersList) {
      $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
      $scope.$parent.selectedUser = $scope.user;
      $scope.rolesList = RolesList;
@@ -159,6 +164,7 @@
 
      $scope.save = function() {
        User.update($scope.user, function(data) {
+         $scope.$emit('nope.toast.success', 'User updated.');
          $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
          //$scope.user = data;
          $timeout(function() {
@@ -272,7 +278,7 @@
    /**
     * Run!
     */
-   .run(['$rootScope', '$location', '$nopeModal', function($rootScope, $location, $nopeModal) {
+   .run(['$rootScope', '$location', '$nopeModal', '$nopeToast', function($rootScope, $location, $nopeModal, $nopeToast) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
@@ -296,6 +302,22 @@
       </nope-modal>', $rootScope).then(function(modal) {
         modal.show();
       });
+     });
+
+     $rootScope.$on('nope.toast.info', function(e, m, o) {
+       $nopeToast.success(m, o);
+     });
+
+     $rootScope.$on('nope.toast.success', function(e, m, o) {
+       $nopeToast.success(m, o);
+     });
+
+     $rootScope.$on('nope.toast.warning', function(e, m, o) {
+       $nopeToast.warning(m, o);
+     });
+
+     $rootScope.$on('nope.toast.error', function(e, m, o) {
+       $nopeToast.error(m, o);
      });
 
    }])

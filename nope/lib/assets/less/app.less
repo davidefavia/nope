@@ -30,6 +30,18 @@
 
 body {
   background: #edecec;
+  position: relative;
+  #notifications-container {
+    z-index: 2000;
+    position: fixed;
+    top: @gutter/2;
+    right: @gutter/2;
+    .alert {
+      width: 200px;
+      margin-bottom: @gutter/2;
+      padding: @gutter/2 @gutter;
+    }
+  }
 }
 
 #login {

@@ -68,6 +68,7 @@
         type : $stateParams.contentType,
         id:$scope.contentToDelete.id
       }, function() {
+        $scope.$emit('nope.toast.success', 'Content deleted.');
         $state.go('app.content', {
           type : $stateParams.contentType
         }, {
@@ -96,6 +97,7 @@
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
+        $scope.$emit('nope.toast.success', 'Content created.');
         $state.go('app.contentedit', {
           contentType : $stateParams.contentType,
           id : data.id
@@ -115,6 +117,7 @@
       Content.update({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
+        $scope.$emit('nope.toast.success', 'Content updated.');
         $scope.content = data;
       });
     }
