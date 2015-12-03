@@ -243,7 +243,7 @@
         require: 'ngModel',
         template: '<div><div class="list-group" ng-show="ngModel">\
         <div class="list-group-item" ng-if="multiple" ng-repeat="item in ngModel track by $index">\
-          <img class="img-rounded preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
+          <img class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
           {{item.title}}\
           <div class="btn-group btn-group-xs pull-right">\
             <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
@@ -252,7 +252,7 @@
           </div>\
         </div>\
         <div class="list-group-item" ng-if="!multiple">\
-          <img class="img-rounded preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
+          <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
           {{ngModel.title}}\
           <a href="" class="btn btn-danger btn-xs pull-right" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
         </div>\
