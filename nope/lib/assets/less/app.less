@@ -53,12 +53,22 @@ body {
     padding: @gutter;
     text-align: center;
     font-size: 12px;
-    img {
-      margin-bottom: 5px;
-    }
     a {
       color: #fff;
       text-shadow: none;
+    }
+    &>a {
+      margin:0 auto 10px auto;
+      position: relative;
+      width: 96px;
+      height: 96px;
+      display: block;
+      border-radius: 50%;
+      &:hover {
+        img {
+          opacity:.85;
+        }
+      }
     }
   }
   .nav {

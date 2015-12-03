@@ -2,7 +2,9 @@
   <div class="row">
     <div id="sidebar" class="col col-md-2 col-sm-3">
       <div id="welcome">
-        <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
+        <a href="#/user/{{currentUser.id}}">
+          <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
+        </a>
         <p><a ng-href="#/user/{{currentUser.id}}">{{currentUser.getFullName()}}</a></p>
       </div>
       <ul class="nav">
