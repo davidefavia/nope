@@ -108,4 +108,4 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     return $res->withBody($body);
   });
 
-});
+})->add(auth());

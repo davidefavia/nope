@@ -66,6 +66,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $user->description = null;
         $user->role = 'admin';
         $user->save();
+        $user->saveInSession();
 
         $setting = new Setting();
         $setting->group = 'nope';

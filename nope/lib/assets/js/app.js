@@ -18,15 +18,25 @@
       templateUrl : 'view/app.html',
       controller: 'AppController',
       resolve : {
-        isLoggedIn : function(User) {
+        isLoggedIn : ['User', function(User) {
           return User.getLoginStatus().$promise;
-        }
+        }]
       }
     })
     .state('login', {
       url :'/login',
       templateUrl : 'view/login.html',
-      controller : 'LoginController'
+      controller : 'LoginController',
+      resolve : {
+        isLoggedIn : ['$q', '$state', 'User', function($q, $state, User) {
+          var q = $q.defer();
+          User.getLoginStatus(function() {
+            q.reject();
+            $state.go('app.dashboard');
+          }, q.resolve);
+          return q.promise;
+        }]
+      }
     })
     .state('app.dashboard', {
       url : 'dashboard',
@@ -80,11 +90,12 @@
   /**
    * Controllers
    */
-   .controller('AppController', ['$scope', '$rootScope', 'AssetsPath', 'User', function($scope, $rootScope, AssetsPath, User) {
+   .controller('AppController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'User', function($scope, $rootScope, $state, AssetsPath, User) {
 
      $rootScope.logout = function() {
        User.logout(function() {
          $scope.$emit('nope.toast.success', 'Logged out.');
+         $state.go('login');
        });
      }
 
@@ -253,8 +264,12 @@
        responseError : function(reason) {
          var $state = $injector.get('$state');
          if(reason.status === 401) {
-           $state.go('login');
-           return $q.reject(reason);
+           if(reason.config.url.indexOf('loginstatus')!==-1) {
+             return $q.reject(reason);
+           } else {
+             $state.go('login');
+             return $q.reject(reason);
+           }
          } else {
            $rootScope.$emit('nope.error', reason);
            return $q.reject(reason);
