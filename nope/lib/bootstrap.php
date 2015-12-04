@@ -19,7 +19,11 @@ define('NOPE_CACHE_PATH', NOPE_STORAGE_PATH . 'cache/');
 require NOPE_LIB_DIR . 'vendor/autoload.php';
 require NOPE_LIB_DIR . 'nope/Nope.php';
 require NOPE_LIB_DIR . 'nope/functions.php';
-require NOPE_DIR . 'config.php';
+if(file_exists(NOPE_DIR . 'config-dev.php')) {
+  require NOPE_DIR . 'config-dev.php';
+} else {
+  require NOPE_DIR . 'config.php';
+}
 
 session_start();
 
