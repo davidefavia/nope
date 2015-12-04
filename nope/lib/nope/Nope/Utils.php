@@ -65,4 +65,21 @@ class Utils {
     }
   }
 
+  static function hashPassword($password,$salt) {
+    return hash('sha512',(string)$password.(string)$salt);
+  }
+
+  /**
+   * http://phpsec.org/articles/2005/password-hashing.html
+   */
+  static function generateSalt($plainText, $salt = null) {
+    $saltLength = 9;
+    if ($salt === null) {
+      $salt = substr(md5(uniqid(rand(), true)), 0, $saltLength);
+    } else {
+      $salt = substr($salt, 0, $saltLength);
+    }
+    return $salt . hash('sha512',$salt . $plainText);
+  }
+
 }

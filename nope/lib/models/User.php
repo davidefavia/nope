@@ -78,15 +78,15 @@ class User extends \Nope\Model {
   }
 
   function setPassword($value) {
-    $salt = generateSalt($value);
-    $hashedPassword = hashPassword($value,$salt);
+    $salt = \Nope\Utils::generateSalt($value);
+    $hashedPassword = \Nope\Utils::hashPassword($value,$salt);
     $this->model->salt = $salt;
     $this->model->password = $hashedPassword;
   }
 
   static function authenticate($username, $password) {
     $user = self::findByUsername($username);
-    if($user && v::identical($user->password)->validate(hashPassword($password,$user->salt)) && $user->enabled==1) {
+    if($user && v::identical($user->password)->validate(\Nope\Utils::hashPassword($password,$user->salt)) && $user->enabled==1) {
       $user->lastLoginDate = new \DateTime();
       $user->resetCode = null;
       $user->save();

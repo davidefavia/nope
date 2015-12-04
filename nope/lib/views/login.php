@@ -1,4 +1,4 @@
-<div id="login" class="container">
+<div class="container front">
   <div class="row">
     <div class="col-md-offset-4 col-md-4">
       <div class="logo">

@@ -48,11 +48,19 @@ label {
   font-size: @font-size-base - 2px;
 }
 
-#login {
+.front {
   margin-top: 20px;
   .logo {
     margin-bottom: 20px;
     text-align: center;
+  }
+  .breadcrumb {
+    font-size: @font-size-base - 2px;
+    color: lighten(@gray-light,10%);
+    &>.active {
+      color: @brand-primary;
+      font-weight: bold;
+    }
   }
 }
 
