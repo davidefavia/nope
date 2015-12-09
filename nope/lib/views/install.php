@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
+    <link href="<?php echo path('lib/assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
   </head>
   <body>
@@ -22,29 +23,19 @@
                 </ol>
                 <div class="list-group">
                   <?php if($step === 1 || !$ok ) { ?>
-                  <div class="list-group-item list-group-item-<?php echo ($php->passed?'success':'danger'); ?>">
-                    <h4 class="list-group-item-heading">PHP version</h4>
-                    <p class="list-group-item-text">Installed version: <?php echo $php->actual; ?><br>Minimum required version: <?php echo $php->required; ?></p>
-                  </div>
-                  <div class="list-group-item list-group-item-<?php echo ($sqlite->passed?'success':'danger'); ?>">
-                    <h4 class="list-group-item-heading">SQLite database</h4>
-                    <p class="list-group-item-text">Connection: <?php echo $sqlite->passed; ?><br>Path: <?php echo $sqlite->dbPath; ?><br>Writeable path: <?php echo $sqlite->isDbPathWriteable; ?></p>
-                  </div>
-                  <div class="list-group-item list-group-item-<?php echo ($folders->passed?'success':'warning'); ?>">
-                    <h4 class="list-group-item-heading">Storage</h4>
-                    <p class="list-group-item-text"><?php echo NOPE_STORAGE_DIR; ?> writeable: <?php echo $folders->passed; ?></p>
-                  </div>
-                  <div class="list-group-item list-group-item-<?php echo ($nope->passed?'success':'danger'); ?>">
-                    <h4 class="list-group-item-heading">Security</h4>
-                    <?php if(!$nope->passed) { ?>
-                      <div class="form-group">
-                        <label>Salt suggestion:</label>
-                        <input type="text" class="form-control input-sm" value="<?php echo $nope->suggestion; ?>" readonly />
+                    <?php foreach($requirements as $key => $requirement) { ?>
+                      <div class="list-group-item list-group-item-<?php echo ($requirement->passed?'success':'danger'); ?>">
+                        <h4 class="list-group-item-heading">
+                          <?php if($requirement->icon) { ?>
+                            <i class="fa fa-<?php echo $requirement->icon; ?>"></i>
+                          <?php } ?>
+                          <?php echo $requirement->title; ?>
+                          <i class="pull-right fa fa-<?php if($requirement->passed) { ?>check<?php } else { ?>exclamation<?php } ?>"></i></h4>
+                        <?php foreach($requirement->lines as $line) { ?>
+                          <p class="list-group-item-text"><?php echo $line; ?></p>
+                        <?php } ?>
                       </div>
-                    <?php } else { ?>
-                      <p class="list-group-item-text">Salt: <?php echo NOPE_SECURITY_SALT; ?></p>
                     <?php } ?>
-                  </div>
                   <?php } ?>
                 </div>
                 <?php if($step === 2 && $ok ) { ?>
@@ -53,19 +44,19 @@
                   <?php } ?>
                   <div class="form-group">
                     <label>Username:</label>
-                    <input type="text" name="username" ng-model="user.username" class="form-control" value="" placeholder="Username" required />
+                    <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username" required />
                   </div>
                   <div class="form-group">
                     <label>Password:</label>
-                    <input type="password" name="password" ng-model="user.password" class="form-control" value="" placeholder="Password" require />
+                    <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required />
                   </div>
                   <div class="form-group">
                     <label>Confirm password:</label>
-                    <input type="password" name="confirm" ng-model="user.confirm" class="form-control" value="" placeholder="Confirm password" required />
+                    <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm password" required />
                   </div>
                   <div class="form-group">
                     <label>Email:</label>
-                    <input type="email" name="email"  ng-model="user.email" class="form-control" value="" placeholder="Email" required />
+                    <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" required />
                   </div>
                   <!--
                   <div class="form-group">
@@ -84,9 +75,9 @@
                   <button type="submit" class="btn btn-success btn-block btn-lg" ng-disabled="installationForm.$invalid">Install</button>
                   <?php } else { ?>
                     <?php if($ok) { ?>
-                      <button class="btn btn-primary btn-block">Go forward</button>
+                      <button class="btn btn-primary btn-block btn-lg">Go forward</button>
                     <?php } else { ?>
-                      <a href="" class="btn btn-warning btn-block">Check again</a>
+                      <a href="" class="btn btn-warning btn-block btn-lg">Check again</a>
                     <?php } ?>
                   <?php } ?>
                 </div>

@@ -14,6 +14,8 @@ define('NOPE_UPLOADS_DIR', NOPE_STORAGE_DIR . 'uploads/');
 define('NOPE_UPLOADS_PATH', NOPE_STORAGE_PATH . 'uploads/');
 define('NOPE_CACHE_DIR', NOPE_STORAGE_DIR . 'cache/');
 define('NOPE_CACHE_PATH', NOPE_STORAGE_PATH . 'cache/');
+define('NOPE_BACKUPS_DIR', NOPE_STORAGE_DIR . 'backups/');
+define('NOPE_BACKUPS_PATH', NOPE_STORAGE_PATH . 'backups/');
 
 
 require NOPE_LIB_DIR . 'vendor/autoload.php';

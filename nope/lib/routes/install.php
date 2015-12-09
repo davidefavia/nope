@@ -11,47 +11,84 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
   $this->map(['GET', 'POST'], '/install', function ($req, $res) {
 
     if(\Nope::isAlredyInstalled()) {
-      return $res->withStatus(302)->withHeader('Location', $req->getUri()->getBasePath() . NOPE_ADMIN_ROUTE);
+      return $res->withStatus(302)->withHeader('Location', $req->getUri()->getBaseFolder() . NOPE_ADMIN_ROUTE);
     }
-
     $data = [];
+    $requirements = [];
     // PHP version
     $phpVersion = phpversion();
     // @TODO: read from composer.json
     $minimumPhpVersion = '5.5.0';
     $isRightPhpVersion = version_compare($phpVersion, $minimumPhpVersion, 'ge');
-    $data['php'] = (object) [
-      'actual' => $phpVersion,
-      'required' => $minimumPhpVersion,
-      'passed' => $isRightPhpVersion
+    $requirements['php'] = (object) [
+      'passed' => $isRightPhpVersion,
+      'title' => 'PHP version',
+      'icon' => 'code',
+      'lines' => [
+        'Installed version: ' . phpversion(),
+        'Minimum required version: ' . $minimumPhpVersion
+      ]
     ];
     // SQLite
     $isConnected = R::testConnection();
-    $data['sqlite'] = (object) [
-      'dbPath' => NOPE_DATABASE_PATH,
-      'isDbPathWriteable' => is_writable(basename(NOPE_DATABASE_PATH)),
-      'passed' => $isConnected
-    ];
-    // Nope salt
-    $passedSalt = v::stringType()->length(1)->not(v::nullType())->validate(NOPE_SECURITY_SALT);
-    $suggestedSalt = password_hash("nope".microtime(), PASSWORD_BCRYPT, ['cost' => 12]);
-    $data['nope'] = (object) [
-      'salt' => NOPE_SECURITY_SALT,
-      'suggestion' => $suggestedSalt,
-      'passed' => $passedSalt
+    $isDatabaseFolderWriteable = is_writable(basename(NOPE_DATABASE_PATH));
+    $isDatabaseOk = $isConnected && $isDatabaseFolderWriteable;
+    $requirements['sqlite'] = (object) [
+      'passed' => $isDatabaseOk,
+      'title' => 'SQLite database',
+      'icon' => 'database',
+      'lines' => [
+        'Connection: <code>' . var_export($isDatabaseOk, true) . '</code>',
+        'Database path: <code>' . NOPE_DATABASE_PATH . '</code>',
+        'Database folder writeable: <code>' . var_export($isDatabaseFolderWriteable, true) . '</code>'
+      ]
     ];
     // Folders
-    $isDataPathWriteable = is_writable(NOPE_STORAGE_DIR);
-    $data['folders'] = (object) [
-      'passed' => $isDataPathWriteable
+    $isStorageFolderWriteable = is_writable(NOPE_STORAGE_DIR);
+    $isCacheFolderWriteable = is_writable(NOPE_CACHE_DIR);
+    $isUploadsFolderWriteable = is_writable(NOPE_UPLOADS_DIR);
+    $isBackupsFolderWriteable = is_writable(NOPE_BACKUPS_DIR);
+    $areFoldersWriteAble = ($isStorageFolderWriteable && $isCacheFolderWriteable && $isUploadsFolderWriteable && $isBackupsFolderWriteable);
+    $requirements['folders'] = (object) [
+      'passed' => $areFoldersWriteAble,
+      'title' => 'Storage',
+      'icon' => 'folder-open',
+      'lines' => [
+        #'Storage folder: <code>' . NOPE_STORAGE_DIR . '</code>',
+        'Storage folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>',
+        #'Cache folder: <code>' . NOPE_CACHE_DIR . '</code>',
+        'Cache folder writeable: <code>' . var_export($isCacheFolderWriteable, true) . '</code>',
+        #'Uploads folder: <code>' . NOPE_UPLOADS_DIR . '</code>',
+        'Uploads folder writeable: <code>' . var_export($isUploadsFolderWriteable, true) . '</code>',
+        #'Backups folder: <code>' . NOPE_BACKUPS_DIR . '</code>',
+        'Backups folder writeable: <code>' . var_export($isBackupsFolderWriteable, true) . '</code>'
+      ]
+    ];
+    // Security
+    $passedSalt = v::stringType()->length(1)->not(v::nullType())->validate(NOPE_SECURITY_SALT);
+    $suggestedSalt = password_hash("nope".microtime(), PASSWORD_BCRYPT, ['cost' => 12]);
+    $requirements['security'] = (object) [
+      'passed' => $passedSalt,
+      'title' => 'Security',
+      'icon' => 'certificate',
+      'lines' => [
+        'Salt: <code>' . NOPE_SECURITY_SALT . '</code>'
+      ]
     ];
     // Timezone
-    $data['timezone'] = (object) [
-      'list' => timezone_identifiers_list()
+    $requirements['timezone'] = (object) [
+      'passed' => true,
+      'title' => 'Timezone',
+      'icon' => 'globe',
+      'lines' => [
+        'Setted timezone: ' => date_default_timezone_get()
+      ]
     ];
     $data['step'] = 1;
 
-    $data['ok'] = ($isRightPhpVersion && $isConnected && $passedSalt && $isDataPathWriteable);
+    $data['ok'] = ($isRightPhpVersion && $isDatabaseOk && $passedSalt && $areFoldersWriteAble);
+
+    $data['requirements'] = $requirements;
 
     if($req->isPost() && $data['ok']) {
       $data['step'] = 2;
