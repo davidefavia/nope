@@ -25,8 +25,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'title' => 'PHP version',
       'icon' => 'code',
       'lines' => [
-        'Installed version: ' . phpversion(),
-        'Minimum required version: ' . $minimumPhpVersion
+        'Installed version: <code>' . phpversion() . '</code>',
+        'Minimum required version: <code>' . $minimumPhpVersion . '</code>'
       ]
     ];
     // SQLite
@@ -39,9 +39,9 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'icon' => 'database',
       'lines' => [
         'Connection: <code>' . var_export($isDatabaseOk, true) . '</code>',
-        'Database path: <code>' . NOPE_DATABASE_PATH . '</code>',
-        'Database folder writeable: <code>' . var_export($isDatabaseFolderWriteable, true) . '</code>'
-      ]
+        'Database path: <code>' . NOPE_DATABASE_PATH . '</code>'
+      ],
+      'help' => 'You can change <code>NOPE_DATABASE_PATH</code> value inside <code>config.php</code>.'
     ];
     // Folders
     $isStorageFolderWriteable = Utils::isPathWriteable(NOPE_STORAGE_DIR);
@@ -61,7 +61,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'icon' => 'folder-open',
       'lines' => [
         'Storage folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>'
-      ]
+      ],
+      'help' => ($areFoldersWriteAble ? '' : 'You need to change <code>' . NOPE_STORAGE_DIR . '</code> folder permissions.')
     ];
     // Security
     $passedSalt = v::stringType()->length(1)->not(v::nullType())->validate(NOPE_SECURITY_SALT);
@@ -72,7 +73,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'icon' => 'certificate',
       'lines' => [
         'Salt: <code>' . NOPE_SECURITY_SALT . '</code>'
-      ]
+      ],
+      'help' => ($passedSalt ?  'You can change <code>NOPE_SECURITY_SALT</code> value inside <code>config.php</code> whenever you want.' : 'You can use the suggested salt <code>' . $suggestedSalt . '</code> as <code>NOPE_SECURITY_SALT</code> value inside <code>config.php</code>.')
     ];
     // Timezone
     $requirements['timezone'] = (object) [
@@ -80,8 +82,9 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'title' => 'Timezone',
       'icon' => 'globe',
       'lines' => [
-        'Setted timezone: ' => date_default_timezone_get()
-      ]
+        'Setted timezone: <code>' . date_default_timezone_get() . '</code>'
+      ],
+      'help' => 'You can change <code>NOPE_DATETIME_TIMEZONE</code> value inside <code>config.php</code>.'
     ];
     $data['step'] = 1;
 

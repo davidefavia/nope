@@ -62,11 +62,22 @@ label {
       font-weight: bold;
     }
   }
+  p {
+    margin-bottom: 5px;
+  }
   .list-group-item-success {
-    .list-group-item-text {
-      code {
-        color: darken(@brand-success,20%);
-      }
+    code {
+      color: darken(@brand-success,20%);
+    }
+  }
+  .help-block {
+    font-size: 12px;
+    color: @gray-light;
+    margin-bottom: 0;
+    code {
+      background: none;
+      font-weight: bold;
+      color: @gray-light;
     }
   }
 }

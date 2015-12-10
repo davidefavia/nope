@@ -34,6 +34,9 @@
                         <?php foreach($requirement->lines as $line) { ?>
                           <p class="list-group-item-text"><?php echo $line; ?></p>
                         <?php } ?>
+                        <?php if($requirement->help) { ?>
+                          <p class="help-block"><i class="fa fa-info-circle"></i> <?php echo $requirement->help; ?></p>
+                        <?php } ?>
                       </div>
                     <?php } ?>
                   <?php } ?>
@@ -58,17 +61,6 @@
                     <label>Email:</label>
                     <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" required />
                   </div>
-                  <!--
-                  <div class="form-group">
-                    <label>Timezone:</label>
-                    <select class="form-control">
-                      <option></option>
-                      <?php foreach ($timezone->list as $key => $value) { ?>
-                      <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                -->
                 <?php } ?>
                 <div class="form-group">
                   <?php if($step === 2 ) { ?>
