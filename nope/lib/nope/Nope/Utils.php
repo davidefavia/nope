@@ -82,4 +82,20 @@ class Utils {
     return $salt . hash('sha512',$salt . $plainText);
   }
 
+  static function isPathWriteable($path) {
+    return is_writeable($path);
+  }
+
+  static function makePathWriteable($path, $permissions = 0755) {
+    chmod($path, $permissions);
+  }
+
+  static function createFolderIfDoesntExist($path, $permissions = 0755) {
+    if(!file_exists($path)) {
+      mkdir($path, $permissions);
+    } else {
+      self::makePathWriteable($path, $permissions);
+    }
+  }
+
 }

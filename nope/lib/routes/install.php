@@ -31,7 +31,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     ];
     // SQLite
     $isConnected = R::testConnection();
-    $isDatabaseFolderWriteable = is_writable(basename(NOPE_DATABASE_PATH));
+    $isDatabaseFolderWriteable = Utils::isPathWriteable(basename(NOPE_DATABASE_PATH));
     $isDatabaseOk = $isConnected && $isDatabaseFolderWriteable;
     $requirements['sqlite'] = (object) [
       'passed' => $isDatabaseOk,
@@ -44,24 +44,23 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       ]
     ];
     // Folders
-    $isStorageFolderWriteable = is_writable(NOPE_STORAGE_DIR);
-    $isCacheFolderWriteable = is_writable(NOPE_CACHE_DIR);
-    $isUploadsFolderWriteable = is_writable(NOPE_UPLOADS_DIR);
-    $isBackupsFolderWriteable = is_writable(NOPE_BACKUPS_DIR);
+    $isStorageFolderWriteable = Utils::isPathWriteable(NOPE_STORAGE_DIR);
+    if(!$isStorageFolderWriteable) {
+      Utils::makePathWriteable(NOPE_STORAGE_DIR);
+    }
+    Utils::createFolderIfDoesntExist(NOPE_CACHE_DIR, 0775);
+    Utils::createFolderIfDoesntExist(NOPE_UPLOADS_DIR, 0775);
+    Utils::createFolderIfDoesntExist(NOPE_BACKUPS_DIR, 0775);
+    $isCacheFolderWriteable = Utils::isPathWriteable(NOPE_CACHE_DIR);
+    $isUploadsFolderWriteable = Utils::isPathWriteable(NOPE_UPLOADS_DIR);
+    $isBackupsFolderWriteable = Utils::isPathWriteable(NOPE_BACKUPS_DIR);
     $areFoldersWriteAble = ($isStorageFolderWriteable && $isCacheFolderWriteable && $isUploadsFolderWriteable && $isBackupsFolderWriteable);
     $requirements['folders'] = (object) [
       'passed' => $areFoldersWriteAble,
       'title' => 'Storage',
       'icon' => 'folder-open',
       'lines' => [
-        #'Storage folder: <code>' . NOPE_STORAGE_DIR . '</code>',
-        'Storage folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>',
-        #'Cache folder: <code>' . NOPE_CACHE_DIR . '</code>',
-        'Cache folder writeable: <code>' . var_export($isCacheFolderWriteable, true) . '</code>',
-        #'Uploads folder: <code>' . NOPE_UPLOADS_DIR . '</code>',
-        'Uploads folder writeable: <code>' . var_export($isUploadsFolderWriteable, true) . '</code>',
-        #'Backups folder: <code>' . NOPE_BACKUPS_DIR . '</code>',
-        'Backups folder writeable: <code>' . var_export($isBackupsFolderWriteable, true) . '</code>'
+        'Storage folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>'
       ]
     ];
     // Security
