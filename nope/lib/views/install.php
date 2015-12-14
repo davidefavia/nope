@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="app">
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
@@ -45,21 +45,35 @@
                   <?php if($user===false) { ?>
                   <p>Something wrong.</p>
                   <?php } ?>
-                  <div class="form-group">
-                    <label>Username:</label>
-                    <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username" required />
+                  <div class="form-group" ng-class="{'has-error':(!installationForm.username.$valid && installationForm.username.$touched)}">
+                    <label class="control-label">Username:</label>
+                    <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username" required ng-pattern="/^([a-z0-9]{3,20})$/" ng-trim="false" />
+                    <div ng-messages="installationForm.username.$error" ng-if="installationForm.username.$touched">
+                      <span class="help-block" ng-message="required">Username is required.</span>
+                      <span class="help-block" ng-message="pattern">Username must contain only lower case letters, numbers and it need to be between 3 and 20 chars long.</span>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label>Password:</label>
+                  <div class="form-group" ng-class="{'has-error':(!installationForm.password.$valid && installationForm.password.$touched)}">
+                    <label class="control-label">Password:</label>
                     <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required />
+                    <div ng-messages="installationForm.password.$error" ng-if="installationForm.password.$touched">
+                      <span class="help-block" ng-message="required">Password is required.</span>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label>Confirm password:</label>
+                  <div class="form-group" ng-class="{'has-error':(!installationForm.confirm.$valid && installationForm.confirm.$touched)}">
+                    <label class="control-label">Confirm password:</label>
                     <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm password" required />
+                    <div ng-messages="installationForm.confirm.$error" ng-if="installationForm.confirm.$touched">
+                      <span class="help-block" ng-message="required">Password confirmation is required.</span>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label>Email:</label>
+                  <div class="form-group" ng-class="{'has-error':(!installationForm.email.$valid && installationForm.email.$touched)}">
+                    <label class="control-label">Email:</label>
                     <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" required />
+                    <div ng-messages="installationForm.email.$error" ng-if="installationForm.email.$touched">
+                     <span class="help-block" ng-message="required">Email is required.</span>
+                     <span class="help-block" ng-message="email">Email must be valid.</span>
+                   </div>
                   </div>
                 <?php } ?>
                 <div class="form-group">
@@ -80,5 +94,9 @@
         </div>
       </div>
       <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
+      <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
+      <script>
+        angular.module('app', ['ngMessages']);
+      </script>
   </body>
 </html>

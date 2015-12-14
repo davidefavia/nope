@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('nope', ['ngResource', 'ngSanitize', 'ui.router', 'nope.app']);
+  angular.module('nope', ['ngMessages', 'ngResource', 'ngSanitize', 'ui.router', 'nope.app']);
 
   angular.module('nope.app', [
     'nope.ui',

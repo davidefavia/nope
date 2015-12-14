@@ -25,8 +25,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'title' => 'PHP version',
       'icon' => 'code',
       'lines' => [
-        'Installed version: <code>' . phpversion() . '</code>',
-        'Minimum required version: <code>' . $minimumPhpVersion . '</code>'
+        'Installed: <code>' . phpversion() . '</code>',
+        'Minimum required: <code>' . $minimumPhpVersion . '</code>'
       ]
     ];
     // SQLite
@@ -39,7 +39,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'icon' => 'database',
       'lines' => [
         'Connection: <code>' . var_export($isDatabaseOk, true) . '</code>',
-        'Database path: <code>' . NOPE_DATABASE_PATH . '</code>'
+        'Path: <code>' . NOPE_DATABASE_PATH . '</code>'
       ],
       'help' => 'You can change <code>NOPE_DATABASE_PATH</code> value inside <code>config.php</code>.'
     ];
@@ -60,7 +60,8 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       'title' => 'Storage',
       'icon' => 'folder-open',
       'lines' => [
-        'Storage folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>'
+        'Folder path: <code>' . NOPE_STORAGE_DIR . '</code>',
+        'Folder writeable: <code>' . var_export($isStorageFolderWriteable, true) . '</code>'
       ],
       'help' => ($areFoldersWriteAble ? '' : 'You need to change <code>' . NOPE_STORAGE_DIR . '</code> folder permissions.')
     ];

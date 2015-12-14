@@ -14,6 +14,7 @@
   <body>
     <ui-view></ui-view>
     <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
+    <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-resource.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-sanitize.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-ui-router.min.js'); ?>"></script>

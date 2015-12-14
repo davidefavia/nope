@@ -4,7 +4,7 @@
       <form name="userForm" ng-submit="save()">
         <div class="form-group">
           <label>Username</label>
-          <input type="text" name="username" class="form-control" ng-model="user.username" required  ng-if="!user.id" />
+          <input type="text" name="username" class="form-control" ng-model="user.username" required  ng-if="!user.id" ng-pattern="/^([a-z0-9]{3,20})$/" ng-trim="false" />
           <p class="form-control-static" ng-if="user.id">{{user.username}}</p>
         </div>
         <div class="form-group" ng-if="!user.id">
