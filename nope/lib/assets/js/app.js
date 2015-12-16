@@ -106,6 +106,8 @@
 
      $rootScope.assetsPath = AssetsPath;
 
+     $scope.recovery = false;
+
      $scope.login = function() {
        User.login($scope.user, function() {
          $scope.$emit('nope.toast.success', 'Welcome!', {timeout:1000});
@@ -113,6 +115,10 @@
        }, function() {
          $scope.loginServerError = true;
        });
+     }
+
+     $scope.recoveryPassword = function() {
+       alert('Password recovered');
      }
 
    }])
