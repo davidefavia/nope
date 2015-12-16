@@ -4,6 +4,10 @@ namespace Nope;
 
 class Utils {
 
+  const USERNAME_REGEX_PATTERN = '/^([a-z0-9]{3,20})$/';
+  // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+  const EMAIL_REGEX_PATTERN = '/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+
   static function mergeDirectories($list,$include=false,$prefix=[]) {
     $ds = '/';
     $files = [];

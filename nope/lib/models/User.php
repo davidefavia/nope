@@ -64,9 +64,9 @@ class User extends \Nope\Model {
   }
 
   function validate() {
-    $userValidator = v::attribute('username', v::alnum()->lowercase()->noWhitespace()->length(3,20))
+    $userValidator = v::attribute('username', v::regex(Utils::USERNAME_REGEX_PATTERN))
       ->attribute('password', v::stringType()->noWhitespace()->notEmpty())
-      ->attribute('email', v::optional(v::email()))
+      ->attribute('email', v::regex(Utils::EMAIL_REGEX_PATTERN))
       ->attribute('role', v::noWhitespace()->notEmpty())
       ;
     try {
