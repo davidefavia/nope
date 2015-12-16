@@ -15,7 +15,8 @@ class Auth
      */
     public function __invoke($request, $response, $next)
     {
-      if(!$loggedIn) {
+      $currentUser = \Nope\User::getAuthenticated();
+      if(!$currentUser) {
         return $response->withStatus(401);
       }
       $response = $next($request, $response);

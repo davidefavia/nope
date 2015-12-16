@@ -64,9 +64,9 @@ class User extends \Nope\Model {
   }
 
   function validate() {
-    $userValidator = v::attribute('username', v::alnum()->noWhitespace()->length(1,20))
+    $userValidator = v::attribute('username', v::regex(Utils::USERNAME_REGEX_PATTERN))
       ->attribute('password', v::stringType()->noWhitespace()->notEmpty())
-      ->attribute('email', v::optional(v::email()))
+      ->attribute('email', v::regex(Utils::EMAIL_REGEX_PATTERN))
       ->attribute('role', v::noWhitespace()->notEmpty())
       ;
     try {
@@ -78,15 +78,15 @@ class User extends \Nope\Model {
   }
 
   function setPassword($value) {
-    $salt = generateSalt($value);
-    $hashedPassword = hashPassword($value,$salt);
+    $salt = \Nope\Utils::generateSalt($value);
+    $hashedPassword = \Nope\Utils::hashPassword($value,$salt);
     $this->model->salt = $salt;
     $this->model->password = $hashedPassword;
   }
 
   static function authenticate($username, $password) {
     $user = self::findByUsername($username);
-    if($user && v::identical($user->password)->validate(hashPassword($password,$user->salt)) && $user->enabled==1) {
+    if($user && v::identical($user->password)->validate(\Nope\Utils::hashPassword($password,$user->salt)) && $user->enabled==1) {
       $user->lastLoginDate = new \DateTime();
       $user->resetCode = null;
       $user->save();

@@ -31,7 +31,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->get('/logout', function ($req, $res) {
     if(User::logout()) {
-      return $res->withStatus(401);
+      return $res->withStatus(200);
     }
     return $res->withStatus(500);
   });

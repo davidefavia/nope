@@ -14,12 +14,18 @@ define('NOPE_UPLOADS_DIR', NOPE_STORAGE_DIR . 'uploads/');
 define('NOPE_UPLOADS_PATH', NOPE_STORAGE_PATH . 'uploads/');
 define('NOPE_CACHE_DIR', NOPE_STORAGE_DIR . 'cache/');
 define('NOPE_CACHE_PATH', NOPE_STORAGE_PATH . 'cache/');
+define('NOPE_BACKUPS_DIR', NOPE_STORAGE_DIR . 'backups/');
+define('NOPE_BACKUPS_PATH', NOPE_STORAGE_PATH . 'backups/');
 
 
 require NOPE_LIB_DIR . 'vendor/autoload.php';
 require NOPE_LIB_DIR . 'nope/Nope.php';
 require NOPE_LIB_DIR . 'nope/functions.php';
-require NOPE_DIR . 'config.php';
+if(file_exists(NOPE_DIR . 'config-dev.php')) {
+  require NOPE_DIR . 'config-dev.php';
+} else {
+  require NOPE_DIR . 'config.php';
+}
 
 session_start();
 

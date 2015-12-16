@@ -2,6 +2,7 @@ composer.phar
 nope/lib/vendor/
 bower_components/
 node_modules/
+nope/config-dev.php
 npm-debug.log
 *.db
 

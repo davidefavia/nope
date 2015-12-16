@@ -4,6 +4,10 @@ namespace Nope;
 
 class Utils {
 
+  const USERNAME_REGEX_PATTERN = '/^([a-z0-9]{3,20})$/';
+  // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+  const EMAIL_REGEX_PATTERN = '/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+
   static function mergeDirectories($list,$include=false,$prefix=[]) {
     $ds = '/';
     $files = [];
@@ -62,6 +66,39 @@ class Utils {
     } catch(\Exception $e) {
       $p = explode('.',$filename);
       return array_pop($p);
+    }
+  }
+
+  static function hashPassword($password,$salt) {
+    return hash('sha512',(string)$password.(string)$salt);
+  }
+
+  /**
+   * http://phpsec.org/articles/2005/password-hashing.html
+   */
+  static function generateSalt($plainText, $salt = null) {
+    $saltLength = 9;
+    if ($salt === null) {
+      $salt = substr(md5(uniqid(rand(), true)), 0, $saltLength);
+    } else {
+      $salt = substr($salt, 0, $saltLength);
+    }
+    return $salt . hash('sha512',$salt . $plainText);
+  }
+
+  static function isPathWriteable($path) {
+    return is_writeable($path);
+  }
+
+  static function makePathWriteable($path, $permissions = 0755) {
+    chmod($path, $permissions);
+  }
+
+  static function createFolderIfDoesntExist($path, $permissions = 0755) {
+    if(!file_exists($path)) {
+      mkdir($path, $permissions);
+    } else {
+      self::makePathWriteable($path, $permissions);
     }
   }
 
