@@ -110,6 +110,8 @@
        User.login($scope.user, function() {
          $scope.$emit('nope.toast.success', 'Welcome!', {timeout:1000});
          $state.go('app.dashboard');
+       }, function() {
+         $scope.loginServerError = true;
        });
      }
 

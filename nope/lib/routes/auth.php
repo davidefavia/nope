@@ -4,36 +4,36 @@ namespace Nope;
 
 $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
-  $this->post('/login', function ($req, $res) {
-    $body = $req->getParsedBody();
+  $this->post('/login', function ($request, $response) {
+    $body = $request->getParsedBody();
     if($body['username'] && $body['password']) {
       if(User::authenticate($body['username'], $body['password'])) {
-        return $res;
+        return $response;
       } else {
         // user with credentials --> not found!
-        return $res->withStatus(404);
+        return $response->withStatus(404, 'User not found.');
       }
     } else {
       // bad request
-      return $res->withStatus(400);
+      return $response->withStatus(400);
     }
   });
 
-  $this->get('/loginstatus', function($req, $res) {
+  $this->get('/loginstatus', function($request, $response) {
     $currentUser = User::getAuthenticated();
     if(is_null($currentUser)) {
-      return $res->withStatus(401);
+      return $response->withStatus(401);
     }
-    $body = $res->getBody();
+    $body = $response->getBody();
     $body->write(json_encode(['currentUser' => $currentUser]));
-    return $res->withBody($body);
+    return $response->withBody($body);
   });
 
-  $this->get('/logout', function ($req, $res) {
+  $this->get('/logout', function ($request, $response) {
     if(User::logout()) {
-      return $res->withStatus(200);
+      return $response->withStatus(200);
     }
-    return $res->withStatus(500);
+    return $response->withStatus(500);
   });
 
 });

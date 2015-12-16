@@ -16,7 +16,8 @@
     "gabordemooij/redbean": "dev-master",
     "respect/validation": "^1.0",
     "intervention/image": "^2.3",
-    "intervention/imagecache": "^2.3"
+    "intervention/imagecache": "^2.3",
+    "phpmailer/phpmailer": "^5.2"
   },
   "autoload": {
     "psr-4": {
