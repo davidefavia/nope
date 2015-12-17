@@ -118,7 +118,9 @@
      }
 
      $scope.recoveryPassword = function() {
-       alert('Password recovered');
+       User.recovery({email:$scope.recoveryEmail}, function() {
+         $scope.recoveryStatus = true;
+       });
      }
 
    }])
@@ -214,6 +216,10 @@
         },
         update : {
           method : 'PUT'
+        },
+        recovery : {
+          url: 'user/recovery',
+          method: 'POST'
         }
       });
 
