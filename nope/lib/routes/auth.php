@@ -40,13 +40,50 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->post('/recovery', function ($request, $response) {
     $body = $request->getParsedBody();
-    if($body['email'] && v::attribute('email', v::regex(Utils::EMAIL_REGEX_PATTERN))) {
+    #$body = $request->getQueryParams();
+    if(v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email'])) {
       $userByEmail = User::findByEmail($body['email']);
       if((int) $userByEmail->enabled) {
+        // Send email!
+        try {
+          $code = Utils::generateSalt(time().$userByEmail->username, $userByEmail->salt);
+          $userByEmail->reset_code = $code;
+          $userByEmail->save();
+          $toName = $userByEmail->pretty_name?:$userByEmail->username;
+          $this->mailer->addAddress($userByEmail->email, $toName);
+          $this->mailer->isHTML(false);
+          $this->mailer->Subject = 'Nope: forgotten password';
+          $this->mailer->Body = "Copy link into your browser to reset password:\n\n".Utils::getFullRequestUri($request, NOPE_ADMIN_ROUTE).'/#/login/'.$code;
+          $this->mailer->send();
+        } catch (phpmailerException $e) {
+          throw $e; //Pretty error messages from PHPMailer
+        } catch (Exception $e) {
+          throw $e; //Boring error messages from anything else!
+        }
         return $response;
       } else {
         // user with credentials --> not found!
         return $response->withStatus(404, 'Email not found.');
+      }
+    } else {
+      // bad request
+      return $response->withStatus(400);
+    }
+  });
+
+  $this->post('/reset', function ($request, $response) {
+    $body = $request->getParsedBody();
+    if($body['password'] && v::identical($body['password'])->validate($body['confirm'])) {
+      $userByResetCode = User::findByResetCode($body['code']);
+      if($userByResetCode && (int) $userByResetCode->enabled) {
+        $userByResetCode->reset_code = null;
+        $userByResetCode->setPassword($body['password']);
+        $userByResetCode->save();
+        $userByResetCode->saveInSession();
+        return $response;
+      } else {
+        // user with credentials --> not found!
+        return $response->withStatus(404, 'User not found.');
       }
     } else {
       // bad request

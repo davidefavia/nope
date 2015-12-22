@@ -102,4 +102,16 @@ class Utils {
     }
   }
 
+  static function getFullRequestUri($request, $add=null) {
+    $uri = $request->getUri();
+    return implode(array_map(function($item) {
+      return ltrim($item,'/');
+    }, [
+      $uri->getScheme() . ':/',
+      $uri->getHost(),
+      $uri->getBasePath(),
+      $add
+    ]),'/');
+  }
+
 }

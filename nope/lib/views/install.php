@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="nope.app">
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
@@ -96,29 +96,9 @@
       </div>
       <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
       <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
+      <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
       <script>
-        angular.module('app', ['ngMessages'])
-        .run(['$rootScope', function($rootScope) {
-          $rootScope.user = {};
-        }])
-        .directive('nopeMatch', [function() {
-          return {
-            restrict : 'A',
-            require : '^ngModel',
-            scope : {
-              nopeMatch : '=',
-              ngModel : '='
-            },
-            link : function($scope, $element, $attrs, ngModelCtrl) {
-              $scope.$watch('ngModel', function(n,o) {
-                ngModelCtrl.$setValidity('match',(n===$scope.nopeMatch));
-              }, true);
-              $scope.$watch('nopeMatch', function(n,o) {
-                ngModelCtrl.$setValidity('match',($scope.ngModel===n));
-              }, true);
-            }
-          }
-        }])
+        angular.module('nope.app', ['ngMessages', 'nope.ui'])
         ;
       </script>
   </body>

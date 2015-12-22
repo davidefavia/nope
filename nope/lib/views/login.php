@@ -6,7 +6,7 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-body" ng-class="{recovery:recovery}">
-          <div ng-hide="recovery">
+          <div ng-hide="recovery || useResetCode">
             <form class="form-signin" name="loginForm" ng-submit="login()">
               <div class="form-group" ng-class="{'has-error':(!loginForm.username.$valid && loginForm.username.$touched) || loginServerError}">
                 <label class="control-label">Username</label>
@@ -43,6 +43,28 @@
               </p>
               <a ng-click="recovery=false;recoveryStatus=false;recoveryEmail=null;recoveryForm.email.$setUntouched();" class="btn btn-link btn-lg">&laquo; Go to login</a>
             </div>
+          </div>
+          <div ng-show="useResetCode">
+            <form class="form-signin" name="resetPasswordForm" ng-submit="resetPassword()">
+              <div class="form-group" ng-class="{'has-error':(!resetPasswordForm.password.$valid && resetPasswordForm.password.$touched)}">
+                <label class="control-label">New password:</label>
+                <input type="password" name="password" ng-model="password" class="form-control input-lg" placeholder="Password" required />
+                <div ng-messages="resetPasswordForm.password.$error" ng-if="resetPasswordForm.password.$touched" ng-cloak>
+                  <span class="help-block" ng-message="required">Password is required.</span>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error':(!resetPasswordForm.confirm.$valid && resetPasswordForm.confirm.$touched)}">
+                <label class="control-label">Confirm new password:</label>
+                <input type="password" name="confirm" ng-model="confirm" class="form-control input-lg" placeholder="Confirm password" required nope-match="password" />
+                <div ng-messages="resetPasswordForm.confirm.$error" ng-if="resetPasswordForm.confirm.$touched" ng-cloak>
+                  <span class="help-block" ng-message="required">Password confirmation is required.</span>
+                  <span class="help-block" ng-message="match">Password and its confirmation must match.</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block btn-lg" ng-disabled="resetPasswordForm.$invalid">Reset password and login</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

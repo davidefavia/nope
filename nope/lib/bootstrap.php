@@ -70,6 +70,27 @@ if(!$isNopeEmbedded) {
     ]);
     return $view;
   };
+  // Register mailer
+  $container['mailer'] = function($c) {
+    $mail = new PHPMailer;
+    $settings = \Nope::getConfig('nope.mailer');
+
+    $mail->From = $settings->sender->email;
+    $mail->FromName = $settings->sender->name;
+
+    if($settings->useSMTP) {
+      $mail->SMTPDebug = 3; // Enable verbose debug output
+      $mail->isSMTP(); // Set mailer to use SMTP
+      $mail->Host = $settings->host; // Specify main and backup SMTP servers
+      $mail->SMTPAuth = $settings->SMTPAuth; // Enable SMTP authentication
+      $mail->Username = $settings->username; // SMTP username
+      $mail->Password = $settings->password; // SMTP password
+      $mail->SMTPSecure = $settings->SMTPSecure; // Enable TLS encryption, `ssl` also accepted
+      $mail->Port = $settings->port; // TCP port to connect to
+    }
+
+    return $mail;
+  };
   $app = new \Slim\App($container);
 }
 

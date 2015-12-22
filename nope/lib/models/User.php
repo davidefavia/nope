@@ -210,6 +210,10 @@ class User extends \Nope\Model {
     return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [$email]));
   }
 
+  static public function findByResetCode($resetCode) {
+    return self::__to(R::findOne(self::MODELTYPE, 'reset_code = ?', [$resetCode]));
+  }
+
   static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
     $filters = (object) $filters;
     $params = [];

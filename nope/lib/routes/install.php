@@ -96,7 +96,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     if($req->isPost() && $data['ok']) {
       $data['step'] = 2;
       $body = $req->getParsedBody();
-      if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::email()->validate($body['email'])) {
+      if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email'])) {
         $user = new User();
         $user->username = $body['username'];
         $user->setPassword($body['password']);
