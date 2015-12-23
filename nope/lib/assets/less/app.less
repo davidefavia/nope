@@ -102,6 +102,14 @@ label {
   }
 }
 
+#dashboard {
+  h2 {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
 // sidebar
 #sidebar {
   color: #fff;
@@ -157,7 +165,7 @@ label {
 // main
 #main {
   &>.row {
-    margin:0;
+    //margin:0;
   }
   padding: @gutter;
   textarea {
@@ -254,6 +262,16 @@ label {
   }
   h3 {
     margin: 10px 0;
+    line-height: 30px;
+    .btn {
+      background: none;
+      color: darken(@gray-lighter, 20%);
+      font-size: inherit;
+      border:none;
+      i {
+        font-size: inherit;
+      }
+    }
   }
 }
 
@@ -272,6 +290,11 @@ label {
   }
 }
 
+#media {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 #media-detail {
   margin-top: -@gutter;
   .preview {
@@ -281,6 +304,10 @@ label {
     background-position: center center;
     background-size: 100% auto;
   }
+}
+
+#gallery {
+  margin:0;
 }
 
 .modal {

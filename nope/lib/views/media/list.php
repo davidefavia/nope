@@ -1,5 +1,10 @@
-<div class="row">
-  <div id="model" class="col" ng-class="{'col-md-9 col-sm-8':selectedMedia}">
+<div id="media" class="row">
+  <div class="col" ng-if="!contentsList.length">
+    <no-empty icon="upload">
+      <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>
+    </no-empty>
+  </div>
+  <div id="model" class="col" ng-class="{'col-md-9 col-sm-8':selectedMedia}" ng-if="contentsList.length">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="row">
@@ -9,7 +14,7 @@
             </div>
           </div>
           <div class="col" ng-class="{'col-md-2':contentsList.length}">
-            <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>
+            <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-upload"></i></a>
           </div>
         </div>
         <div class="list-group-item ng-cloak" ng-show="!filteredContentsList.length && q.title">No {{contentType}} found with filter "{{q.title}}".</div>

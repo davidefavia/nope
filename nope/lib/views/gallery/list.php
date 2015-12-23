@@ -1,5 +1,5 @@
-<div class="row">
-  <div id="model" class="col col-md-3 col-sm-4">
+<div id="gallery" class="row">
+  <div id="model" class="col col-md-3 col-sm-4" ng-if="contentsList.length">
     <div ng-show="contentsList.length">
       <div class="form-group" nope-can="{{contentType}}.read">
         <input type="text" class="form-control" ng-model="q.title" placeholder="Filter {{contentType}} by title" />
@@ -19,7 +19,10 @@
     </div>
     <a href="#/gallery/create" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>
   </div>
-  <div class="col col-md-9 col-sm-8" ui-view="content">
-    <no-empty icon="file-text-o">Select {{contentType}}</no-empty>
+  <div class="col" ng-class="{'col-md-9 col-sm-8':contentsList.length}" ui-view="content">
+    <no-empty icon="object-group">
+      <span ng-if="contentsList.length">Select {{contentType}}</span>
+      <a href="#/gallery/create" ng-if="!contentsList.length" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>
+    </no-empty>
   </div>
 </div>
