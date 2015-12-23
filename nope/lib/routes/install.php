@@ -105,8 +105,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $user->prettyName = null;
         $user->description = null;
         $user->role = 'admin';
-        $user->save();
-        $user->saveInSession();
+        User::authenticate($user);
 
         $setting = new Setting();
         $setting->group = 'nope';

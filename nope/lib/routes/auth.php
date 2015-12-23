@@ -9,7 +9,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   $this->post('/login', function ($request, $response) {
     $body = $request->getParsedBody();
     if($body['username'] && $body['password']) {
-      if(User::authenticate($body['username'], $body['password'])) {
+      if(User::login($body['username'], $body['password'])) {
         return $response;
       } else {
         // user with credentials --> not found!
@@ -76,10 +76,8 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     if($body['password'] && v::identical($body['password'])->validate($body['confirm'])) {
       $userByResetCode = User::findByResetCode($body['code']);
       if($userByResetCode && (int) $userByResetCode->enabled) {
-        $userByResetCode->reset_code = null;
         $userByResetCode->setPassword($body['password']);
-        $userByResetCode->save();
-        $userByResetCode->saveInSession();
+        User::authenticate($userByResetCode);
         return $response;
       } else {
         // user with credentials --> not found!

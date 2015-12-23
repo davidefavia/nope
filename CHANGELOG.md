@@ -3,8 +3,13 @@
 ### Libraries
 - Added **PHPMailer** version 5.2.
 
+### Breaking changes
+- `User::authenticate` now accepts only instance of `User` to be saved in session.
+- Added `User::login` to replace old `User::authenticate` method.
+
 ### Features
-- Added CHANGELOG file.
+- Added `CHANGELOG.md` file.
+- Added password recovery flow (#6).
 
 ## v0.2.0 (2015-12-16)
 
