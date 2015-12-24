@@ -109,7 +109,7 @@
 //** Global color for active items (e.g., navs or dropdowns).
 @component-active-color:    #fff;
 //** Global background color for active items (e.g., navs or dropdowns).
-@component-active-bg:       lighten(@brand-primary, 10%);
+@component-active-bg:       #fff; //lighten(@brand-primary, 10%);
 
 //** Width of the `border` for generating carets that indicator dropdowns.
 @caret-width-base:          4px;
@@ -682,9 +682,9 @@
 //** Background color of active list items
 @list-group-active-bg:          @component-active-bg;
 //** Border color of active list elements
-@list-group-active-border:      @list-group-active-bg;
+@list-group-active-border:      lighten(@brand-primary, 10%); //@list-group-active-bg;
 //** Text color for content within active list items
-@list-group-active-text-color:  lighten(@list-group-active-bg, 40%);
+@list-group-active-text-color:  @gray-light; //lighten(@list-group-active-bg, 40%);
 
 //** Text color of disabled list items
 @list-group-disabled-color:      @gray-light;

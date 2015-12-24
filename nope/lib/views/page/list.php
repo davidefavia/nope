@@ -1,5 +1,5 @@
 <div class="row">
-  <div id="model" class="col col-md-3 col-sm-4" ng-show="contentsList.length">
+  <div class="list-column col col-md-4 col-sm-6" ng-show="contentsList.length">
     <div class="form-group" nope-can="{{contentType}}.read">
       <input type="text" class="form-control" ng-model="q.title" placeholder="Filter {{contentType}} by title" />
     </div>
@@ -17,7 +17,7 @@
     </div>
     <a href="#/content/page/create" class="btn btn-sm btn-block btn-default" nope-can="user.create">Create new {{contentType}} <i class="fa fa-plus"></i></a>
   </div>
-  <div class="col" ng-class="{'col-md-9 col-sm-8':contentsList.length}" ui-view="content">
+  <div class="col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
     <no-empty icon="file-text-o">
       <span ng-if="contentsList.length">Select {{contentType}}</span>
       <a href="#/content/page/create" class="btn btn-default" nope-can="user.create" ng-if="!contentsList.length">Create new {{contentType}} <i class="fa fa-plus"></i></a>
