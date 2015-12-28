@@ -1,4 +1,4 @@
-<div id="content-form" class="page-form">
+<div class="page-form">
   <form name="contentForm" ng-submit="save()">
     <div class="row">
       <div class="col col-md-9">

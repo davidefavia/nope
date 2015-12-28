@@ -10,6 +10,9 @@
   .constant('BasePath', window.BASE_PATH)
   .constant('AssetsPath', window.TEMPLATES_PATH)
   .constant('RolesList', window.ROLES)
+  .config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  }])
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('app', {

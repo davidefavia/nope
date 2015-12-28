@@ -42,6 +42,11 @@
   flex: @f;
 }
 
+html, body {
+  height: 100%;
+  min-height: 100%;
+}
+
 body {
   background: #edecec;
   position: relative;
@@ -177,14 +182,22 @@ label {
 
 // main
 #main {
+  .flex-direction(column);
   &>.row {
-    //margin:0;
+    .flex-direction(row);
+    .flex(1);
+    position: relative;
   }
+  position: absolute;
+  left: 0;
+  right:0;
+  top:0;
+  bottom:0;
   padding: @gutter;
   textarea {
     min-height: 120px;
   }
-  #model {
+  .media-list {
     .row-span {
       margin-bottom: @gutter;
       .col {
@@ -233,7 +246,44 @@ label {
 }
 
 .list-column {
-
+  .flex(.25);
+  .media {
+    margin:0;
+    &:not(:last-child) {
+      border-bottom:0;
+    }
+  }
+  .flex-direction();
+  .searchbar {
+    margin-bottom: @gutter;
+  }
+  &>.list-group {
+    .flex(1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom:0;
+  }
+}
+.detail-column {
+  .flex(.75);
+  .flex-direction(row);
+  .panel {
+    margin-bottom: 0;
+    .flex-direction(row);
+    .flex(1);
+  }
+  .panel-body {
+    .flex-direction(column);
+    .flex(1);
+    h2:first-child {
+      margin-top:0;
+    }
+    .content {
+      .flex(1);
+      overflow:auto;
+      margin-bottom: @gutter;
+    }
+  }
 }
 
 .toolbar {
@@ -243,12 +293,17 @@ label {
     i {
       font-size: 14px;
     }
+    color: @gray-light;
+    &:hover {
+      color: @gray-dark;
+    }
   }
 }
 
 .empty {
   color: darken(@gray-lighter, 20%);
   text-align: center;
+  width: 100%;
   i {
     font-size: 96px;
   }
@@ -270,31 +325,52 @@ label {
 .reset {
   margin-right: 10px;
 }
-
-#content-detail {
-  h2:first-child {
-    margin-top: 0;
-  }
-}
-#content-form {
-  textarea {
-    min-height: 240px;
-  }
+textarea {
+  min-height: 240px;
 }
 
 #media {
-  margin-left: 0;
-  margin-right: 0;
+  &.not-selected {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  >.col:first-child {
+    .flex(1);
+  }
+  .list-column {
+    .flex(1);
+  }
+  .detail-column {
+    .flex(.3);
+    .panel-body {
+      padding:0;
+    }
+  }
 }
 
 #media-detail {
-  margin-top: -@gutter;
+  //margin:@gutter;
   .preview {
-    height: 200px;
-    margin: -@gutter -@gutter @gutter -@gutter;
+    min-height: 200px;
+    //margin: -@gutter -@gutter @gutter -@gutter;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
+    .flex(.3);
+  }
+  form {
+    overflow: hidden;
+    .flex-direction();
+    .flex(.7);
+    &>div:first-child {
+      padding: @gutter;
+      .flex(1);
+      overflow: auto;
+      margin-bottom: @gutter;
+    }
+    &>div:last-child {
+      padding: 0 @gutter;
+    }
   }
 }
 

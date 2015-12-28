@@ -14,7 +14,7 @@
               <a <?php foreach($item['attrs'] as $key => $attr) { echo "$key=\"$attr\" ";} ?>><i class="<?php echo $item['icon']; ?>"></i> <?php echo $item['label']; ?></a>
             </li>
           <?php } ?>
-        </ul>        
+        </ul>
       </div>
     </div>
     <div id="main" class="col col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3" ui-view="content"></div>
