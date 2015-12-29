@@ -351,5 +351,23 @@
         }]
       }
     }])
+    .directive('nopeMatch', [function() {
+      return {
+        restrict : 'A',
+        require : '^ngModel',
+        scope : {
+          nopeMatch : '=',
+          ngModel : '='
+        },
+        link : function($scope, $element, $attrs, ngModelCtrl) {
+          $scope.$watch('ngModel', function(n,o) {
+            ngModelCtrl.$setValidity('match',(n===$scope.nopeMatch));
+          }, true);
+          $scope.$watch('nopeMatch', function(n,o) {
+            ngModelCtrl.$setValidity('match',($scope.ngModel===n));
+          }, true);
+        }
+      }
+    }])
     ;
 })()

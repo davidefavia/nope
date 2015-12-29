@@ -42,6 +42,7 @@ Simple installation process will drive you through requirements and folder permi
 - [RedbeanPHP][redbeanphp]
 - [Respect\Validation][validation]
 - [Intervention\Image][image]
+- [PHPMailer][phpmailer]
 - League\Event
 
 Administration interface is built on top of:
@@ -98,6 +99,7 @@ See [LICENSE](LICENSE) file.
 [composer]: http://getcomposer.org
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
 [image]: http://image.intervention.io/
+[phpmailer]: https://github.com/PHPMailer/PHPMailer
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
 [validation]: https://github.com/Respect/Validation

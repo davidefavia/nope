@@ -10,6 +10,9 @@
   .constant('BasePath', window.BASE_PATH)
   .constant('AssetsPath', window.TEMPLATES_PATH)
   .constant('RolesList', window.ROLES)
+  .config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  }])
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
     .state('app', {
@@ -24,7 +27,7 @@
       }
     })
     .state('login', {
-      url :'/login',
+      url :'/login{code:(?:/[^/]+)?}',
       templateUrl : 'view/login.html',
       controller : 'LoginController',
       resolve : {
@@ -102,12 +105,31 @@
      $rootScope.assetsPath = AssetsPath;
 
    }])
-   .controller('LoginController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'User', function($scope, $rootScope, $state, AssetsPath, User) {
+   .controller('LoginController', ['$scope', '$rootScope', '$state', '$stateParams', 'AssetsPath', 'User', function($scope, $rootScope, $state, $stateParams, AssetsPath, User) {
 
      $rootScope.assetsPath = AssetsPath;
 
+     $scope.recovery = false;
+     $scope.useResetCode = $stateParams.code;
+     $scope.resetCode = $stateParams.code.substr(1);
+
      $scope.login = function() {
        User.login($scope.user, function() {
+         $scope.$emit('nope.toast.success', 'Welcome!', {timeout:1000});
+         $state.go('app.dashboard');
+       }, function() {
+         $scope.loginServerError = true;
+       });
+     }
+
+     $scope.recoveryPassword = function() {
+       User.recovery({email:$scope.recoveryEmail}, function() {
+         $scope.recoveryStatus = true;
+       });
+     }
+
+     $scope.resetPassword = function() {
+       User.reset({password:$scope.password, confirm: $scope.confirm, code: $scope.resetCode}, function() {
          $scope.$emit('nope.toast.success', 'Welcome!', {timeout:1000});
          $state.go('app.dashboard');
        });
@@ -206,6 +228,14 @@
         },
         update : {
           method : 'PUT'
+        },
+        recovery : {
+          url: 'user/recovery',
+          method: 'POST'
+        },
+        reset : {
+          url: 'user/reset',
+          method: 'POST'
         }
       });
 
@@ -293,7 +323,7 @@
    /**
     * Run!
     */
-   .run(['$rootScope', '$location', '$nopeModal', '$nopeToast', function($rootScope, $location, $nopeModal, $nopeToast) {
+   .run(['$rootScope', '$location', '$state', '$nopeModal', '$nopeToast', function($rootScope, $location, $state, $nopeModal, $nopeToast) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
@@ -301,7 +331,7 @@
      });
 
      $rootScope.$on('$stateChangeError', function() {
-       //console.log(arguments)
+       $state.go('login');
      });
 
      $rootScope.$on('nope.error', function(e, reason) {

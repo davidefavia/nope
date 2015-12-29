@@ -84,17 +84,22 @@ class User extends \Nope\Model {
     $this->model->password = $hashedPassword;
   }
 
-  static function authenticate($username, $password) {
+  static function login($username, $password) {
     $user = self::findByUsername($username);
     if($user && v::identical($user->password)->validate(\Nope\Utils::hashPassword($password,$user->salt)) && $user->enabled==1) {
-      $user->lastLoginDate = new \DateTime();
-      $user->resetCode = null;
-      $user->save();
-      $user->saveInSession();
+      self::authenticate($user);
       return true;
     } else {
       return false;
     }
+  }
+
+  static function authenticate($user) {
+    $user->lastLoginDate = new \DateTime();
+    $user->resetCode = null;
+    $user->save();
+    $user->saveInSession();
+    return true;
   }
 
   static function getAuthenticated() {
@@ -208,6 +213,10 @@ class User extends \Nope\Model {
 
   static public function findByEmail($email) {
     return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [$email]));
+  }
+
+  static public function findByResetCode($resetCode) {
+    return self::__to(R::findOne(self::MODELTYPE, 'reset_code = ?', [$resetCode]));
   }
 
   static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
