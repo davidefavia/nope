@@ -17,7 +17,7 @@
           <p class="list-group-item-text" ng-if="u.pretty_name">{{u.pretty_name}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
             <a ng-href="#/user/{{u.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-            <a href="" ng-click="deleteUser(u);" class="btn btn-default" ng-if="!currentUser.itsMe(u)" nope-can="user.delete"><i class="fa fa-trash text-danger"></i></a>
+            <a href="" ng-click="deleteUser(u);" class="btn btn-default" ng-if="!currentUser.itsMe(u)" nope-can="user.delete"><i class="fa fa-trash"></i></a>
           </div>
         </div>
       </div>

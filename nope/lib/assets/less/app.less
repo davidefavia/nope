@@ -291,6 +291,18 @@ label {
   }
 }
 
+.content-detail {
+  width: 100%;
+  .flex-direction(row);
+  .panel {
+    .flex-direction(column);
+    .flex(1);
+    .panel-body {
+      overflow: auto;
+    }
+  }
+}
+
 .toolbar {
   .btn {
     border:0;
@@ -347,35 +359,24 @@ textarea {
   }
   .detail-column {
     .flex(.3);
-    .panel-body {
-      padding:0;
-    }
   }
 }
 
 #media-detail {
-  //margin:@gutter;
+  .flex(1);
+  .panel-heading {
+    padding:0;
+    .flex(.3);
+  }
   .preview {
     min-height: 200px;
-    //margin: -@gutter -@gutter @gutter -@gutter;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
-    .flex(.3);
   }
-  form {
-    overflow: hidden;
-    .flex-direction();
+  .panel-body {
+    padding-bottom:0;
     .flex(.7);
-    &>div:first-child {
-      padding: @gutter;
-      .flex(1);
-      overflow: auto;
-      margin-bottom: @gutter;
-    }
-    &>div:last-child {
-      padding: 0 @gutter;
-    }
   }
 }
 

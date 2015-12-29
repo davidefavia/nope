@@ -323,7 +323,7 @@
    /**
     * Run!
     */
-   .run(['$rootScope', '$location', '$nopeModal', '$nopeToast', function($rootScope, $location, $nopeModal, $nopeToast) {
+   .run(['$rootScope', '$location', '$state', '$nopeModal', '$nopeToast', function($rootScope, $location, $state, $nopeModal, $nopeToast) {
 
      $rootScope.$on('$stateChangeSuccess', function(e) {
        $rootScope.selectedPath = $location.path();
@@ -331,7 +331,7 @@
      });
 
      $rootScope.$on('$stateChangeError', function() {
-       //console.log(arguments)
+       $state.go('login');
      });
 
      $rootScope.$on('nope.error', function(e, reason) {

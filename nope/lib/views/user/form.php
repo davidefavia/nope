@@ -1,10 +1,14 @@
-<div id="user-detail" class="panel panel-default">
-  <div class="panel-body">
-    <form name="userForm" ng-submit="save()">
+<form name="userForm" ng-submit="save()" class="content-detail">
+  <div class="panel panel-default">
+    <div class="panel-heading" ng-if="user.id">
       <div class="form-group">
-        <label>Username</label>
-        <input type="text" name="username" class="form-control" ng-model="user.username" required  ng-if="!user.id" ng-pattern="/^([a-z0-9]{3,20})$/" ng-trim="false" />
         <p class="form-control-static" ng-if="user.id">{{user.username}}</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="form-group" ng-if="!user.id">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" ng-model="user.username" required   ng-pattern="/^([a-z0-9]{3,20})$/" ng-trim="false" />
       </div>
       <div class="form-group" ng-if="!user.id">
         <label>Password</label>
@@ -42,12 +46,14 @@
         <label>Cover</label>
         <nope-model model="Media" ng-model="user.cover" preview="icon" multiple="false"></nope-model>
       </div>
+    </div>
+    <div class="panel-footer">
       <div class="form-group clearfix">
         <div class="pull-right">
           <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
           <button class="btn" ng-disabled="userForm.$invalid" ng-class="{'btn-success':!userForm.$invalid}">Save</button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
-</div>
+</form>

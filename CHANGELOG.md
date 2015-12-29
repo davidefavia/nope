@@ -1,4 +1,4 @@
-## v0.3.0 (2015-12-??)
+## v0.3.0 (2015-12-29)
 
 ### Libraries
 - Added **PHPMailer** version 5.2.
@@ -11,7 +11,7 @@
 - Added password recovery flow (#6).
 - Added `User::login` to replace old `User::authenticate` method.
 - Added basic administration dashboard.
-- **UI**: better components spacing and dimensions.
+- **UI**: better components spacing and dimensions (#7).
 
 ## v0.2.0 (2015-12-16)
 
