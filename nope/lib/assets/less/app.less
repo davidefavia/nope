@@ -264,6 +264,11 @@ label {
     margin-bottom:0;
   }
 }
+&.no-items {
+  .detail-column {
+    .flex(1);
+  }
+}
 .detail-column {
   .flex(.75);
   .flex-direction(row);
@@ -374,8 +379,12 @@ textarea {
   }
 }
 
-#gallery {
+#gallery.no-items {
   margin:0;
+}
+
+#gallery-detail {
+  width: 100%;
 }
 
 .modal {

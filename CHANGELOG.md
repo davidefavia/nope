@@ -11,6 +11,7 @@
 - Added password recovery flow (#6).
 - Added `User::login` to replace old `User::authenticate` method.
 - Added basic administration dashboard.
+- **UI**: better components spacing and dimensions.
 
 ## v0.2.0 (2015-12-16)
 
