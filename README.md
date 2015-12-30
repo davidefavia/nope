@@ -43,6 +43,7 @@ Simple installation process will drive you through requirements and folder permi
 - [Respect\Validation][validation]
 - [Intervention\Image][image]
 - [PHPMailer][phpmailer]
+- [Stringy][stringy]
 - League\Event
 
 Administration interface is built on top of:
@@ -102,5 +103,6 @@ See [LICENSE](LICENSE) file.
 [phpmailer]: https://github.com/PHPMailer/PHPMailer
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
+[stringy]: https://github.com/danielstjules/Stringy
 [validation]: https://github.com/Respect/Validation
 [wordpress]: http://wordpress.org

@@ -28,8 +28,8 @@ class User extends \Nope\Model {
     $obj = parent::jsonSerialize();
     $obj->enabled = (int) $obj->enabled;
     $obj->permissions = $this->getPermissions();
-    if($obj->cover_id) {
-      $cover = Media::findById($obj->cover_id);
+    if($obj->coverId) {
+      $cover = Media::findById($obj->coverId);
       if($cover) {
         unset($cover->model->author_id);
       }
@@ -37,9 +37,9 @@ class User extends \Nope\Model {
     $obj->cover = $cover;
     unset($obj->password);
     unset($obj->salt);
-    unset($obj->last_login_date);
-    unset($obj->reset_code);
-    unset($obj->cover_id);
+    unset($obj->lastLoginDate);
+    unset($obj->resetCode);
+    unset($obj->coverId);
     return $obj;
   }
 

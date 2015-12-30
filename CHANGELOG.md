@@ -1,3 +1,8 @@
+## v0.4.0 (2016-01-??)
+
+### Libraries
+- Added **Stringy** version 2.2.
+
 ## v0.3.0 (2015-12-29)
 
 ### Libraries

@@ -14,7 +14,7 @@
         </div>
         <div class="media-body">
           <a ng-href="#/content/{{contentType}}/view/{{p.id}}"><h4 class="list-group-item-heading">{{::p.title}}</h4></a>
-          <p class="list-group-item-text">Modified on: {{p.last_modification_date | nopeDate:medium}}</p>
+          <p class="list-group-item-text">Modified on: {{p.lastModificationDate | nopeDate:medium}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
             <a ng-href="#/content/{{contentType}}/edit/{{p.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
             <a href="" ng-click="deleteContent(p);" class="btn btn-default" nope-can="page.delete"><i class="fa fa-trash"></i></a>

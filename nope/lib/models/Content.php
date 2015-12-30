@@ -23,17 +23,17 @@ class Content extends Model {
   function jsonSerialize() {
     $json = parent::jsonSerialize();
     $author = $this->getAuthor();
-    unset($json->author_id);
+    unset($json->authorId);
     $json->author = $author;
     $json->id = (int) $json->id;
     $json->tags = $this->getTags();
-    if($json->cover_id) {
-      $cover = Media::findById($json->cover_id);
+    if($json->coverId) {
+      $cover = Media::findById($json->coverId);
       if($cover) {
         unset($cover->model->author_id);
       }
     }
-    unset($json->cover_id);
+    unset($json->coverId);
     $json->cover = $cover;
     $a = (object) $json;
     unset($a->sharedTag);

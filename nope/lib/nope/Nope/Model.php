@@ -3,6 +3,7 @@
 namespace Nope;
 
 use RedBeanPHP\R as R;
+use Stringy\StaticStringy as S;
 
 abstract class Model implements \JsonSerializable {
 
@@ -58,13 +59,17 @@ abstract class Model implements \JsonSerializable {
   public function jsonSerialize() {
     $json = (object) $this->model->export();
     $json->id = (int) $json->id;
-    return $json;
+    $tmp = [];
+    foreach ($json as $key => $value) {
+      $tmp[(string) S::camelize($key)] = $value;
+    }
+    return (object) $tmp;
   }
 
   public function save() {
     if($this->validate()) {
       $this->beforeSave();
-      $this->model->id = R::store($this->model);
+      $this->id = R::store($this->model);
     }
   }
 
@@ -79,10 +84,10 @@ abstract class Model implements \JsonSerializable {
   }
 
   function beforeSave() {
-    if(!$this->model->id) {
-      $this->model->creationDate = new \DateTime();
+    if(!$this->id) {
+      $this->creationDate = new \DateTime();
     }
-    $this->model->lastModificationDate = new \DateTime();
+    $this->lastModificationDate = new \DateTime();
   }
 
   public function delete() {
