@@ -25,7 +25,6 @@ class Content extends Model {
     $author = $this->getAuthor();
     unset($json->authorId);
     $json->author = $author;
-    $json->id = (int) $json->id;
     $json->tags = $this->getTags();
     if($json->coverId) {
       $cover = Media::findById($json->coverId);
@@ -67,9 +66,8 @@ class Content extends Model {
   }
 
   private function getAuthor() {
-    if($this->model->author_id) {
-      return User::findByid($this->model->author_id);
-      return $this->model->fetchAs(User::MODELTYPE)->author;
+    if($this->author_id) {
+      return User::findByid($this->author_id);
     }
     return null;
   }
@@ -111,7 +109,7 @@ class Content extends Model {
           $this->setCover($body[$f]);
         } else {
           if(array_key_exists($f, $body)) {
-            $this->model->$f = $body[$f];
+            $this->$f = $body[$f];
           }
         }
       }

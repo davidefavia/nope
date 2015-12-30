@@ -27,8 +27,19 @@
               <input type="text" name="slug" class="form-control" ng-model="content.slug" required ng-pattern="/^[a-zA-Z0-9-_\/]+$/" ng-trim="false" />
             </div>
             <div class="form-group">
-              <label>Publishing date</label>
-              <input type="text" name="title" class="form-control" ng-model="content.publishing_date" placeholder="yyyy-mm-dd hh:mm:ss" />
+              <label>Status</label>
+              <select class="form-control" ng-model="content.status">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Start publishing date</label>
+              <input type="text" name="title" class="form-control" ng-model="content.startPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
+            </div>
+            <div class="form-group">
+              <label>End publishing date</label>
+              <input type="text" name="title" class="form-control" ng-model="content.endPpublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
             </div>
             <div class="form-group">
               <label>Cover</label>

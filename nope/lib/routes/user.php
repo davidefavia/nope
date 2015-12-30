@@ -21,7 +21,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
   $this->post('', function($req, $res, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('user.create')) {
-      $fields = ['username','email','description','enabled','pretty_name','role'];
+      $fields = ['username','email','description','enabled','prettyName','role'];
       $userToCreate = new User();
       $body = $req->getParsedBody();
       if(v::identical($body['password'])->validate($body['confirm']) && $body['role']!=='admin') {
@@ -59,19 +59,19 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     if($currentUser->can('user.update') || $currentUser->id == $args['id']) {
       if($currentUser->isAdmin()) {
         if($currentUser->id == $args['id']) {
-          $fields = ['email','description','pretty_name','cover'];
+          $fields = ['email','description','prettyName','cover'];
         } else {
           if($body['role'] === 'admin') {
             return $res->withStatus(400);
           } else {
-            $fields = ['email','description','enabled','pretty_name','role','cover'];
+            $fields = ['email','description','enabled','prettyName','role','cover'];
           }
         }
       } else {
         if($currentUser->can('media.read')) {
-          $fields = ['email','description','pretty_name','cover'];
+          $fields = ['email','description','prettyName','cover'];
         } else {
-          $fields = ['email','description','pretty_name'];
+          $fields = ['email','description','prettyName'];
         }
       }
       $userToUpdate = new User($args['id']);

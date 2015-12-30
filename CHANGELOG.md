@@ -3,6 +3,9 @@
 ### Libraries
 - Added **Stringy** version 2.2.
 
+### Breaking changes
+- JSON-serialized model have now *camelized* properties.
+
 ## v0.3.0 (2015-12-29)
 
 ### Libraries

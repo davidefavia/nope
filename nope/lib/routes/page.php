@@ -6,25 +6,30 @@ use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
 
-  $this->get('', function($req, $res) {
+  $this->get('', function($request, $response) {
+    $rpp = 5;
     $currentUser = User::getAuthenticated();
-    if($currentUser->can('page.read')) {
-      $contentsList = Page::findAll();
-    } else {
-      return $res->withStatus(403);
+    if(!$currentUser->can('page.read')) {
+      return $response->withStatus(403);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentsList]));
-    return $res->withBody($body);
+    $params = Utils::getPaginationTerms($request, $rpp);
+    $contentsList = Page::findAll([
+      'text' => $params->query
+    ], $params->limit, $params->offset, $count);
+    $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
+    return $response->write(json_encode([
+      'currentUser' => $currentUser,
+      'metadata' => $metadata,
+      'data' => $contentsList
+    ]))->withHeader('Link', json_encode($metadata));
   });
 
   $this->post('', function($req, $res, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status'];
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'body', 'slug', 'cover'];
-      } else {
-        $fields = ['title', 'body', 'slug'];
+        $fields[] = 'cover';
       }
       $contentToCreate = new Page();
       $body = $req->getParsedBody();
@@ -53,10 +58,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     $currentUser = User::getAuthenticated();
     $body = $req->getParsedBody();
     if($currentUser->can('page.update')) {
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status'];
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'body', 'slug', 'cover'];
-      } else {
-        $fields = ['title', 'body', 'slug'];
+        $fields[] = 'cover';
       }
       $contentToUpdate = new Page($args['id']);
       if($contentToUpdate) {

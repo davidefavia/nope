@@ -114,4 +114,29 @@ class Utils {
     ]),'/');
   }
 
+  static function getPaginationTerms($request, $rpp = 6) {
+    $params = (object) $request->getQueryParams();
+    $page = (int) ($params->page? : 1);
+    $limit = $page * $rpp;
+    $offset = ($page-1) * $rpp;
+    return (object) [
+      'query' => (string) $params->query,
+      'page' => (int) $page,
+      'limit' => (int) $limit,
+      'offset' => (int) $offset,
+      'rpp' => (int) $rpp
+    ];
+  }
+
+  static function getPaginationMetadata($page, $count, $rpp = 6) {
+    $last = ceil($count/$rpp);
+    return (object) [
+      'first' => 1,
+      'last' => $last,
+      'actual' => $page,
+      'previous' => ($page>1?$page-1:1),
+      'next' => ($page<$last?$page+1:$last)
+    ];
+  }
+
 }

@@ -254,7 +254,7 @@
       }
 
       r.prototype.getFullName = function() {
-        return this.pretty_name || this.username;
+        return this.prettyName || this.username;
       }
 
       r.prototype.itsMe = function(u) {

@@ -12,13 +12,6 @@
           },
           controller: 'ContentsListController'
         }
-      },
-      resolve : {
-        ContentsList : ['$stateParams', 'Content', function($stateParams, Content) {
-          return Content.getAll({
-            type : $stateParams.contentType
-          });
-        }]
       }
     })
     .state('app.content.detail', {
@@ -59,9 +52,26 @@
   /**
    * Controller
    */
-  .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', 'ContentsList', function($scope, $state, $stateParams, $nopeModal, Content, ContentsList) {
+  .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', function($scope, $state, $stateParams, $nopeModal, Content) {
     $scope.contentType = $stateParams.contentType;
-    $scope.contentsList = ContentsList;
+    $scope.contentsList = [];
+
+    $scope.searchByText = function(text, page) {
+      page = page || 1;
+      if(page===1) {
+        $scope.contentsList = [];
+      }
+      Content.query({
+        type : $stateParams.contentType,
+        page : page,
+        query : text
+      }, function(data, headers) {
+        $scope.metadata = angular.fromJson(headers().link);
+        $scope.contentsList = $scope.contentsList.concat(data);
+      });
+    }
+
+    $scope.searchByText($scope.q);
 
     $scope.deleteContentOnClick = function() {
       Content.delete({

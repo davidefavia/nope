@@ -369,5 +369,27 @@
         }
       }
     }])
+    .directive('nopePublishing', [function() {
+      return {
+        restrict : 'E',
+        replace : true,
+        scope: {
+          ngModel: '='
+        },
+        template : function($elem, $attrs) {
+          var m = 'ngModel';//$attrs.ngModel;
+          var html = [];
+          html.push('<span>');
+          html.push('<span class="label label-info" ng-if="'+m+'.realStatus==\'draft-published\'">Draft ready to be published</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'published\'"><span class="label label-success">Published</span> {{'+m+'.startPublishingDate}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{'+m+'.endPublishingDate}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{'+m+'.startPublishingDate}}</span>');
+          html.push('</span>');
+          return html.join('');
+        }
+      }
+    }])
     ;
 })()
