@@ -19,6 +19,7 @@
     <script src="<?php echo path('lib/assets/js/lib/angular-sanitize.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-ui-router.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/ng-file-upload.min.js'); ?>"></script>
+    <script src="<?php echo path('lib/assets/js/lib/moment.min.js'); ?>"></script>
     <?php foreach($js as $file) { ?>
     <script src="<?php echo path($file); ?>"></script>
     <?php } ?>

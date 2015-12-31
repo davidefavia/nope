@@ -140,6 +140,13 @@ class Page extends Content {
     return $status;
   }
 
+  function beforeSave() {
+    parent::beforeSave();
+    if(!$this->startPublishingDate) {
+      $this->startPublishingDate = new \DateTime();
+    }
+  }
+
 
 
 }

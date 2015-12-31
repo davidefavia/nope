@@ -46,6 +46,13 @@
         return $filter('date')(input, format, timezone);
       }
     }])
+    .filter('nopeMoment', [function() {
+      return function(input, format, timezone) {
+        input = input.split(' ').join('T') + 'Z';
+        format = format || 'fromNow';
+        return moment(input, 'YYYY-MM-DD hh:mm:ss')[format]();
+      }
+    }])
     /**
      * Services
      */
@@ -376,16 +383,16 @@
         scope: {
           ngModel: '='
         },
-        template : function($elem, $attrs) {
+        template : function($element, $attrs) {
           var m = 'ngModel';//$attrs.ngModel;
           var html = [];
           html.push('<span>');
           html.push('<span class="label label-info" ng-if="'+m+'.realStatus==\'draft-published\'">Draft ready to be published</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'published\'"><span class="label label-success">Published</span> {{'+m+'.startPublishingDate}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{'+m+'.endPublishingDate}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{'+m+'.startPublishingDate}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'published\'"><span class="label label-success">Published</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
           html.push('</span>');
           return html.join('');
         }

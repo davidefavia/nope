@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
               <label>End publishing date</label>
-              <input type="text" name="title" class="form-control" ng-model="content.endPpublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
+              <input type="text" name="title" class="form-control" ng-model="content.endPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
             </div>
             <div class="form-group">
               <label>Cover</label>
