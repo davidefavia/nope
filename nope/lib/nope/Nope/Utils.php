@@ -7,6 +7,7 @@ class Utils {
   const USERNAME_REGEX_PATTERN = '/^([a-z0-9]{3,20})$/';
   // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
   const EMAIL_REGEX_PATTERN = '/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+  const SLUG_REGEX_PATTERN = '/^[A-Za-z0-9-_\/]{1,255}$/';
 
   static function mergeDirectories($list,$include=false,$prefix=[]) {
     $ds = '/';

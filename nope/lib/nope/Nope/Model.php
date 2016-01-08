@@ -10,13 +10,18 @@ abstract class Model implements \JsonSerializable {
   const MODELTYPE = '';
   protected $model;
 
-  public function __construct($id = null, $model = null) {
+  static function __getModelType() {
     $c = get_called_class();
+    return $c::MODELTYPE;
+  }
+
+  public function __construct($id = null, $model = null) {
+
     if(is_null($id) && is_null($model)) {
-      $this->model = R::dispense($c::MODELTYPE);
+      $this->model = R::dispense(self::__getModelType());
     } else {
       if(is_null($model)) {
-        $this->model = R::load($c::MODELTYPE, $id);
+        $this->model = R::load(self::__getModelType(), $id);
       } else {
         $this->model = $model;
       }
@@ -92,6 +97,10 @@ abstract class Model implements \JsonSerializable {
 
   public function delete() {
     R::trash($this->model);
+  }
+
+  static public function findById($id) {
+    return self::__to(R::findOne(self::__getModelType(), 'id = ?', [$id]));
   }
 
 }

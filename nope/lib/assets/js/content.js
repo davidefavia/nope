@@ -100,8 +100,9 @@
      });
     };
   }])
-  .controller('ContentCreateController', ['$scope', '$state', '$stateParams', 'Content', function($scope, $state, $stateParams, Content) {
+  .controller('ContentCreateController', ['$scope', '$rootScope', '$state', '$stateParams', 'Content', function($scope, $rootScope, $state, $stateParams, Content) {
     $scope.content = new Content();
+    $scope.content.author = $rootScope.currentUser;
 
     $scope.save = function() {
       Content.save({

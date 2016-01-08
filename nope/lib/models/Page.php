@@ -18,21 +18,13 @@ class Page extends Content {
 
   function validate() {
     $contentValidator = v::attribute('title', v::length(1,255))
-      ->attribute('slug', v::regex('/[A-Za-z0-9-_\/]/')->length(1,255));
+      ->attribute('slug', v::regex(Utils::SLUG_REGEX_PATTERN));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
       throw $exception;
     }
     return true;
-  }
-
-  static public function findById($id) {
-    return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
-  }
-
-  static public function findBySlug($slug) {
-    return self::__to(R::findOne(self::MODELTYPE, 'slug = ?', [$slug]));
   }
 
   static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {

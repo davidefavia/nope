@@ -155,7 +155,7 @@ class User extends \Nope\Model {
     if(!$this->id && $userCheck) {
       $e = new \Exception("Error saving user due to existing username.");
       throw $e;
-    } elseif(!$this->id && $emailCheck && $this->email != '') {
+    } elseif(!$this->id && $emailCheck) {
       $e = new \Exception("Error saving user due to existing email.");
       throw $e;
     }

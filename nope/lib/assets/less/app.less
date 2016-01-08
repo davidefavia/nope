@@ -359,6 +359,33 @@ label {
   }
 }
 
+.content-author {
+  @size: 32px;
+  .list-group {
+    margin:0;
+    .list-group-item {
+      background: none;
+      border:0;
+      padding:0;
+      padding-left: @size + 10px;
+      position: relative;
+      min-height: @size;
+      img {
+        padding:0;
+        border: 0;
+        width: @size;
+        position: absolute;
+        left:0;
+        top:0;
+      }
+      span.fullname {
+        font-weight: bold;
+      }
+      font-size: 11px;
+    }
+  }
+}
+
 .empty {
   color: darken(@gray-lighter, 20%);
   text-align: center;
