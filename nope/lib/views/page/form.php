@@ -10,7 +10,7 @@
             </div>
             <div class="form-group">
               <label>Body</label>
-              <textarea name="body" class="form-control" ng-model="content.body"></textarea>
+              <textarea name="body" class="form-control" ng-model="content.body" rows="20"></textarea>
             </div>
           </div>
         </div>
@@ -18,6 +18,12 @@
       <div class="col col-md-3">
         <div class="panel panel-default">
           <div class="panel-body">
+            <div class="form-group content-featured-image">
+              <div class="preview-image" ng-show="content.cover" ng-style="{backgroundImage:'url('+content.cover.preview.thumb+')'}">
+                <a href="" ng-click="content.cover=null" class="btn btn-danger btn-xs"><i class="fa fa-times-circle"></i></a>
+              </div>
+              <nope-model model="Media" ng-model="content.cover" preview="icon" multiple="false" label="Add featured image"></nope-model>
+            </div>
             <div class="form-group" ng-if="content.author">
               <label>Author</label>
               <p class="form-control-static">{{content.author.prettyName || content.author.username}}</p>
@@ -40,10 +46,6 @@
             <div class="form-group">
               <label>End publishing date</label>
               <input type="text" name="title" class="form-control" ng-model="content.endPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
-            </div>
-            <div class="form-group">
-              <label>Cover</label>
-              <nope-model model="Media" ng-model="content.cover" preview="icon" multiple="false"></nope-model>
             </div>
             <div class="form-group">
               <button class="btn btn-block" ng-disabled="contentForm.$invalid" ng-class="{'btn-success':!contentForm.$invalid}">Save</button>
