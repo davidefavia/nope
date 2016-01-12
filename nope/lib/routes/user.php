@@ -13,7 +13,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     } else {
       $usersList = [$currentUser];
     }
-    return $response->write(json_encode(['currentUser' => $currentUser, "data" => $usersList]));
+    return $response->withJson(['currentUser' => $currentUser, "data" => $usersList]);
   });
 
   $this->post('', function($request, $response, $args) {
@@ -37,7 +37,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
           }
           return $response->withStatus($code, $e->getMessage());
         }
-        return $response->write(json_encode(['currentUser' => $currentUser, "data" => $userToCreate]));
+        return $response->withJson(['currentUser' => $currentUser, "data" => $userToCreate]);
       } else {
         return $response->withStatus(400);
       }
@@ -83,7 +83,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
           $userToUpdate->saveInSession();
           $currentUser = $userToUpdate;
         }
-        return $response->write(json_encode(['currentUser' => $currentUser, "data" => $userToUpdate]));
+        return $response->withJson(['currentUser' => $currentUser, "data" => $userToUpdate]);
       } else {
         return $response->withStatus(404);
       }
@@ -102,7 +102,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
         $userToDelete->delete();
       }
     }
-    return $response->write(json_encode(['currentUser' => $currentUser]));
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
 })->add(auth());

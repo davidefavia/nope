@@ -17,17 +17,17 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       'text' => $params->query
     ], $params->limit, $params->offset, $count);
     $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
-    return $response->write(json_encode([
+    return $response->withJson([
       'currentUser' => $currentUser,
       'metadata' => $metadata,
       'data' => $contentsList
-    ]))->withHeader('Link', json_encode($metadata));
+    ])->withHeader('Link', json_encode($metadata));
   });
 
   $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
-      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status'];
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }
@@ -41,7 +41,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
         // Conflict with existing slug!
         return $response->withStatus(409, $e->getMessage());
       }
-      return $response->write(json_encode(['currentUser' => $currentUser, "data" => $contentToCreate]));
+      return $response->withJson(['currentUser' => $currentUser, 'data' => $contentToCreate]);
     } else {
       return $response->withStatus(403);
     }
@@ -52,7 +52,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     if($currentUser->can('page.read')) {
       $content = Page::findById($args['id']);
     }
-    return $response->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
+    return $response->withJson(['currentUser' => $currentUser, 'data' => $content]);
   });
 
   $this->get('/{id}/status', function($request, $response, $args) {
@@ -65,14 +65,14 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
         $content->import($params, $fields);
       }
     }
-    return $response->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
+    return $response->withJson(['currentUser' => $currentUser, 'data' => $content]);
   });
 
   $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('page.update')) {
-      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status'];
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }
@@ -80,9 +80,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
-        $body = $response->getBody();
-        $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToUpdate]));
-        return $response->withBody($body);
+        return $response->withJson(['currentUser' => $currentUser, 'data' => $contentToUpdate]);
       } else {
         return $response->withStatus(404);
       }
@@ -97,7 +95,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       $contentToDelete = new Page($args['id']);
       $contentToDelete->delete();
     }
-    return $response->write(json_encode(['currentUser' => $currentUser]));
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
 });

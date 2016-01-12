@@ -6,22 +6,20 @@ use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
-  $this->get('', function($req, $res) {
+  $this->get('', function($request, $response) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.read')) {
       $contentsList = Media::findAll();
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentsList]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser, "data" => $contentsList]);
   });
 
-  $this->post('/upload', function($req, $res) {
+  $this->post('/upload', function($request, $response) {
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('media.create')) {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
     $filename = basename($_FILES['file']['name']);
     $filename = str_replace(' ', '-', $filename);
@@ -59,52 +57,44 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       @unlink($uploadfile);
       throw new \Exception();
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $media]));
-    return $res->withBody($body)->withHeader('Content-Type', 'application/json');
+    return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
   });
 
-  $this->get('/{id}', function($req, $res, $args) {
+  $this->get('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.read')) {
       $content = Media::findById($args['id']);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
-    return $res->withBody($body);
+    return $response->withBody(['currentUser' => $currentUser, "data" => $content]);
   });
 
-  $this->put('/{id}', function($req, $res, $args) {
+  $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
-    $body = $req->getParsedBody();
+    $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
       $fields = ['title', 'description', 'tags'];
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
-        $body = $res->getBody();
-        $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToUpdate]));
-        return $res->withBody($body);
+        return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
       } else {
-        return $res->withStatus(404);
+        return $response->withStatus(404);
       }
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
   });
 
-  $this->delete('/{id}', function($req, $res, $args) {
+  $this->delete('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.delete')) {
       $contentToDelete = new Media($args['id']);
       $path = $contentToDelete->getPath();
       $contentToDelete->delete();
-      @unlink();
+      @unlink($path);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
 });

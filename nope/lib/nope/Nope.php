@@ -138,6 +138,10 @@ class Nope {
     self::getInstance()->addConfigWithException('nope.media.size', $key, $item, 'Image size "'.$key.'" already exists');
   }
 
+  static function registerTextFormat($key, $item) {
+    self::getInstance()->addConfigWithException('nope.content.format', $key, $item, 'Text format "'.$key.'" already exists');
+  }
+
   static function registerModel($key, $item) {
     self::getInstance()->addConfigWithException('nope.models', $key, $item, 'Model "'.$key.'" already exists');
     if(is_array($item['route'])) {
@@ -154,7 +158,7 @@ class Nope {
   }
 
   static function registerRole($key, $item) {
-    self::getInstance()->addConfigWithException('nope.roles', $key, $item, 'Role "'.$key.'" already exists');
+    self::getInstance()->addConfigWithException('nope.user.roles', $key, $item, 'Role "'.$key.'" already exists');
   }
 
   static function registerMenuItem($item, $priority) {

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "af225156436c0faeba03d085abd6a8ed",
-    "content-hash": "441ce1c8a3badd055151d0b53b521218",
+    "hash": "888e1b6ef580db3a7e55849d7445527c",
+    "content-hash": "11b97bbbaf556b504bfb918da0831c08",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -158,17 +158,56 @@
             "time": "2015-11-06 14:35:42"
         },
         {
+            "name": "erusev/parsedown",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
+                "reference": "3ebbd730b5c2cf5ce78bc1bf64071407fc6674b7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2015-10-04 16:44:32"
+        },
+        {
             "name": "gabordemooij/redbean",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "11691bd3e90cd36196223250b47886984bdc30c0"
+                "reference": "f1f572ddac226d047d730444927794321ee9aca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/11691bd3e90cd36196223250b47886984bdc30c0",
-                "reference": "11691bd3e90cd36196223250b47886984bdc30c0",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/f1f572ddac226d047d730444927794321ee9aca6",
+                "reference": "f1f572ddac226d047d730444927794321ee9aca6",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +235,7 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2015-11-05 20:49:55"
+            "time": "2015-12-28 19:46:34"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -990,16 +1029,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "3b06f0f2d84dabbe81b6cea46ace46a3e883253e"
+                "reference": "03b44a4b41896ba42c78bbd5fa172cd79e650496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/3b06f0f2d84dabbe81b6cea46ace46a3e883253e",
-                "reference": "3b06f0f2d84dabbe81b6cea46ace46a3e883253e",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/03b44a4b41896ba42c78bbd5fa172cd79e650496",
+                "reference": "03b44a4b41896ba42c78bbd5fa172cd79e650496",
                 "shasum": ""
             },
             "require": {
@@ -1010,7 +1049,8 @@
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0"
+                "phpunit/phpunit": "^4.0",
+                "squizlabs/php_codesniffer": "^2.5"
             },
             "type": "library",
             "autoload": {
@@ -1052,7 +1092,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2015-12-07 14:11:09"
+            "time": "2016-01-08 15:37:50"
         },
         {
             "name": "symfony/finder",

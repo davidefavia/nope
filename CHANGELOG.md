@@ -1,6 +1,8 @@
 ## v0.4.0 (2016-01-??)
 
 ### Libraries
+- Updated **Slim framework** to version 3.1.0.
+- Added **Parsedown** version 1.6.
 - Added **Stringy** version 2.2.
 
 ### Breaking changes

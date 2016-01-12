@@ -8,7 +8,8 @@
     <script>
       window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
       window.TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
-      window.ROLES = <?php echo json_encode($roles); ?>;
+      window.USER_ROLES = <?php echo json_encode($userRoles); ?>;
+      window.TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
     </script>
   </head>
   <body>

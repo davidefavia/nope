@@ -26,9 +26,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     if(is_null($currentUser)) {
       return $response->withStatus(401);
     }
-    $body = $response->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser]));
-    return $response->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
   $this->get('/logout', function ($request, $response) {

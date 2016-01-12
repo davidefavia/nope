@@ -13,7 +13,24 @@ class TextContent extends Content {
   function jsonSerialize() {
     $json = parent::jsonSerialize();
     $json->realStatus = $this->calculateStatus();
+    $json->parsedBody = $this->getParsedBody();
     return $json;
+  }
+
+  function getParsedBody() {
+    if(!$this->format) {
+      return $this->body;
+    }
+    $textFormats = \Nope::getConfig('nope.content.format');
+    foreach ($textFormats as $key => $value) {
+      if($value['key'] === $this->format) {
+        if($value['parser']=== false) {
+          return $this->body;
+        } else {
+          return $value['parser']->text($this->body);
+        }
+      }
+    }
   }
 
   function validate() {

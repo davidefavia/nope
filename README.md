@@ -44,6 +44,7 @@ Simple installation process will drive you through requirements and folder permi
 - [Intervention\Image][image]
 - [PHPMailer][phpmailer]
 - [Stringy][stringy]
+- [Parsedown][parsedown]
 - League\Event
 
 Administration interface is built on top of:
@@ -100,6 +101,7 @@ See [LICENSE](LICENSE) file.
 [composer]: http://getcomposer.org
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
 [image]: http://image.intervention.io/
+[parsedown]: https://github.com/erusev/parsedown
 [phpmailer]: https://github.com/PHPMailer/PHPMailer
 [redbeanphp]: http://www.redbeanphp.com/
 [slim]: http://www.slimframework.com/
