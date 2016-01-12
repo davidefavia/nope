@@ -133,6 +133,21 @@
       });
     }
 
+    $scope.getRealStatus = function() {
+      if(!$scope.content.id) {
+        return;
+      }
+      Content.getCalculatedStatus({
+        type : $stateParams.contentType,
+        id : $scope.content.id,
+        status : $scope.content.status,
+        startPublishingDate : $scope.content.startPublishingDate,
+        endPublishingDate : $scope.content.endPublishingDate
+      }, function(data) {
+        $scope.content.realStatus = data.realStatus;
+      });
+    }
+
   }])
   .controller('ContentDetailController', ['$scope', '$stateParams', 'Content', function($scope, $stateParams, Content) {
     Content.get({
@@ -153,6 +168,9 @@
       },
       update: {
         method: 'PUT'
+      },
+      getCalculatedStatus : {
+        url : 'content/:type/:id/status'
       }
     });
   }])

@@ -10,16 +10,6 @@ class Content extends Model {
 
   const MODELTYPE = 'content';
 
-  function beforeSave() {
-    // Check unique slug!
-    $contentCheckBySlug = self::findBySlug($this->slug);
-    if((!$this->id && $contentCheckBySlug) || ($this->id && $contentCheckBySlug && (int) $contentCheckBySlug->id!==(int)$this->id)) {
-      $e = new \Exception("Error saving page due to existing slug.");
-      throw $e;
-    }
-    parent::beforeSave();
-  }
-
   function validate() {
     $contentValidator = v::attribute('title', v::alnum()->noWhitespace()->length(1,255));
     try {

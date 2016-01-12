@@ -252,6 +252,9 @@ label {
     &:not(:last-child) {
       border-bottom:0;
     }
+    .list-group-item-heading {
+      word-break: break-all;
+    }
   }
   .flex-direction();
   .searchbar {
@@ -345,6 +348,7 @@ label {
 .content-featured-image {
   position: relative;
   .preview-image {
+    border-bottom: 1px solid @gray-lighter;
     margin: -@gutter -@gutter @gutter -@gutter;
     .bg-cover();
     height: 150px;
@@ -354,9 +358,9 @@ label {
       top: @gutter;
     }
   }
-  .list-group-contents {
+  /*.list-group-contents {
     display:none;
-  }
+  }*/
 }
 
 .content-author {
@@ -382,6 +386,16 @@ label {
         font-weight: bold;
       }
       font-size: 11px;
+    }
+  }
+}
+
+.content-status {
+  &>span {
+    display:block;
+    margin-bottom: 5px;
+    span {
+      font-size: 10px;
     }
   }
 }

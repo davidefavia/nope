@@ -6,6 +6,15 @@
 ### Breaking changes
 - JSON-serialized model have now *camelized* properties.
 
+### Features
+- Better `Page` model UI.
+- Added `TextContent` model to extend for text-based models (_e.g._ `Page`, `Post`).
+
+### Fixes
+- Check unique slug for content on saving.
+- Added same regular expression check for slug for PHP and Javascript (266cfeb).
+- Added remote content status calculation.
+
 ## v0.3.0 (2015-12-29)
 
 ### Libraries

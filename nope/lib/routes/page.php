@@ -55,6 +55,19 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     return $response->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
   });
 
+  $this->get('/{id}/status', function($request, $response, $args) {
+    $currentUser = User::getAuthenticated();
+    if($currentUser->can('page.read')) {
+      $params = $request->getQueryParams();
+      $fields = ['startPublishingDate', 'endPublishingDate', 'status'];
+      $content = Page::findById($args['id']);
+      if($content) {
+        $content->import($params, $fields);
+      }
+    }
+    return $response->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
+  });
+
   $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();

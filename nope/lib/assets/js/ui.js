@@ -62,19 +62,19 @@
       bodyElement.append('<div id="notifications-container"></div>');
       var container = angular.element(document.getElementById('notifications-container'));
 
-      function error(m,o) {
+      var error = function(m,o) {
         show('danger',m,o || {});
       }
 
-      function success(m,o) {
+      var success = function(m,o) {
         show('success',m,o || {});
       }
 
-      function warning(m,o) {
+      var warning = function(m,o) {
         show('warning',m,o || {});
       }
 
-      function info(m,o) {
+      var info = function(m,o) {
         show('info',m,o || {});
       }
 
@@ -389,7 +389,7 @@
         template : function($element, $attrs) {
           var m = 'ngModel';//$attrs.ngModel;
           var html = [];
-          html.push('<span>');
+          html.push('<span class="nope-publishing">');
           html.push('<span class="label label-info" ng-if="'+m+'.realStatus==\'draft-published\'">Draft ready to be published</span>');
           html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
           html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
