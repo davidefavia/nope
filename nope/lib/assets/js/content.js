@@ -55,17 +55,17 @@
   .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', function($scope, $state, $stateParams, $nopeModal, Content) {
     $scope.contentType = $stateParams.contentType;
     $scope.contentsList = [];
+    $scope.q = {};
 
-    $scope.searchByText = function(text, page) {
+    $scope.searchByText = function(q, page) {
       page = page || 1;
       if(page===1) {
         $scope.contentsList = [];
       }
-      Content.query({
+      Content.query(angular.extend({
         type : $stateParams.contentType,
-        page : page,
-        query : text
-      }, function(data, headers) {
+        page : page
+      }, q), function(data, headers) {
         $scope.metadata = angular.fromJson(headers().link);
         $scope.contentsList = $scope.contentsList.concat(data);
       });

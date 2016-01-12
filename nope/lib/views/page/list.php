@@ -3,16 +3,25 @@
     <div class="searchbar">
       <form name="searchForm" ng-submit="searchByText(q);">
         <div class="input-group" nope-can="{{contentType}}.read">
-          <input type="text" class="form-control" ng-model="q" placeholder="Search" />
-          <span class="input-group-btn">
+          <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
+          <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-          </span>
+            <a class="btn btn-default" ng-click="showOptions=!showOptions"><span class="caret"></span></a>
+            <ul ng-show="showOptions" class="dropdown-menu dropdown-menu-right" ng-cloak>
+              <li ng-class="{active:q.status==='draft'}">
+                <a href="" ng-click="q.status=(q.status==='draft'?null:'draft');showOptions=false;">Only draft</a>
+              </li>
+              <li ng-class="{active:q.status==='published'}">
+                <a href="" ng-click="q.status=(q.status==='published'?null:'published');showOptions=false;">Only published</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </form>
       <a href="#/content/page/create" class="btn btn-sm btn-block btn-default" nope-can="{{contentType}}.create">Create new {{contentType}} <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q">No {{contentType}} found with filter "{{q}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q">No {{contentType}} found with filter "{{q.query}}" <span ng-show="q.status">status "{{q.status}}"</span>.</div>
       <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" alt="...">

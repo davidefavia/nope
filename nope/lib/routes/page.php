@@ -12,9 +12,11 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     if(!$currentUser->can('page.read')) {
       return $response->withStatus(403);
     }
+    $queryParams = (object) $request->getQueryParams();
     $params = Utils::getPaginationTerms($request, $rpp);
     $contentsList = Page::findAll([
-      'text' => $params->query
+      'text' => $params->query,
+      'status' => $queryParams->status
     ], $params->limit, $params->offset, $count);
     $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     return $response->withJson([
