@@ -46,6 +46,13 @@
         return $filter('date')(input, format, timezone);
       }
     }])
+    .filter('nopeMoment', [function() {
+      return function(input, format, timezone) {
+        input = input.split(' ').join('T') + 'Z';
+        format = format || 'fromNow';
+        return moment(input, 'YYYY-MM-DD hh:mm:ss')[format]();
+      }
+    }])
     /**
      * Services
      */
@@ -55,19 +62,19 @@
       bodyElement.append('<div id="notifications-container"></div>');
       var container = angular.element(document.getElementById('notifications-container'));
 
-      function error(m,o) {
+      var error = function(m,o) {
         show('danger',m,o || {});
       }
 
-      function success(m,o) {
+      var success = function(m,o) {
         show('success',m,o || {});
       }
 
-      function warning(m,o) {
+      var warning = function(m,o) {
         show('warning',m,o || {});
       }
 
-      function info(m,o) {
+      var info = function(m,o) {
         show('info',m,o || {});
       }
 
@@ -279,11 +286,11 @@
         restrict: 'E',
         replace: true,
         require: 'ngModel',
-        template: '<div><div class="list-group" ng-show="ngModel">\
-        <div class="list-group-item" ng-if="multiple" ng-repeat="item in ngModel track by $index">\
+        template: '<div><div class="list-group list-group-contents" ng-class="{\'is-multiple\':multiple}" ng-show="ngModel && preview">\
+        <div class="list-group-item" ng-repeat="item in ngModel track by $index" ng-if="multiple">\
           <img class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
-          {{item.title}}\
-          <div class="btn-group btn-group-xs pull-right">\
+          <span class="title">{{item.title}}</span>\
+          <div class="btn-group btn-group-xs btn-toolbar">\
             <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
             <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
             <a href="" class="btn btn-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
@@ -291,18 +298,21 @@
         </div>\
         <div class="list-group-item" ng-if="!multiple">\
           <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
-          {{ngModel.title}}\
-          <a href="" class="btn btn-danger btn-xs pull-right" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
+          <span class="title">{{ngModel.title}}</span>\
+          <div class="btn-group btn-group-xs btn-toolbar">\
+            <a href="" class="btn btn-danger btn-xs" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
+          </div>\
         </div>\
       </div>\
-      <a href="" class="btn btn-block btn-default" ng-click="openModal()" ng-hide="!multiple && ngModel">Add {{model}} <i class="fa fa-plus"></i></a></div>',
+      <a href="" class="btn btn-block btn-default" ng-click="openModal()" ng-hide="!multiple && ngModel">{{label || \'Add\' + model}} <i class="fa fa-plus"></i></a></div>',
         scope: {
           model: '@',
           method: '@',
           multiple: '=',
           ngModel: '=',
           title: '=',
-          preview: '@'
+          preview: '@',
+          label: '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var model = $injector.get($scope.model);
@@ -366,6 +376,28 @@
           $scope.$watch('nopeMatch', function(n,o) {
             ngModelCtrl.$setValidity('match',($scope.ngModel===n));
           }, true);
+        }
+      }
+    }])
+    .directive('nopePublishing', [function() {
+      return {
+        restrict : 'E',
+        replace : true,
+        scope: {
+          ngModel: '='
+        },
+        template : function($element, $attrs) {
+          var m = 'ngModel';//$attrs.ngModel;
+          var html = [];
+          html.push('<span class="nope-publishing">');
+          html.push('<span class="label label-info" ng-if="'+m+'.realStatus==\'draft-published\'">Draft ready to be published</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'published\'"><span class="label label-success">Published</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="'+m+'.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('</span>');
+          return html.join('');
         }
       }
     }])

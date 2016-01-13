@@ -8,7 +8,8 @@
     <script>
       window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
       window.TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
-      window.ROLES = <?php echo json_encode($roles); ?>;
+      window.USER_ROLES = <?php echo json_encode($userRoles); ?>;
+      window.TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
     </script>
   </head>
   <body>
@@ -19,6 +20,7 @@
     <script src="<?php echo path('lib/assets/js/lib/angular-sanitize.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-ui-router.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/ng-file-upload.min.js'); ?>"></script>
+    <script src="<?php echo path('lib/assets/js/lib/moment.min.js'); ?>"></script>
     <?php foreach($js as $file) { ?>
     <script src="<?php echo path($file); ?>"></script>
     <?php } ?>

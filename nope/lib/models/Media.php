@@ -57,7 +57,7 @@ class Media extends Content {
     foreach (\Nope::getConfig('nope.media.size') as $key => $value) {
       $obj->preview->$key = $this->getPreview($key);
     }
-    $obj->isimage = $this->isImage();
+    $obj->isImage = $this->isImage();
     unset($obj->cover);
     return $obj;
   }

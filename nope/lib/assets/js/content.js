@@ -12,13 +12,6 @@
           },
           controller: 'ContentsListController'
         }
-      },
-      resolve : {
-        ContentsList : ['$stateParams', 'Content', function($stateParams, Content) {
-          return Content.getAll({
-            type : $stateParams.contentType
-          });
-        }]
       }
     })
     .state('app.content.detail', {
@@ -59,9 +52,26 @@
   /**
    * Controller
    */
-  .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', 'ContentsList', function($scope, $state, $stateParams, $nopeModal, Content, ContentsList) {
+  .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', function($scope, $state, $stateParams, $nopeModal, Content) {
     $scope.contentType = $stateParams.contentType;
-    $scope.contentsList = ContentsList;
+    $scope.contentsList = [];
+    $scope.q = {};
+
+    $scope.searchByText = function(q, page) {
+      page = page || 1;
+      if(page===1) {
+        $scope.contentsList = [];
+      }
+      Content.query(angular.extend({
+        type : $stateParams.contentType,
+        page : page
+      }, q), function(data, headers) {
+        $scope.metadata = angular.fromJson(headers().link);
+        $scope.contentsList = $scope.contentsList.concat(data);
+      });
+    }
+
+    $scope.searchByText($scope.q);
 
     $scope.deleteContentOnClick = function() {
       Content.delete({
@@ -74,6 +84,17 @@
         }, {
           reload: true
         });
+      });
+    }
+
+    $scope.save = function(p, i) {
+      Content.update({
+        type : $stateParams.contentType
+      }, p, function(data) {
+        var msg = (data.starred ? 'starred': 'unstarred');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" '+msg+'.');
+        $scope.$broadcast('nope.content.updated', data);
+        $scope.contentsList[i] = data;
       });
     }
 
@@ -90,14 +111,15 @@
      });
     };
   }])
-  .controller('ContentCreateController', ['$scope', '$state', '$stateParams', 'Content', function($scope, $state, $stateParams, Content) {
+  .controller('ContentCreateController', ['$scope', '$rootScope', '$state', '$stateParams', 'Content', function($scope, $rootScope, $state, $stateParams, Content) {
     $scope.content = new Content();
+    $scope.content.author = $rootScope.currentUser;
 
     $scope.save = function() {
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        $scope.$emit('nope.toast.success', 'Content created.');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" created.');
         $state.go('app.contentedit', {
           contentType : $stateParams.contentType,
           id : data.id
@@ -117,20 +139,44 @@
       Content.update({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        $scope.$emit('nope.toast.success', 'Content updated.');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" updated.');
         $scope.content = data;
+      });
+    }
+
+    $scope.getRealStatus = function() {
+      if(!$scope.content.id) {
+        return;
+      }
+      Content.getCalculatedStatus({
+        type : $stateParams.contentType,
+        id : $scope.content.id,
+        status : $scope.content.status,
+        startPublishingDate : $scope.content.startPublishingDate,
+        endPublishingDate : $scope.content.endPublishingDate
+      }, function(data) {
+        $scope.content.realStatus = data.realStatus;
       });
     }
 
   }])
   .controller('ContentDetailController', ['$scope', '$stateParams', 'Content', function($scope, $stateParams, Content) {
-    Content.get({
-      type : $stateParams.contentType,
-      id : $stateParams.id
-    }, function(data) {
-      $scope.content = data;
-      $scope.$parent.selectedContent = $scope.content;
+
+    $scope.getContent = function() {
+      Content.get({
+        type : $stateParams.contentType,
+        id : $stateParams.id
+      }, function(data) {
+        $scope.content = data;
+        $scope.$parent.selectedContent = $scope.content;
+      });
+    }
+
+    $scope.$on('nope.content.updated', function(e, data) {
+      $scope.getContent();
     });
+
+    $scope.getContent();
   }])
   /**
    * Services
@@ -142,6 +188,9 @@
       },
       update: {
         method: 'PUT'
+      },
+      getCalculatedStatus : {
+        url : 'content/:type/:id/status'
       }
     });
   }])

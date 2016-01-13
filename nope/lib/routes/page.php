@@ -6,82 +6,98 @@ use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
 
-  $this->get('', function($req, $res) {
+  $this->get('', function($request, $response) {
+    $rpp = 5;
     $currentUser = User::getAuthenticated();
-    if($currentUser->can('page.read')) {
-      $contentsList = Page::findAll();
-    } else {
-      return $res->withStatus(403);
+    if(!$currentUser->can('page.read')) {
+      return $response->withStatus(403);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentsList]));
-    return $res->withBody($body);
+    $queryParams = (object) $request->getQueryParams();
+    $params = Utils::getPaginationTerms($request, $rpp);
+    $contentsList = Page::findAll([
+      'text' => $params->query,
+      'status' => $queryParams->status
+    ], $params->limit, $params->offset, $count);
+    $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
+    return $response->withJson([
+      'currentUser' => $currentUser,
+      'metadata' => $metadata,
+      'data' => $contentsList
+    ])->withHeader('Link', json_encode($metadata));
   });
 
-  $this->post('', function($req, $res, $args) {
+  $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'body', 'slug', 'cover'];
-      } else {
-        $fields = ['title', 'body', 'slug'];
+        $fields[] = 'cover';
       }
       $contentToCreate = new Page();
-      $body = $req->getParsedBody();
+      $body = $request->getParsedBody();
       $contentToCreate->import($body, $fields);
       $contentToCreate->setAuthor($currentUser);
-      $contentToCreate->save();
-      $body = $res->getBody();
-      $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToCreate]));
-      return $res->withBody($body);
+      try {
+        $contentToCreate->save();
+      } catch(\Exception $e) {
+        // Conflict with existing slug!
+        return $response->withStatus(409, $e->getMessage());
+      }
+      return $response->withJson(['currentUser' => $currentUser, 'data' => $contentToCreate]);
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
   });
 
-  $this->get('/{id}', function($req, $res, $args) {
+  $this->get('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.read')) {
       $content = Page::findById($args['id']);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser, 'data' => $content]);
   });
 
-  $this->put('/{id}', function($req, $res, $args) {
+  $this->get('/{id}/status', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
-    $body = $req->getParsedBody();
+    if($currentUser->can('page.read')) {
+      $params = $request->getQueryParams();
+      $fields = ['startPublishingDate', 'endPublishingDate', 'status'];
+      $content = Page::findById($args['id']);
+      if($content) {
+        $content->import($params, $fields);
+      }
+    }
+    return $response->withJson(['currentUser' => $currentUser, 'data' => $content]);
+  });
+
+  $this->put('/{id}', function($request, $response, $args) {
+    $currentUser = User::getAuthenticated();
+    $body = $request->getParsedBody();
     if($currentUser->can('page.update')) {
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
-        $fields = ['title', 'body', 'slug', 'cover'];
-      } else {
-        $fields = ['title', 'body', 'slug'];
+        $fields[] = 'cover';
       }
       $contentToUpdate = new Page($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
-        $body = $res->getBody();
-        $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToUpdate]));
-        return $res->withBody($body);
+        return $response->withJson(['currentUser' => $currentUser, 'data' => $contentToUpdate]);
       } else {
-        return $res->withStatus(404);
+        return $response->withStatus(404);
       }
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
   });
 
-  $this->delete('/{id}', function($req, $res, $args) {
+  $this->delete('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.delete')) {
       $contentToDelete = new Page($args['id']);
       $contentToDelete->delete();
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
 });

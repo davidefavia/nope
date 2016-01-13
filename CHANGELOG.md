@@ -1,3 +1,22 @@
+## v0.4.0 (2016-01-13)
+
+### Libraries
+- Updated **Slim framework** to version 3.1.0.
+- Added **Parsedown** version 1.6.
+- Added **Stringy** version 2.2.
+
+### Breaking changes
+- JSON-serialized model have now *camelized* properties.
+
+### Features
+- Better and more complete `Page` model with corresponding UI.
+- Added `TextContent` model to extend for text-based models (_e.g._ `Page`, `Post`).
+
+### Fixes
+- Check unique slug for content on saving.
+- Added same regular expression check for slug for PHP and Javascript (266cfeb).
+- Added remote content status calculation.
+
 ## v0.3.0 (2015-12-29)
 
 ### Libraries

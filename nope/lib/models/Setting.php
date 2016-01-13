@@ -13,7 +13,7 @@ class Setting extends \Nope\Model {
   }
 
   function jsonSerialize() {
-    return;
+    return parent::jsonSerialize();
   }
 
   static function getByKey($key) {

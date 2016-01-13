@@ -9,7 +9,8 @@
   ])
   .constant('BasePath', window.BASE_PATH)
   .constant('AssetsPath', window.TEMPLATES_PATH)
-  .constant('RolesList', window.ROLES)
+  .constant('RolesList', window.USER_ROLES)
+  .constant('TextFormatsList', window.TEXT_FORMATS)
   .config(['$compileProvider', function ($compileProvider) {
     $compileProvider.debugInfoEnabled(false);
   }])
@@ -93,7 +94,7 @@
   /**
    * Controllers
    */
-   .controller('AppController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'User', function($scope, $rootScope, $state, AssetsPath, User) {
+   .controller('AppController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'TextFormatsList', 'User', function($scope, $rootScope, $state, AssetsPath, TextFormatsList, User) {
 
      $rootScope.logout = function() {
        User.logout(function() {
@@ -103,6 +104,8 @@
      }
 
      $rootScope.assetsPath = AssetsPath;
+
+     $rootScope.textFormats = TextFormatsList;
 
    }])
    .controller('LoginController', ['$scope', '$rootScope', '$state', '$stateParams', 'AssetsPath', 'User', function($scope, $rootScope, $state, $stateParams, AssetsPath, User) {
@@ -254,7 +257,7 @@
       }
 
       r.prototype.getFullName = function() {
-        return this.pretty_name || this.username;
+        return this.prettyName || this.username;
       }
 
       r.prototype.itsMe = function(u) {

@@ -20,7 +20,7 @@
       </div>
       <div class="form-group">
         <label>Pretty name</label>
-        <input type="text" name="prettyname" class="form-control" ng-model="user.pretty_name" />
+        <input type="text" name="prettyname" class="form-control" ng-model="user.prettyName" />
       </div>
       <div class="checkbox">
         <label>

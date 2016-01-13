@@ -7,13 +7,21 @@ use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE, function() {
 
-  $this->get('', function ($req, $res) {
-    return redirect($req, $res, NOPE_ADMIN_ROUTE . '/');
+  $this->get('', function ($request, $response) {
+    return redirect($request, $response, NOPE_ADMIN_ROUTE . '/');
   });
 
-  $this->get('/', function ($req, $res) {
-    foreach(\Nope::getConfig('nope.roles') as $key => $value) {
-      $roles[] = [
+  $this->get('/', function ($request, $response) {
+    $userRoles = [];
+    foreach(\Nope::getConfig('nope.user.roles') as $key => $value) {
+      $userRoles[] = [
+        'label' => $value['label'],
+        'key' => $key
+      ];
+    }
+    $textFormats = [];
+    foreach(\Nope::getConfig('nope.content.format') as $key => $value) {
+      $textFormats[] = [
         'label' => $value['label'],
         'key' => $key
       ];
@@ -31,7 +39,12 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         }
       }
     }
-    return $this->view->adminRender($res, 'index.php', ['request' => $req, 'roles' => $roles, 'js' => $jsFiles]);
+    return $this->view->adminRender($response, 'index.php', [
+      'request' => $request,
+      'userRoles' => $userRoles,
+      'textFormats' => $textFormats,
+      'js' => $jsFiles
+    ]);
   });
 
 });

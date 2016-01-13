@@ -6,19 +6,17 @@ use Respect\Validation\Validator as v;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
 
-  $this->get('', function($req, $res) {
+  $this->get('', function($request, $response) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.read')) {
       $contentsList = Gallery::findAll();
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentsList]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser, "data" => $contentsList]);
   });
 
-  $this->post('', function($req, $res, $args) {
+  $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.create')) {
       if($currentUser->can('media.read')) {
@@ -27,31 +25,27 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
         $fields = ['title', 'description', 'tags'];
       }
       $contentToCreate = new Gallery();
-      $body = $req->getParsedBody();
+      $body = $request->getParsedBody();
       $contentToCreate->import($body, $fields);
       $contentToCreate->setAuthor($currentUser);
       $contentToCreate->save();
-      $body = $res->getBody();
-      $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToCreate]));
-      return $res->withBody($body);
+      return $response->withJson(['currentUser' => $currentUser, "data" => $contentToCreate]);
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
   });
 
-  $this->get('/{id}', function($req, $res, $args) {
+  $this->get('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.read')) {
       $content = Gallery::findById($args['id']);
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser, "data" => $content]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
 
-  $this->put('/{id}', function($req, $res, $args) {
+  $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
-    $body = $req->getParsedBody();
+    $body = $request->getParsedBody();
     if($currentUser->can('gallery.update')) {
       if($currentUser->can('media.read')) {
         $fields = ['title', 'description', 'tags', 'cover', 'media'];
@@ -62,26 +56,22 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
-        $body = $res->getBody();
-        $body->write(json_encode(['currentUser' => $currentUser, "data" => $contentToUpdate]));
-        return $res->withBody($body);
+        return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
       } else {
-        return $res->withStatus(404);
+        return $response->withStatus(404);
       }
     } else {
-      return $res->withStatus(403);
+      return $response->withStatus(403);
     }
   });
 
-  $this->delete('/{id}', function($req, $res, $args) {
+  $this->delete('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.delete')) {
       $contentToDelete = new Gallery($args['id']);
       $contentToDelete->delete();
     }
-    $body = $res->getBody();
-    $body->write(json_encode(['currentUser' => $currentUser]));
-    return $res->withBody($body);
+    return $response->withJson(['currentUser' => $currentUser]);
   });
 
 });

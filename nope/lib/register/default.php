@@ -4,6 +4,17 @@
 \Nope::registerImageSize('profile', new \Nope\Filter\Thumb(96,96));
 \Nope::registerImageSize('thumb', new \Nope\Filter\Thumb(200));
 
+\Nope::registerTextFormat('html', [
+  'key' => 'html',
+  'label' => 'Html',
+  'parser' => false
+]);
+\Nope::registerTextFormat('markdown', [
+  'key' => 'markdown',
+  'label' => 'Markdown',
+  'parser' => new \Nope\Format\Markdown()
+]);
+
 \Nope::setConfig('nope.paths',[
   '{{baseurl}}' => NOPE_INDEX,
   '{{basepath}}' => NOPE_BASE_PATH,

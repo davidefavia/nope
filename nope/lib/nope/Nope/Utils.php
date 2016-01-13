@@ -7,6 +7,7 @@ class Utils {
   const USERNAME_REGEX_PATTERN = '/^([a-z0-9]{3,20})$/';
   // http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
   const EMAIL_REGEX_PATTERN = '/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+  const SLUG_REGEX_PATTERN = '/^[A-Za-z0-9-_\/]{1,255}$/';
 
   static function mergeDirectories($list,$include=false,$prefix=[]) {
     $ds = '/';
@@ -112,6 +113,31 @@ class Utils {
       $uri->getBasePath(),
       $add
     ]),'/');
+  }
+
+  static function getPaginationTerms($request, $rpp = 6) {
+    $params = (object) $request->getQueryParams();
+    $page = (int) ($params->page? : 1);
+    $limit = $page * $rpp;
+    $offset = ($page-1) * $rpp;
+    return (object) [
+      'query' => (string) $params->query,
+      'page' => (int) $page,
+      'limit' => (int) $limit,
+      'offset' => (int) $offset,
+      'rpp' => (int) $rpp
+    ];
+  }
+
+  static function getPaginationMetadata($page, $count, $rpp = 6) {
+    $last = ceil($count/$rpp);
+    return (object) [
+      'first' => 1,
+      'last' => $last,
+      'actual' => $page,
+      'previous' => ($page>1?$page-1:1),
+      'next' => ($page<$last?$page+1:$last)
+    ];
   }
 
 }

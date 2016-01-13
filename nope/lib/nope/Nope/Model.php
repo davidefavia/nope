@@ -3,19 +3,25 @@
 namespace Nope;
 
 use RedBeanPHP\R as R;
+use Stringy\StaticStringy as S;
 
 abstract class Model implements \JsonSerializable {
 
   const MODELTYPE = '';
   protected $model;
 
-  public function __construct($id = null, $model = null) {
+  static function __getModelType() {
     $c = get_called_class();
+    return $c::MODELTYPE;
+  }
+
+  public function __construct($id = null, $model = null) {
+
     if(is_null($id) && is_null($model)) {
-      $this->model = R::dispense($c::MODELTYPE);
+      $this->model = R::dispense(self::__getModelType());
     } else {
       if(is_null($model)) {
-        $this->model = R::load($c::MODELTYPE, $id);
+        $this->model = R::load(self::__getModelType(), $id);
       } else {
         $this->model = $model;
       }
@@ -58,13 +64,17 @@ abstract class Model implements \JsonSerializable {
   public function jsonSerialize() {
     $json = (object) $this->model->export();
     $json->id = (int) $json->id;
-    return $json;
+    $tmp = [];
+    foreach ($json as $key => $value) {
+      $tmp[(string) S::camelize($key)] = $value;
+    }
+    return (object) $tmp;
   }
 
   public function save() {
     if($this->validate()) {
       $this->beforeSave();
-      $this->model->id = R::store($this->model);
+      $this->id = R::store($this->model);
     }
   }
 
@@ -72,21 +82,25 @@ abstract class Model implements \JsonSerializable {
     if(is_array($fields)) {
       foreach($fields as $f) {
         if(array_key_exists($f, $body)) {
-          $this->model->$f = $body[$f];
+          $this->$f = $body[$f];
         }
       }
     }
   }
 
   function beforeSave() {
-    if(!$this->model->id) {
-      $this->model->creationDate = new \DateTime();
+    if(!$this->id) {
+      $this->creationDate = new \DateTime();
     }
-    $this->model->lastModificationDate = new \DateTime();
+    $this->lastModificationDate = new \DateTime();
   }
 
   public function delete() {
     R::trash($this->model);
+  }
+
+  static public function findById($id) {
+    return self::__to(R::findOne(self::__getModelType(), 'id = ?', [$id]));
   }
 
 }

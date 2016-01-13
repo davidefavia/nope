@@ -104,6 +104,7 @@ if(!$isNopeEmbedded) {
 }
 
 require NOPE_LIB_DIR . 'models/Content.php';
+require NOPE_LIB_DIR . 'models/TextContent.php';
 require NOPE_APP_DIR . 'bootstrap.php';
 
 $models = \Nope::getConfig('nope.models');

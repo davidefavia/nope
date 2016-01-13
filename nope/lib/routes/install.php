@@ -8,10 +8,10 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE, function() {
 
 
-  $this->map(['GET', 'POST'], '/install', function ($req, $res) {
+  $this->map(['GET', 'POST'], '/install', function ($request, $response) {
 
     if(\Nope::isAlredyInstalled()) {
-      return $res->withStatus(302)->withHeader('Location', $req->getUri()->getBaseFolder() . NOPE_ADMIN_ROUTE);
+      return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBaseFolder() . NOPE_ADMIN_ROUTE);
     }
     $data = [];
     $requirements = [];
@@ -93,9 +93,9 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
 
     $data['requirements'] = $requirements;
 
-    if($req->isPost() && $data['ok']) {
+    if($request->isPost() && $data['ok']) {
       $data['step'] = 2;
-      $body = $req->getParsedBody();
+      $body = $request->getParsedBody();
       if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email'])) {
         $user = new User();
         $user->username = $body['username'];
@@ -113,14 +113,14 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $setting->value = new \DateTime();
         $setting->save();
 
-        return redirect($req, $res, NOPE_ADMIN_ROUTE);
+        return redirect($request, $response, NOPE_ADMIN_ROUTE);
       } else if($body) {
         $data['user'] = false;
       }
     }
 
 
-    return $this->view->adminRender($res, 'install.php', $data);
+    return $this->view->adminRender($response, 'install.php', $data);
   });
 
 });
