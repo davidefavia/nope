@@ -65,7 +65,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     if($currentUser->can('media.read')) {
       $content = Media::findById($args['id']);
     }
-    return $response->withBody(['currentUser' => $currentUser, "data" => $content]);
+    return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
 
   $this->put('/{id}', function($request, $response, $args) {

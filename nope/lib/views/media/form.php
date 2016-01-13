@@ -1,10 +1,27 @@
 <form name="mediaForm" ng-submit="save()" id="media-detail" class="content-detail">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}" />
+    <div class="panel-heading content-author">
+      <div class="list-group">
+        <div class="list-group-item clearfix">
+          <img ng-src="{{media.author.cover.preview.icon}}" class="img-circle" />
+          Created by <span class="fullname">{{media.author.prettyName || media.author.username}}</span>
+          <span>{{media.creationDate | nopeMoment:'fromNow'}}</span>
+        </div>
+      </div>
+      <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
       </div>
     </div>
     <div class="panel-body">
+      <div class="form-group">
+        <label>URL</label>
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control" ng-model="media.url" readonly nope-selectable />
+          <span class="input-group-btn">
+            <a ng-href="{{media.url}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
+          <span>
+        </div>
+
+      </div>
       <div class="form-group">
         <label>Title</label>
         <input type="text" name="title" class="form-control" ng-model="media.title" required  />

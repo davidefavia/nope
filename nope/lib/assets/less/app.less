@@ -239,6 +239,7 @@ label {
             position: absolute;
             h4 {
               background-color: rgba(0,0,0,.75);
+              color: #fff;
               padding: 7px;
               position: absolute;
               bottom:0;
@@ -498,10 +499,13 @@ textarea {
   .flex(1);
   .panel-heading {
     padding:0;
+    .list-group-item {
+      margin: 10px 15px;
+    }
     .flex(.3);
   }
   .preview {
-    min-height: 200px;
+    min-height: 150px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
@@ -509,6 +513,12 @@ textarea {
   .panel-body {
     padding-bottom:0;
     .flex(.7);
+  }
+  .panel-footer {
+    padding:0;
+    .form-group {
+      margin: 10px 15px;
+    }
   }
 }
 

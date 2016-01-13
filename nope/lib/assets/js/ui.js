@@ -401,5 +401,15 @@
         }
       }
     }])
+    .directive('nopeSelectable', [function() {
+      return {
+        restrict : 'A',
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $element.on('focus', function(e) {
+            $element[0].select();
+          });
+        }]
+      }
+    }])
     ;
 })()

@@ -16,7 +16,7 @@
               <textarea name="body" class="form-control" ng-model="content.body" rows="20"></textarea>
             </div>
             <div class="form-group">
-              <label>Tags</label>
+              <label>Tags (comma separated)</label>
               <input type="text" name="tags" class="form-control" ng-model="content.tags" />
             </div>
           </div>

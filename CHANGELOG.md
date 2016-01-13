@@ -1,3 +1,11 @@
+## v0.5.0 (2016-01-??)
+
+### Features
+- Better and more complete `Media` model with corresponding UI.
+
+### Fixes
+- Fixed wrong `Page` edit link on content detail.
+
 ## v0.4.0 (2016-01-13)
 
 ### Libraries
