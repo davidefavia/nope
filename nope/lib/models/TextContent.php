@@ -14,6 +14,8 @@ class TextContent extends Content {
     $json = parent::jsonSerialize();
     $json->realStatus = $this->calculateStatus();
     $json->parsedBody = $this->getParsedBody();
+    $json->starred = (bool) $json->starred;
+    $json->priority = (int) $json->priority;
     return $json;
   }
 
@@ -44,21 +46,21 @@ class TextContent extends Content {
     return true;
   }
 
-  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc, priority desc, id desc') {
     $params = [];
     $sql = self::__getSql($filters, $params);
     if($orderBy) {
       $sql[] = 'order by '.$orderBy;
     }
-    $pagesList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
-    return self::__to($pagesList, $limit, $offset, $count);
+    $contentsList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
+    return self::__to($contentsList, $limit, $offset, $count);
   }
 
   static function __getSql($filters, &$params=[], $p = null) {
     $sql = [];
     $filters = (object) $filters;
     if($filters->author) {
-      $sql[] = 'author_id = ?';
+      $sql[] = $p.'author_id = ?';
       $params[] = $filters->author->id;
     }
     if($filters->status) {
@@ -100,7 +102,7 @@ class TextContent extends Content {
         $sql[] = 'and';
       }
       $like = '%' . $filters->text . '%';
-      $sql[] = 'title LIKE ? or body LIKE ?';
+      $sql[] = '(title LIKE ? or body LIKE ?)';
       $params[] = $like;
       $params[] = $like;
     }

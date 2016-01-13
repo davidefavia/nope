@@ -29,7 +29,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
   $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
-      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format'];
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }
@@ -74,7 +74,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('page.update')) {
-      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format'];
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }

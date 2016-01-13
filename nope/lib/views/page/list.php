@@ -6,16 +6,18 @@
           <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-            <a class="btn btn-default" ng-click="showOptions=!showOptions"><span class="caret"></span></a>
-            <ul ng-show="showOptions" class="dropdown-menu dropdown-menu-right" ng-cloak>
-              <li ng-class="{active:q.status==='draft'}">
-                <a href="" ng-click="q.status=(q.status==='draft'?null:'draft');showOptions=false;">Only draft</a>
-              </li>
-              <li ng-class="{active:q.status==='published'}">
-                <a href="" ng-click="q.status=(q.status==='published'?null:'published');showOptions=false;">Only published</a>
-              </li>
-            </ul>
           </div>
+        </div>
+        <div class="form-group">
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.status" value=""> All
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.status" value="draft"> Only draft
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.status" value="published"> Only published
+          </label>
         </div>
       </form>
       <a href="#/content/page/create" class="btn btn-sm btn-block btn-default" nope-can="{{contentType}}.create">Create new {{contentType}} <i class="fa fa-plus"></i></a>
@@ -33,6 +35,7 @@
           </p>
           <div class="btn-group btn-group-xs pull-right toolbar">
             <a ng-href="#/content/{{contentType}}/edit/{{p.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+            <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn btn-default btn-star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
             <a href="" ng-click="deleteContent(p);" class="btn btn-default" nope-can="page.delete"><i class="fa fa-trash"></i></a>
           </div>
         </div>

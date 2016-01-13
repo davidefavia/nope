@@ -1,4 +1,4 @@
-## v0.4.0 (2016-01-??)
+## v0.4.0 (2016-01-13)
 
 ### Libraries
 - Updated **Slim framework** to version 3.1.0.
@@ -9,7 +9,7 @@
 - JSON-serialized model have now *camelized* properties.
 
 ### Features
-- Better `Page` model UI.
+- Better and more complete `Page` model with corresponding UI.
 - Added `TextContent` model to extend for text-based models (_e.g._ `Page`, `Post`).
 
 ### Fixes

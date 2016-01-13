@@ -286,8 +286,8 @@
         restrict: 'E',
         replace: true,
         require: 'ngModel',
-        template: '<div><div class="list-group list-group-contents" ng-class="{\'is-multiple\':multiple}" ng-show="ngModel && preview" ng-if="multiple">\
-        <div class="list-group-item" ng-repeat="item in ngModel track by $index">\
+        template: '<div><div class="list-group list-group-contents" ng-class="{\'is-multiple\':multiple}" ng-show="ngModel && preview">\
+        <div class="list-group-item" ng-repeat="item in ngModel track by $index" ng-if="multiple">\
           <img class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
           <span class="title">{{item.title}}</span>\
           <div class="btn-group btn-group-xs btn-toolbar">\

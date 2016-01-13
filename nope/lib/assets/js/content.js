@@ -87,6 +87,17 @@
       });
     }
 
+    $scope.save = function(p, i) {
+      Content.update({
+        type : $stateParams.contentType
+      }, p, function(data) {
+        var msg = (data.starred ? 'starred': 'unstarred');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" '+msg+'.');
+        $scope.$broadcast('nope.content.updated', data);
+        $scope.contentsList[i] = data;
+      });
+    }
+
     $scope.deleteContent = function(c) {
       $scope.contentToDelete = c;
       $nopeModal.fromTemplate('<nope-modal title="Delete content">\
@@ -108,7 +119,7 @@
       Content.save({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        $scope.$emit('nope.toast.success', 'Content created.');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" created.');
         $state.go('app.contentedit', {
           contentType : $stateParams.contentType,
           id : data.id
@@ -128,7 +139,7 @@
       Content.update({
         type : $stateParams.contentType
       }, $scope.content, function(data) {
-        $scope.$emit('nope.toast.success', 'Content updated.');
+        $scope.$emit('nope.toast.success', 'Content "'+data.title+'" updated.');
         $scope.content = data;
       });
     }
@@ -150,13 +161,22 @@
 
   }])
   .controller('ContentDetailController', ['$scope', '$stateParams', 'Content', function($scope, $stateParams, Content) {
-    Content.get({
-      type : $stateParams.contentType,
-      id : $stateParams.id
-    }, function(data) {
-      $scope.content = data;
-      $scope.$parent.selectedContent = $scope.content;
+
+    $scope.getContent = function() {
+      Content.get({
+        type : $stateParams.contentType,
+        id : $stateParams.id
+      }, function(data) {
+        $scope.content = data;
+        $scope.$parent.selectedContent = $scope.content;
+      });
+    }
+
+    $scope.$on('nope.content.updated', function(e, data) {
+      $scope.getContent();
     });
+
+    $scope.getContent();
   }])
   /**
    * Services

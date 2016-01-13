@@ -56,9 +56,21 @@ body {
     top: @gutter/2;
     right: @gutter/2;
     .alert {
-      width: 200px;
+      min-width: 200px;
       margin-bottom: @gutter/2;
       padding: @gutter/2 @gutter;
+      &.alert-success {
+        background-color: fade(@alert-success-bg, 85%);
+      }
+      &.alert-info {
+        background-color: fade(@alert-info-bg, 85%);
+      }
+      &.alert-warning {
+        background-color: fade(@alert-warning-bg, 85%);
+      }
+      &.alert-danger {
+        background-color: fade(@alert-danger-bg, 85%);
+      }
     }
   }
 }
@@ -294,6 +306,10 @@ label {
         h2 {
           margin:@gutter 0;
           font-size: 20px;
+          .fa-star {
+            color: @brand-warning;
+            font-size: 16px;
+          }
         }
       }
       .panel-body {
@@ -345,6 +361,9 @@ label {
     background: transparent;
     i {
       font-size: 14px;
+      &.fa-star {
+        color: @brand-warning;
+      }
     }
     color: @gray-light;
     &:hover {

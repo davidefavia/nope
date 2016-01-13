@@ -4,6 +4,9 @@
       <div class="col col-md-9">
         <div class="panel panel-default">
           <div class="panel-body">
+            <div class="toolbar">
+              <a ng-click="content.starred=!content.starred;" class="btn btn-star pull-right"><i class="fa" ng-class="{'fa-star-o':!content.starred,'fa-star':content.starred}"></i></a>
+              </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.title.$valid && contentForm.title.$touched)}">
               <label class="control-label">Title</label>
               <input type="text" name="title" class="form-control input-lg" ng-model="content.title" required />
@@ -63,6 +66,10 @@
             <div class="form-group">
               <label>End publishing date</label>
               <input type="text" name="endPublishingDate" class="form-control input-sm" ng-model="content.endPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" ng-blur="getRealStatus()" />
+            </div>
+            <div class="form-group" ng-class="{'has-error':(!contentForm.priority.$valid && contentForm.priority.$touched)}">
+              <label class="control-label">Priority</label>
+              <input type="text" name="priority" class="form-control input-sm" ng-model="content.priority" ng-pattern="/^[0-9]+$/" />
             </div>
             <div class="form-group">
               <label>Summary</label>
