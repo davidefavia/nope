@@ -229,6 +229,30 @@
         }
       }
     }])
+    .directive('nopeUploadModal', ['$nopeModal', function($nopeModal) {
+      return {
+        restrict: 'A',
+        scope: {
+          onUploadDone: '&nopeUploadModal'
+        },
+        link: function($scope, $element, $attrs) {
+          var theModal;
+          $element.addClass('nope-upload-modal');
+          $element.on('click', function(e) {
+            e.preventDefault();
+            $nopeModal.fromTemplateUrl('view/modal/upload.html', $scope).then(function(modal) {
+              theModal = modal;
+              theModal.show();
+            });
+          });
+
+          $scope.onDone = function() {
+            theModal.hide();
+            $scope.onUploadDone();
+          }
+        }
+      }
+    }])
     .directive('nopeUpload', ['$compile', '$q', 'Upload', function($compile, $q, Upload) {
       return {
         restrict: 'A',
@@ -277,7 +301,7 @@
           </nope-modal>', $scope).then(function(modal) {
               modal.show();
             })
-          })
+          });
         }]
       }
     }])

@@ -131,7 +131,7 @@ class Utils {
 
   static function getPaginationMetadata($page, $count, $rpp = 6) {
     $last = ceil($count/$rpp);
-    $last = $last?:1;
+    $last = $last>0?$last:1;
     return (object) [
       'first' => 1,
       'last' => $last,
@@ -139,6 +139,15 @@ class Utils {
       'previous' => ($page>1?$page-1:1),
       'next' => ($page<$last?$page+1:$last)
     ];
+  }
+
+  // http://stackoverflow.com/a/2297421
+  static function getBaseUrl() {
+    return sprintf(
+      "%s://%s",
+      isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+      $_SERVER['SERVER_NAME']
+    );
   }
 
 }

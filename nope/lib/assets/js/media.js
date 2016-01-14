@@ -44,6 +44,7 @@
           if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
             $scope.selectedMedia = null;
             $scope.selectedMediaIndex = null;
+            $state.go('app.media');
           }
           $scope.getAllContents();
         });

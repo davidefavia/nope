@@ -20,6 +20,10 @@ class Media extends Content {
     return NOPE_UPLOADS_PATH . $this->filename . $t;
   }
 
+  function getAbsoluteUrl($cache=true) {
+    return Utils::getBaseUrl() . $this->getUrl($cache);
+  }
+
   function isImage() {
     $needle = 'image/';
     $length = strlen($needle);
@@ -70,6 +74,7 @@ class Media extends Content {
   function jsonSerialize() {
     $json = parent::jsonSerialize();
     $json->url = $this->getUrl();
+    $json->absoluteUrl = $this->getAbsoluteUrl();
     $json->preview = (object) [];
     foreach (\Nope::getConfig('nope.media.size') as $key => $value) {
       $json->preview->$key = $this->getPreview($key);
@@ -82,7 +87,8 @@ class Media extends Content {
   }
 
   function validate() {
-    $contentValidator = v::attribute('title', v::length(1,255));
+    $contentValidator = v::attribute('title', v::length(1,255))
+      ->attribute('filename', v::length(1,255));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
@@ -91,11 +97,7 @@ class Media extends Content {
     return true;
   }
 
-  static public function findById($id) {
-    return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
-  }
-
-  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc,id desc') {
     $params = [];
     $sql = self::__getSql($filters, $params);
     if($orderBy) {

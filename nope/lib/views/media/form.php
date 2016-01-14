@@ -18,9 +18,9 @@
       <div class="form-group">
         <label>URL</label>
         <div class="input-group input-group-sm">
-          <input type="text" class="form-control" ng-model="media.url" readonly nope-selectable />
+          <input type="text" class="form-control" ng-model="media.absoluteUrl" readonly nope-selectable />
           <span class="input-group-btn">
-            <a ng-href="{{media.url}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
+            <a ng-href="{{media.absoluteUrl}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
           <span>
         </div>
 
