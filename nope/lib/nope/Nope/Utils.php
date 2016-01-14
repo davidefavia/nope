@@ -131,6 +131,7 @@ class Utils {
 
   static function getPaginationMetadata($page, $count, $rpp = 6) {
     $last = ceil($count/$rpp);
+    $last = $last?:1;
     return (object) [
       'first' => 1,
       'last' => $last,

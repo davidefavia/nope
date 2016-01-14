@@ -13,7 +13,7 @@
           },
           resolve : {
             MediaList : ['Media', function(Media) {
-              return Media.getAll().$promise;
+              return Media.query().$promise;
             }]
           }
         })
@@ -66,11 +66,25 @@
       }
 
       $scope.getAllContents = function() {
-        Media.getAll(function(data) {
-          $scope.contentsList = data;
+        $scope.q = {};
+        $scope.search($scope.q, 1);
+      }
+
+      $scope.search = function(q, page) {
+        page = page || 1;
+        if(page===1) {
+          $scope.contentsList = [];
+        }
+        Media.query(angular.extend({
+          page : page
+        }, q), function(data, headers) {
+          $scope.metadata = angular.fromJson(headers().link);
+          $scope.contentsList = $scope.contentsList.concat(data);
           MediaList = $scope.contentsList;
         });
       }
+
+      $scope.search($scope.q);
 
     }])
     .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
@@ -94,9 +108,6 @@
       return $resource('content/media/:id', {
         id: '@id'
       }, {
-        getAll: {
-          isArray: true
-        },
         update: {
           method: 'PUT'
         }

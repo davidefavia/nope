@@ -1,7 +1,7 @@
 <div class="row">
   <div class="list-column col col-md-4 col-sm-6">
     <div class="searchbar">
-      <form name="searchForm" ng-submit="searchByText(q);">
+      <form name="searchForm" ng-submit="search(q);">
         <div class="input-group" nope-can="{{contentType}}.read">
           <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
           <div class="input-group-btn">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <a href="" class="btn btn-sm btn-block btn-default" ng-click="searchByText(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
+    <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div class="detail-column col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
     <no-empty icon="file-text-o">

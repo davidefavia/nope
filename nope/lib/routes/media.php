@@ -7,13 +7,23 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
   $this->get('', function($request, $response) {
+    $rpp = 12;
     $currentUser = User::getAuthenticated();
-    if($currentUser->can('media.read')) {
-      $contentsList = Media::findAll();
-    } else {
+    if(!$currentUser->can('media.read')) {
       return $response->withStatus(403);
     }
-    return $response->withJson(['currentUser' => $currentUser, "data" => $contentsList]);
+    $queryParams = (object) $request->getQueryParams();
+    $params = Utils::getPaginationTerms($request, $rpp);
+    $contentsList = Media::findAll([
+      'text' => $params->query,
+      'mimetype' => $queryParams->mimetype
+    ], $params->limit, $params->offset, $count);
+    $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
+    return $response->withJson([
+      'currentUser' => $currentUser,
+      'metadata' => $metadata,
+      'data' => $contentsList
+    ])->withHeader('Link', json_encode($metadata));
   });
 
   $this->post('/upload', function($request, $response) {

@@ -94,16 +94,40 @@ class Media extends Content {
     return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
   }
 
-  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
-    $filters = (object) $filters;
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
     $params = [];
+    $sql = self::__getSql($filters, $params);
     if($orderBy) {
       $sql[] = 'order by '.$orderBy;
     }
-    $users = R::findAll(self::MODELTYPE, implode(' ',$sql),$params);
-    return self::__to($users, $limit, $offset, $count);
+    $contentsList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
+    return self::__to($contentsList, $limit, $offset, $count);
   }
 
-
+  static function __getSql($filters, &$params=[], $p = null) {
+    $sql = [];
+    $filters = (object) $filters;
+    if($filters->author) {
+      $sql[] = $p.'author_id = ?';
+      $params[] = $filters->author->id;
+    }
+    if($filters->mimetype) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = $p.'mimetype LIKE ?';
+      $params[] = '%' . $filters->mimetype . '%';
+    }
+    if($filters->text) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $like = '%' . $filters->text . '%';
+      $sql[] = '(title LIKE ? or description LIKE ?)';
+      $params[] = $like;
+      $params[] = $like;
+    }
+    return $sql;
+  }
 
 }

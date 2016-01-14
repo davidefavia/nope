@@ -1,26 +1,33 @@
 <div id="media" class="row" ng-class="{'not-selected':!selectedMedia}">
-  <div class="col" ng-if="!contentsList.length">
-    <no-empty icon="upload">
-      <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>
-    </no-empty>
-  </div>
-  <div class="col list-column" ng-class="{'col-md-9 col-sm-8':selectedMedia}" ng-if="contentsList.length">
-    <div class="searchbar">
-      <div class="row">
-        <div class="col col-md-10" ng-show="contentsList.length">
-          <div class="form-group" nope-can="{{contentType}}.read">
-            <input type="text" class="form-control" ng-model="q.title" placeholder="Filter {{contentType}} by title" />
-          </div>
+  <div class="col list-column" ng-class="{'col-md-9 col-sm-8':selectedMedia}">
+    <form name="searchForm" ng-submit="search(q);">
+      <div class="input-group" nope-can="{{contentType}}.read">
+        <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
         </div>
-        <div class="col" ng-class="{'col-md-2':contentsList.length}">
+        <div class="input-group-btn">
           <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-upload"></i></a>
         </div>
       </div>
-    </div>
+      <div class="form-group">
+        <label class="radio-inline">
+          <input type="radio" ng-model="q.mimetype" value=""> All
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="q.mimetype" value="image/"> Only images
+        </label>
+      </div>
+    </form>
     <div class="media-list list-group">
-      <div class="list-group-item ng-cloak" ng-show="!filteredContentsList.length && q.title">No {{contentType}} found with filter "{{q.title}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q.query">No {{contentType}} found with filter "{{q}}".</div>
+      <div ng-if="!contentsList.length">
+        <no-empty icon="upload">
+          <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>
+        </no-empty>
+      </div>
       <div class="row row-span clearfix">
-        <div class="col col-md-3" ng-repeat="p in filteredContentsList = (contentsList | filter : q)" ng-show="filteredContentsList.length">
+        <div class="col col-md-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
           <div class="list-group-item clearfix" style="{{'background-image:url('+p.preview.thumb+')'}}" ng-class="{active:p.id===selectedMedia.id}">
             <div class="btn-group btn-group-xs">
               <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
@@ -31,6 +38,7 @@
         </div>
       </div>
     </div>
+    <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div class="detail-column col col-md-3 col-sm-4" ng-show="selectedMedia" ui-view="content">
     <no-empty icon="file-text-o">Select {{contentType}}</no-empty>
