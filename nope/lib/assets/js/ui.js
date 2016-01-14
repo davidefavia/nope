@@ -42,13 +42,13 @@
      */
     .filter('nopeDate', ['$filter', function($filter) {
       return function(input, format, timezone) {
-        input = input.split(' ').join('T') + 'Z';
+        input = input ? input.split(' ').join('T') + 'Z' : input;
         return $filter('date')(input, format, timezone);
       }
     }])
     .filter('nopeMoment', [function() {
       return function(input, format, timezone) {
-        input = input.split(' ').join('T') + 'Z';
+        input = input ? input.split(' ').join('T') + 'Z' : input;
         format = format || 'fromNow';
         return moment(input, 'YYYY-MM-DD hh:mm:ss')[format]();
       }
@@ -320,7 +320,7 @@
           $scope.titleField = $scope.title || 'title';
           $scope.multiple = (angular.isDefined($scope.multiple) ? $scope.multiple : true);
           $scope.hasPreview = !!$scope.preview;
-          var methodToInvoke = $scope.method || 'getAll';
+          var methodToInvoke = $scope.method || 'query';
 
           $scope.openModal = function() {
             model[methodToInvoke](function(data) {

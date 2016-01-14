@@ -68,16 +68,17 @@ class Media extends Content {
   }
 
   function jsonSerialize() {
-    $obj = parent::jsonSerialize();
-    $obj->url = $this->getUrl();
-    $obj->preview = (object) [];
+    $json = parent::jsonSerialize();
+    $json->url = $this->getUrl();
+    $json->preview = (object) [];
     foreach (\Nope::getConfig('nope.media.size') as $key => $value) {
-      $obj->preview->$key = $this->getPreview($key);
+      $json->preview->$key = $this->getPreview($key);
     }
-    $obj->isImage = $this->isImage();
-    $obj->metadata = json_decode($this->metadata);
-    unset($obj->cover);
-    return $obj;
+    $json->isImage = $this->isImage();
+    $json->metadata = json_decode($this->metadata);
+    $json->starred = (bool) $json->starred;
+    unset($json->cover);
+    return $json;
   }
 
   function validate() {
@@ -115,7 +116,12 @@ class Media extends Content {
       if(count($sql)) {
         $sql[] = 'and';
       }
-      $sql[] = $p.'mimetype LIKE ?';
+      if(substr($filters->mimetype,0,1)==='!') {
+        $sql[] = $p.'mimetype NOT LIKE ?';
+        $filters->mimetype = substr($filters->mimetype,1);
+      } else {
+        $sql[] = $p.'mimetype LIKE ?';
+      }
       $params[] = '%' . $filters->mimetype . '%';
     }
     if($filters->text) {

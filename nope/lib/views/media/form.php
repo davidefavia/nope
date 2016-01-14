@@ -2,13 +2,16 @@
   <div class="panel panel-default">
     <div class="panel-heading content-author">
       <div class="list-group">
-        <div class="list-group-item clearfix">
-          <img ng-src="{{media.author.cover.preview.icon}}" class="img-circle" />
+        <div class="list-group-item clearfix" ng-class="{'has-image':media.author.cover}">
+          <img ng-src="{{media.author.cover.preview.icon}}" class="img-circle" ng-if="media.author.cover" />
           Created by <span class="fullname">{{media.author.prettyName || media.author.username}}</span>
           <span>{{media.creationDate | nopeMoment:'fromNow'}}</span>
         </div>
       </div>
       <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
+        <div class="toolbar">
+          <a ng-click="media.starred=!media.starred;" class="btn btn-star btn-lg pull-right"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
+        </div>
       </div>
     </div>
     <div class="panel-body">

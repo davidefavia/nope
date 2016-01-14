@@ -230,6 +230,11 @@ label {
               color: #fff;
               background-color: rgba(0,0,0,.75);
             }
+            .btn-star {
+              .fa-star {
+                color: @brand-warning;
+              }
+            }
           }
           a.btn-select {
             bottom:0;
@@ -421,9 +426,11 @@ label {
       background: none;
       border:0;
       padding:0;
-      padding-left: @size + 10px;
       position: relative;
-      min-height: @size;
+      &.has-image {
+        padding-left: @size + 10px;
+        min-height: @size;
+      }
       img {
         padding:0;
         border: 0;
@@ -509,6 +516,13 @@ textarea {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
+    .toolbar {
+      .btn {
+        i {
+          font-size: 20px;
+        }
+      }
+    }
   }
   .panel-body {
     padding-bottom:0;

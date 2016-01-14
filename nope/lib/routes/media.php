@@ -82,7 +82,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
-      $fields = ['title', 'description', 'tags'];
+      $fields = ['title', 'description', 'tags', 'starred'];
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);

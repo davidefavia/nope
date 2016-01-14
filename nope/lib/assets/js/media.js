@@ -33,6 +33,7 @@
     .controller('MediaListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Media', 'MediaList', function($scope, $state, $stateParams, $nopeModal, Media, MediaList) {
       $scope.contentType = 'media';
       $scope.selectedMedia = null;
+      $scope.selectedMediaIndex = null;
       $scope.contentsList = MediaList;
 
       $scope.deleteContentOnClick = function() {
@@ -42,6 +43,7 @@
           $scope.$emit('nope.toast.success', 'Media deleted.');
           if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
             $scope.selectedMedia = null;
+            $scope.selectedMediaIndex = null;
           }
           $scope.getAllContents();
         });
@@ -84,22 +86,47 @@
         });
       }
 
-      $scope.search($scope.q);
+      $scope.save = function(p, i) {
+        Media.update(p, function(data) {
+          var msg = (data.starred ? 'starred': 'unstarred');
+          $scope.$emit('nope.toast.success', 'Media "'+data.title+'" '+msg+'.');
+          $scope.$broadcast('nope.media.updated', data);
+          $scope.contentsList[i] = data;
+          MediaList = $scope.contentsList;
+        });
+      }
 
     }])
     .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
+      var mediaId = parseInt($stateParams.id,10);
+      var i = 0;
+
       $scope.media = $filter('filter')($scope.$parent.contentsList, {
-        id: parseInt($stateParams.id,10)
-      }, true)[0];
+        id: mediaId
+      }, function(actual, expected, index) {
+        if(actual === expected) {
+          $scope.$parent.selectedMediaIndex = i;
+          return true;
+        }
+        i++
+      })[0];
       $scope.$parent.selectedMedia = $scope.media;
 
       $scope.save = function() {
         Media.update($scope.media, function(data) {
-          $scope.$emit('nope.toast.success', 'Media updated.');
+          $scope.$emit('nope.toast.success', 'Media "'+data.title+'" updated.');
           $scope.media = data;
-          $scope.$parent.selectedMedia = $scope.media;
+          $scope.$parent.selectedMedia = data;
+          $scope.$parent.contentsList[$scope.$parent.selectedMediaIndex] = data;
         });
       }
+
+      $scope.$on('nope.media.updated', function(e, data) {
+        if(data.id === mediaId) {
+          $scope.media = data;
+          $scope.$parent.selectedMedia = $scope.media;
+        }
+      });
     }])
     /**
      * Services
