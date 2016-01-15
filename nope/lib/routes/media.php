@@ -53,6 +53,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $media->mimetype = $type;
         $media->filename = $uniqueFilename;
         $media->size = $size;
+        $media->starred = false;
         $media->setAuthor($currentUser);
         /*if($tags) {
         	$media->setTags($tags);
