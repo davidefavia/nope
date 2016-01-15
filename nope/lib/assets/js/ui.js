@@ -278,7 +278,8 @@
         terminal: true,
         priority: 1000,
         scope: {
-          onDone: '&nopeUpload'
+          onDone: '&nopeUpload',
+          accept : '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.uploadFiles = function(files) {
@@ -300,7 +301,7 @@
         link: function($scope, $element, $attrs) {
           $element.attr('ngf-select', 'uploadFiles($files)');
           if($scope.accept) {
-            $element.attr('ngf-accept', $scope.accept);
+            $element.attr('ngf-accept', $scope.accept.toString());
           }
           $element.attr('multiple', 'multiple');
           $element.removeAttr('nope-upload');
