@@ -6,10 +6,11 @@
     <link href="<?php echo path('lib/assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <script>
-      window.BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
-      window.TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
-      window.USER_ROLES = <?php echo json_encode($userRoles); ?>;
-      window.TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
+      window.NOPE_BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
+      window.NOPE_IFRAME = <?php echo $isIframe; ?>;
+      window.NOPE_TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
+      window.NOPE_USER_ROLES = <?php echo json_encode($userRoles); ?>;
+      window.NOPE_TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
     </script>
   </head>
   <body>

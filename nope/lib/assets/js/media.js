@@ -12,8 +12,8 @@
             }
           },
           resolve : {
-            MediaList : ['Media', function(Media) {
-              return Media.query().$promise;
+            MediaList : ['$location', 'Media', function($location, Media) {
+              return Media.query($location.search()).$promise;
             }]
           }
         })
@@ -30,11 +30,31 @@
     /**
      * Controller
      */
-    .controller('MediaListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Media', 'MediaList', function($scope, $state, $stateParams, $nopeModal, Media, MediaList) {
+    .controller('MediaListController', ['$scope', '$rootScope', '$location', '$window', '$state', '$stateParams', '$nopeModal', 'Media', 'MediaList', function($scope, $rootScope, $location, $window, $state, $stateParams, $nopeModal, Media, MediaList) {
       $scope.contentType = 'media';
       $scope.selectedMedia = null;
       $scope.selectedMediaIndex = null;
       $scope.contentsList = MediaList;
+
+      if($location.search()) {
+        $scope.q = $location.search();
+        $scope.hideMimetypeOptions = true;
+      }
+
+      $scope.selection = [];
+
+      $scope.select = function(c,i) {
+        if($rootScope.nope.isIframe) {
+          var $parent = $window.parent;
+          var el = $parent.angular.element($parent.document.getElementById('modal-content'));
+          var callerScope = el.isolateScope().$parent;
+          $scope.selection = callerScope.selectedItem(c);
+          callerScope.$apply();
+        } else {
+          $scope.selectedMediaIndex = i;
+          $state.go('app.media.detail', {id:c.id});
+        }
+      }
 
       $scope.deleteContentOnClick = function() {
         Media.delete({

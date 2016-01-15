@@ -2,6 +2,12 @@
   'use strict';
 
   /* where to put? */
+  Array.prototype.hasItem = function(a) {
+    return this.itemIndex(a) !== -1;
+  }
+  Array.prototype.itemIndex = function(a) {
+    return this.indexOf(a);
+  }
   Array.prototype.swapItems = function(a, b) {
     if (a >= 0 && b < this.length) {
       this[a] = this.splice(b, 1, this[a])[0];
@@ -51,6 +57,15 @@
         input = input ? input.split(' ').join('T') + 'Z' : input;
         format = format || 'fromNow';
         return moment(input, 'YYYY-MM-DD hh:mm:ss')[format]();
+      }
+    }])
+    .filter('nopeGetIds', [function() {
+      return function(input) {
+        var ids = []
+        angular.forEach(input, function(v, index) {
+          ids.push(v.id);
+        });
+        return ids;
       }
     }])
     /**
@@ -191,14 +206,17 @@
         template: '<div class="modal-footer" ng-transclude></div>'
       }
     }])
-    .directive('nopeModalClose', [function() {
+    .directive('nopeModalClose', ['$compile', function($compile) {
       return {
         restrict: 'A',
         require: '^nopeModal',
         link: function($scope, $element, $attrs, nopeModalCtrl) {
-          $element.on('click', function() {
+          $element.on('click', function($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
             nopeModalCtrl.close();
           });
+
         }
       }
     }])
@@ -305,7 +323,7 @@
         }]
       }
     }])
-    .directive('nopeModel', ['$injector', '$nopeModal', function($injector, $nopeModal) {
+    .directive('nopeModel', ['$injector', '$nopeModal', 'BasePath', function($injector, $nopeModal, BasePath) {
       return {
         restrict: 'E',
         replace: true,
@@ -328,42 +346,57 @@
           </div>\
         </div>\
       </div>\
-      <a href="" class="btn btn-block btn-default" ng-click="openModal()" ng-hide="!multiple && ngModel">{{label || \'Add\' + model}} <i class="fa fa-plus"></i></a></div>',
+      <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a></div>',
         scope: {
-          model: '@',
-          method: '@',
           multiple: '=',
           ngModel: '=',
           title: '=',
           preview: '@',
-          label: '@'
+          label: '@',
+          url: '@href'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
-          var model = $injector.get($scope.model);
+          var theModal;
 
           $scope.titleField = $scope.title || 'title';
           $scope.multiple = (angular.isDefined($scope.multiple) ? $scope.multiple : true);
           $scope.hasPreview = !!$scope.preview;
-          var methodToInvoke = $scope.method || 'query';
 
-          $scope.openModal = function() {
-            model[methodToInvoke](function(data) {
-              $scope.itemsList = data;
-              $nopeModal.fromTemplateUrl('view/modal/model.html', $scope).then(function(modal) {
-                modal.show();
-              })
+          $scope.openModal = function($event) {
+            $scope.selection = [];
+            $scope.url = BasePath +'?iframe=1' + $scope.url;
+            $nopeModal.fromTemplateUrl('view/modal/content.html', $scope).then(function(modal) {
+              theModal = modal;
+              theModal.show();
             });
           }
 
-          $scope.onSelect = function(item) {
+          $scope.$on('modal.hidden', function() {
+            $scope.selection = [];
+          });
+
+          $scope.onSelect = function(items) {
             if ($scope.multiple) {
               if (!angular.isArray($scope.ngModel)) {
                 $scope.ngModel = [];
               }
-              $scope.ngModel.push(item);
+              $scope.ngModel = $scope.ngModel.concat(items);
             } else {
-              $scope.ngModel = item;
+              $scope.ngModel = items[0];
             }
+            theModal.hide();
+          }
+
+          $scope.selectedItem = function(c) {
+            if($scope.selection.hasItem(c)) {
+              $scope.selection.removeItemAt($scope.selection.itemIndex(c));
+            } else {
+              if(!$scope.multiple) {
+                $scope.selection.removeItemAt(0);
+              }
+              $scope.selection.push(c);
+            }
+            return $scope.selection;
           }
 
           $scope.remove = function() {

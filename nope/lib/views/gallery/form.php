@@ -12,11 +12,11 @@
       </div>
       <div class="form-group">
         <label>Cover</label>
-        <nope-model model="Media" ng-model="gallery.cover" preview="icon" multiple="false"></nope-model>
+        <nope-model href="#/media" ng-model="gallery.cover" multiple="false" label="Add cover" preview="icon"></nope-model>
       </div>
       <div class="form-group">
         <label>Media</label>
-        <nope-model model="Media" ng-model="gallery.media" preview="icon"></nope-model>
+        <nope-model href="#/media?excluded={{(gallery.media | nopeGetIds).join(',')}}" ng-model="gallery.media" label="Add media" preview="icon"></nope-model>
       </div>
     </div>
     <div class="panel-footer">

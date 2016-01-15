@@ -11,15 +11,17 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="radio-inline">
-          <input type="radio" ng-model="q.mimetype" value=""> All
-        </label>
-        <label class="radio-inline">
-          <input type="radio" ng-model="q.mimetype" value="image/"> Only images
-        </label>
-        <label class="radio-inline">
-          <input type="radio" ng-model="q.mimetype" value="!image/"> Not images
-        </label>
+        <div  ng-hide="hideMimetypeOptions">
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.mimetype" value=""> All
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.mimetype" value="image/"> Only images
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.mimetype" value="!image/"> Not images
+          </label>
+        </div>
       </div>
     </form>
     <div class="media-list list-group">
@@ -32,12 +34,16 @@
       <div class="row row-span clearfix">
         <div class="col col-md-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
           <div class="list-group-item clearfix" style="{{'background-image:url('+p.preview.thumb+')'}}" ng-class="{active:p.id===selectedMedia.id}">
-            <div class="btn-group btn-group-xs">
+            <div class="btn-group btn-group-xs" ng-if="!nope.isIframe">
               <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn btn-default btn-star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
               <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
               <a href="" class="btn btn-danger" ng-click="deleteContent(p);"><i class="fa fa-trash"></i></a>
             </div>
-            <a ng-href="#/{{contentType}}/view/{{p.id}}" ng-click="selectedMediaIndex=$index;" class="btn-select"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+            <div ng-if="nope.isIframe" class="pull-right">
+              <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
+              <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
+            </div>
+            <a href="" ng-click="select(p,$index);" class="btn-select"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
           </div>
         </div>
       </div>

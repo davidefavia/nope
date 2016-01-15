@@ -39,7 +39,7 @@
               <div class="preview-image" ng-show="content.cover" ng-style="{backgroundImage:'url('+content.cover.preview.thumb+')'}">
                 <a href="" ng-click="content.cover=null" class="btn btn-danger btn-xs"><i class="fa fa-times-circle"></i></a>
               </div>
-              <nope-model model="Media" ng-model="content.cover" multiple="false" preview="icon" label="Add featured image"></nope-model>
+              <nope-model href="#/media?mimetype=image/" ng-model="content.cover" multiple="false" label="Add featured image"></nope-model>
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.slug.$valid && contentForm.slug.$touched)}">
               <label class="control-label">Slug</label>
