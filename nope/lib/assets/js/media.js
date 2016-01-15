@@ -38,6 +38,7 @@
 
       if($location.search()) {
         $scope.q = $location.search();
+        $scope.acceptedFiles = $location.search().mimetype + '*';
         $scope.hideMimetypeOptions = true;
       }
 
@@ -57,10 +58,11 @@
       }
 
       $scope.deleteContentOnClick = function() {
+        var t = $scope.contentToDelete.title;
         Media.delete({
           id: $scope.contentToDelete.id
         }, function() {
-          $scope.$emit('nope.toast.success', 'Media deleted.');
+          $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
           if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
             $scope.selectedMedia = null;
             $scope.selectedMediaIndex = null;
@@ -89,7 +91,11 @@
       }
 
       $scope.getAllContents = function() {
-        $scope.q = {};
+        if($location.search()) {
+          $scope.q = $location.search();
+        } else {
+          $scope.q = {};
+        }
         $scope.search($scope.q, 1);
       }
 

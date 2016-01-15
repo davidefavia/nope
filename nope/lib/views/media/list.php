@@ -7,7 +7,7 @@
           <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
         </div>
         <div class="input-group-btn" nope-can="{{contentType}}.create">
-          <a href="" nope-upload-modal="onUploadDone()" class="btn btn-block btn-default">Create new media <i class="fa fa-upload"></i></a>
+          <a href="" nope-upload-modal="onUploadDone()" accept="{{acceptedFiles}}" class="btn btn-block btn-default">Create new media <i class="fa fa-upload"></i></a>
         </div>
       </div>
       <div class="form-group">

@@ -251,7 +251,8 @@
       return {
         restrict: 'A',
         scope: {
-          onUploadDone: '&nopeUploadModal'
+          onUploadDone: '&nopeUploadModal',
+          accept : '@'
         },
         link: function($scope, $element, $attrs) {
           var theModal;
@@ -298,6 +299,9 @@
         }],
         link: function($scope, $element, $attrs) {
           $element.attr('ngf-select', 'uploadFiles($files)');
+          if($scope.accept) {
+            $element.attr('ngf-accept', $scope.accept);
+          }
           $element.attr('multiple', 'multiple');
           $element.removeAttr('nope-upload');
           $compile($element)($scope);
