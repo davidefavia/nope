@@ -57,7 +57,7 @@
     $scope.contentsList = [];
     $scope.q = {};
 
-    $scope.searchByText = function(q, page) {
+    $scope.search = function(q, page) {
       page = page || 1;
       if(page===1) {
         $scope.contentsList = [];
@@ -71,7 +71,7 @@
       });
     }
 
-    $scope.searchByText($scope.q);
+    $scope.search($scope.q);
 
     $scope.deleteContentOnClick = function() {
       Content.delete({

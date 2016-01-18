@@ -19,7 +19,8 @@
     "intervention/imagecache": "^2.3",
     "phpmailer/phpmailer": "^5.2",
     "danielstjules/stringy": "~2.2",
-    "erusev/parsedown": "^1.6"
+    "erusev/parsedown": "^1.6",
+    "embed/embed": "^2.6"
   },
   "autoload": {
     "psr-4": {

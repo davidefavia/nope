@@ -83,7 +83,7 @@ class Content extends Model {
     return $t;
   }
 
-  private function setTags($tags) {
+  function setTags($tags) {
     if(is_string($tags)) {
       $tags = array_map('trim', explode(',',$tags));
     } elseif(is_array($tags)) {

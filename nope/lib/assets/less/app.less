@@ -219,6 +219,12 @@ label {
           height: 120px;
           overflow: hidden;
           .bg-cover();
+          .fa-check-circle-o {
+            color: rgba(255,255,255,.7);
+          }
+          .fa-check-circle {
+            color: @brand-success;
+          }
           .btn-group {
             bottom:auto;
             right: 5px;
@@ -230,6 +236,11 @@ label {
               color: #fff;
               background-color: rgba(0,0,0,.75);
             }
+            .btn-star {
+              .fa-star {
+                color: @brand-warning;
+              }
+            }
           }
           a.btn-select {
             bottom:0;
@@ -239,6 +250,7 @@ label {
             position: absolute;
             h4 {
               background-color: rgba(0,0,0,.75);
+              color: #fff;
               padding: 7px;
               position: absolute;
               bottom:0;
@@ -420,9 +432,11 @@ label {
       background: none;
       border:0;
       padding:0;
-      padding-left: @size + 10px;
       position: relative;
-      min-height: @size;
+      &.has-image {
+        padding-left: @size + 10px;
+        min-height: @size;
+      }
       img {
         padding:0;
         border: 0;
@@ -498,17 +512,41 @@ textarea {
   .flex(1);
   .panel-heading {
     padding:0;
+    .list-group-item {
+      margin: 10px 15px;
+    }
     .flex(.3);
   }
   .preview {
-    min-height: 200px;
+    position: relative;
+    min-height: 150px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% auto;
+    .toolbar {
+      .btn {
+        i {
+          font-size: 20px;
+        }
+      }
+    }
+    .provider {
+      position: absolute;
+      left: @gutter;
+      bottom: @gutter;
+      font-size: 20px;
+      color: #fff;
+    }
   }
   .panel-body {
     padding-bottom:0;
     .flex(.7);
+  }
+  .panel-footer {
+    padding:0;
+    .form-group {
+      margin: 10px 15px;
+    }
   }
 }
 
@@ -529,6 +567,25 @@ textarea {
     .modal-body {
       margin:0;
       padding:0;
+      text-align: center;
+      .img-responsive {
+        display:inline;
+      }
+    }
+  }
+  &.content {
+    .modal-dialog {
+      width: 90%;
+      margin: 30px auto;
+      .modal-body {
+        padding:0;
+        min-height: 400px;
+        iframe {
+          border:0;
+          width: 100%;
+          min-height: inherit;
+        }
+      }
     }
   }
   &.contents {

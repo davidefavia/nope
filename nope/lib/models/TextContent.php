@@ -37,7 +37,9 @@ class TextContent extends Content {
 
   function validate() {
     $contentValidator = v::attribute('title', v::length(1,255))
-      ->attribute('slug', v::regex(Utils::SLUG_REGEX_PATTERN));
+      ->attribute('slug', v::regex(Utils::SLUG_REGEX_PATTERN))
+      ->attribute('format', v::length(1,255))
+      ->attribute('status', v::length(1,255));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
@@ -160,6 +162,9 @@ class TextContent extends Content {
     }
     if(!$this->startPublishingDate) {
       $this->startPublishingDate = new \DateTime();
+    }
+    if(!$this->priority) {
+      $this->priority = 0;
     }
     parent::beforeSave();
   }

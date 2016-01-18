@@ -39,11 +39,14 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         }
       }
     }
+    $params = (object) $request->getQueryParams();
+    $isIframe = ((int) $params->iframe === 1?'true':'false');
     return $this->view->adminRender($response, 'index.php', [
       'request' => $request,
       'userRoles' => $userRoles,
       'textFormats' => $textFormats,
-      'js' => $jsFiles
+      'js' => $jsFiles,
+      'isIframe' => $isIframe
     ]);
   });
 

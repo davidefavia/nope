@@ -9,7 +9,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/service', function() {
   $this->get('/preview/{type:[a-z]+}/{id:[0-9]+}', function($request, $response, $args) {
     $media = Media::findById($args['id']);
     $filter = \Nope::getConfig('nope.media.size')[$args['type']];
-    if($media->isImage()) {
+    if($media->isImage() || $media->isExternal()) {
       $path = $media->getPath();
     } else {
       $f = 'icon-200';

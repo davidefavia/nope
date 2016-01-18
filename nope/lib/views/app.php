@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div id="sidebar" class="col col-md-2 col-sm-3">
+    <div id="sidebar" class="col col-md-2 col-sm-3" ng-if="!nope.isIframe">
       <div id="welcome">
         <a href="#/user/{{currentUser.id}}">
           <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
@@ -17,6 +17,6 @@
         </ul>
       </div>
     </div>
-    <div id="main" class="col col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3" ui-view="content"></div>
+    <div id="main" class="col" ng-class="{'col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3':!nope.isIframe}" ui-view="content"></div>
   </div>
 </div>

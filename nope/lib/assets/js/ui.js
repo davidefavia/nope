@@ -2,6 +2,12 @@
   'use strict';
 
   /* where to put? */
+  Array.prototype.hasItem = function(a) {
+    return this.itemIndex(a) !== -1;
+  }
+  Array.prototype.itemIndex = function(a) {
+    return this.indexOf(a);
+  }
   Array.prototype.swapItems = function(a, b) {
     if (a >= 0 && b < this.length) {
       this[a] = this.splice(b, 1, this[a])[0];
@@ -42,15 +48,24 @@
      */
     .filter('nopeDate', ['$filter', function($filter) {
       return function(input, format, timezone) {
-        input = input.split(' ').join('T') + 'Z';
+        input = input ? input.split(' ').join('T') + 'Z' : input;
         return $filter('date')(input, format, timezone);
       }
     }])
     .filter('nopeMoment', [function() {
       return function(input, format, timezone) {
-        input = input.split(' ').join('T') + 'Z';
+        input = input ? input.split(' ').join('T') + 'Z' : input;
         format = format || 'fromNow';
         return moment(input, 'YYYY-MM-DD hh:mm:ss')[format]();
+      }
+    }])
+    .filter('nopeGetIds', [function() {
+      return function(input) {
+        var ids = []
+        angular.forEach(input, function(v, index) {
+          ids.push(v.id);
+        });
+        return ids;
       }
     }])
     /**
@@ -154,7 +169,7 @@
         restrict: 'E',
         replace: true,
         transclude: true,
-        template: '<div class="modal" nope-modal-close>\
+        template: '<div class="modal" ng-click="close($event);">\
        <div class="modal-dialog">\
          <div class="modal-content">\
            <div class="modal-header" ng-if="title">\
@@ -171,6 +186,12 @@
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           this.close = function() {
             $element.remove();
+          }
+
+          $scope.close = function($event) {
+            if(angular.element($event.target).hasClass('modal')) {
+              $element.remove();
+            }
           }
         }]
       }
@@ -191,12 +212,15 @@
         template: '<div class="modal-footer" ng-transclude></div>'
       }
     }])
-    .directive('nopeModalClose', [function() {
+    .directive('nopeModalClose', ['$compile', function($compile) {
       return {
         restrict: 'A',
         require: '^nopeModal',
         link: function($scope, $element, $attrs, nopeModalCtrl) {
-          $element.on('click', function() {
+          $element.on('click', function($event) {
+            $event.stopPropagation();
+            $event.cancelBubble = true;
+            $event.preventDefault();
             nopeModalCtrl.close();
           });
         }
@@ -229,13 +253,39 @@
         }
       }
     }])
+    .directive('nopeUploadModal', ['$nopeModal', function($nopeModal) {
+      return {
+        restrict: 'A',
+        scope: {
+          onUploadDone: '&nopeUploadModal',
+          accept : '@'
+        },
+        link: function($scope, $element, $attrs) {
+          var theModal;
+          $element.addClass('nope-upload-modal');
+          $element.on('click', function(e) {
+            e.preventDefault();
+            $nopeModal.fromTemplateUrl('view/modal/upload.html', $scope).then(function(modal) {
+              theModal = modal;
+              theModal.show();
+            });
+          });
+
+          $scope.onDone = function() {
+            theModal.hide();
+            $scope.onUploadDone();
+          }
+        }
+      }
+    }])
     .directive('nopeUpload', ['$compile', '$q', 'Upload', function($compile, $q, Upload) {
       return {
         restrict: 'A',
         terminal: true,
         priority: 1000,
         scope: {
-          onDone: '&nopeUpload'
+          onDone: '&nopeUpload',
+          accept : '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.uploadFiles = function(files) {
@@ -256,10 +306,42 @@
         }],
         link: function($scope, $element, $attrs) {
           $element.attr('ngf-select', 'uploadFiles($files)');
+          if($scope.accept) {
+            $element.attr('ngf-accept', $scope.accept.toString());
+          }
           $element.attr('multiple', 'multiple');
           $element.removeAttr('nope-upload');
           $compile($element)($scope);
         }
+      }
+    }])
+    .directive('nopeImport', ['Media', function(Media) {
+      return {
+        restrict: 'E',
+        template: '<form name="importForm" ng-submit="importMedia();">\
+          <div class="form-group">\
+            <label>or import from url:</label>\
+            <div class="input-group">\
+              <input type="url" class="form-control" ng-model="importUrl" required placeholder="Insert URL" >\
+              <div class="input-group-btn">\
+                <button class="btn btn-default" ng-disabled="importForm.$invalid">Import</button>\
+              </div>\
+            </div>\
+          </div>\
+        </form>',
+        replace: true,
+        scope: {
+          onDone: '&onDone'
+        },
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.importMedia = function() {
+            Media.import({
+              url : $scope.importUrl
+            }, function() {
+              $scope.onDone();
+            });
+          }
+        }]
       }
     }])
     .directive('nopeZoom', ['$nopeModal', function($nopeModal) {
@@ -277,11 +359,11 @@
           </nope-modal>', $scope).then(function(modal) {
               modal.show();
             })
-          })
+          });
         }]
       }
     }])
-    .directive('nopeModel', ['$injector', '$nopeModal', function($injector, $nopeModal) {
+    .directive('nopeModel', ['$injector', '$nopeModal', 'BasePath', function($injector, $nopeModal, BasePath) {
       return {
         restrict: 'E',
         replace: true,
@@ -304,42 +386,57 @@
           </div>\
         </div>\
       </div>\
-      <a href="" class="btn btn-block btn-default" ng-click="openModal()" ng-hide="!multiple && ngModel">{{label || \'Add\' + model}} <i class="fa fa-plus"></i></a></div>',
+      <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a></div>',
         scope: {
-          model: '@',
-          method: '@',
           multiple: '=',
           ngModel: '=',
           title: '=',
           preview: '@',
-          label: '@'
+          label: '@',
+          url: '@href'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
-          var model = $injector.get($scope.model);
+          var theModal;
 
           $scope.titleField = $scope.title || 'title';
           $scope.multiple = (angular.isDefined($scope.multiple) ? $scope.multiple : true);
           $scope.hasPreview = !!$scope.preview;
-          var methodToInvoke = $scope.method || 'getAll';
 
-          $scope.openModal = function() {
-            model[methodToInvoke](function(data) {
-              $scope.itemsList = data;
-              $nopeModal.fromTemplateUrl('view/modal/model.html', $scope).then(function(modal) {
-                modal.show();
-              })
+          $scope.openModal = function($event) {
+            $scope.selection = [];
+            $scope.url = BasePath +'?iframe=1' + $scope.url;
+            $nopeModal.fromTemplateUrl('view/modal/content.html', $scope).then(function(modal) {
+              theModal = modal;
+              theModal.show();
             });
           }
 
-          $scope.onSelect = function(item) {
+          $scope.$on('modal.hidden', function() {
+            $scope.selection = [];
+          });
+
+          $scope.onSelect = function(items) {
             if ($scope.multiple) {
               if (!angular.isArray($scope.ngModel)) {
                 $scope.ngModel = [];
               }
-              $scope.ngModel.push(item);
+              $scope.ngModel = $scope.ngModel.concat(items);
             } else {
-              $scope.ngModel = item;
+              $scope.ngModel = items[0];
             }
+            theModal.hide();
+          }
+
+          $scope.selectedItem = function(c) {
+            if($scope.selection.hasItem(c)) {
+              $scope.selection.removeItemAt($scope.selection.itemIndex(c));
+            } else {
+              if(!$scope.multiple) {
+                $scope.selection.removeItemAt(0);
+              }
+              $scope.selection.push(c);
+            }
+            return $scope.selection;
           }
 
           $scope.remove = function() {
@@ -399,6 +496,16 @@
           html.push('</span>');
           return html.join('');
         }
+      }
+    }])
+    .directive('nopeSelectable', [function() {
+      return {
+        restrict : 'A',
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $element.on('focus', function(e) {
+            $element[0].select();
+          });
+        }]
       }
     }])
     ;

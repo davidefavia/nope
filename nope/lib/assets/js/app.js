@@ -7,12 +7,15 @@
     'nope.ui',
     'ngFileUpload'
   ])
-  .constant('BasePath', window.BASE_PATH)
-  .constant('AssetsPath', window.TEMPLATES_PATH)
-  .constant('RolesList', window.USER_ROLES)
-  .constant('TextFormatsList', window.TEXT_FORMATS)
+  .constant('BasePath', window.NOPE_BASE_PATH)
+  .constant('AssetsPath', window.NOPE_TEMPLATES_PATH)
+  .constant('RolesList', window.NOPE_USER_ROLES)
+  .constant('TextFormatsList', window.NOPE_TEXT_FORMATS)
+  .constant('Iframe', window.NOPE_IFRAME)
+  .constant('IframeCaller', window.NOPE_IFRAME_CALLER)
   .config(['$compileProvider', function ($compileProvider) {
-    $compileProvider.debugInfoEnabled(false);
+    // Required to be true in order to communicate between iframes.
+    $compileProvider.debugInfoEnabled(true);
   }])
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -94,7 +97,7 @@
   /**
    * Controllers
    */
-   .controller('AppController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'TextFormatsList', 'User', function($scope, $rootScope, $state, AssetsPath, TextFormatsList, User) {
+   .controller('AppController', ['$scope', '$rootScope', '$state', 'AssetsPath', 'Iframe', 'IframeCaller', 'TextFormatsList', 'User', function($scope, $rootScope, $state, AssetsPath, Iframe, IframeCaller, TextFormatsList, User) {
 
      $rootScope.logout = function() {
        User.logout(function() {
@@ -106,6 +109,11 @@
      $rootScope.assetsPath = AssetsPath;
 
      $rootScope.textFormats = TextFormatsList;
+
+     $rootScope.nope = {
+       isIframe : Iframe,
+       iframeCaller : IframeCaller
+     }
 
    }])
    .controller('LoginController', ['$scope', '$rootScope', '$state', '$stateParams', 'AssetsPath', 'User', function($scope, $rootScope, $state, $stateParams, AssetsPath, User) {
@@ -273,7 +281,7 @@
    /**
     * Interceptor
     */
-   .service('NopeHttpInterceptor', ['$rootScope', '$cacheFactory', '$injector', '$q', function($rootScope, $cacheFactory, $injector, $q) {
+   .service('NopeHttpInterceptor', ['$rootScope', '$cacheFactory', '$injector', '$q', 'BasePath', 'AssetsPath', function($rootScope, $cacheFactory, $injector, $q, BasePath, AssetsPath) {
      return {
        request : function(request) {
          if(!request.cache) {
@@ -283,11 +291,11 @@
            request.params.__t__ = (new Date()).getTime();
          }
          if(/^view\/(.+).html/.test(request.url)) {
-           request.url = window.BASE_PATH + request.url;
+           request.url = BasePath + request.url;
          } else if(request.url.indexOf('.html')!==-1) {
-           request.url = window.TEMPLATES_PATH + request.url;
+           request.url = AssetsPath + request.url;
          } else {
-           request.url = window.BASE_PATH + request.url;
+           request.url = BasePath + request.url;
          }
          if(request.method.toLowerCase!=='get') {
            $cacheFactory.get('$http').removeAll();

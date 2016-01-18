@@ -7,13 +7,24 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
   $this->get('', function($request, $response) {
+    $rpp = 12;
     $currentUser = User::getAuthenticated();
-    if($currentUser->can('media.read')) {
-      $contentsList = Media::findAll();
-    } else {
+    if(!$currentUser->can('media.read')) {
       return $response->withStatus(403);
     }
-    return $response->withJson(['currentUser' => $currentUser, "data" => $contentsList]);
+    $queryParams = (object) $request->getQueryParams();
+    $params = Utils::getPaginationTerms($request, $rpp);
+    $contentsList = Media::findAll([
+      'text' => $params->query,
+      'mimetype' => $queryParams->mimetype,
+      'excluded' => explode(',', $queryParams->excluded)
+    ], $params->limit, $params->offset, $count);
+    $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
+    return $response->withJson([
+      'currentUser' => $currentUser,
+      'metadata' => $metadata,
+      'data' => $contentsList
+    ])->withHeader('Link', json_encode($metadata));
   });
 
   $this->post('/upload', function($request, $response) {
@@ -43,14 +54,12 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $media->mimetype = $type;
         $media->filename = $uniqueFilename;
         $media->size = $size;
+        $media->starred = false;
         $media->setAuthor($currentUser);
-        /*if($tags) {
-        	$media->setTags($tags);
-        }*/
         $media->save();
         $media = Media::findById($media->id);
       } catch(Exception $e) {
-        #unlink($uploadfile);
+        @unlink($uploadfile);
         throw $e;
       }
     } else {
@@ -60,19 +69,55 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
   });
 
+  $this->post('/import', function($request, $response) {
+    $currentUser = User::getAuthenticated();
+    if(!$currentUser->can('media.create')) {
+      return $response->withStatus(403);
+    }
+    $body = (object) $request->getParsedBody();
+    try {
+      $info = \Embed\Embed::create($body->url);
+      $media = new Media();
+      $media->title = $info->title;
+      $media->description = $info->description;
+      $media->url = $info->url;
+      $media->type = $info->type;
+      $p = explode('/', $info->images[0]['value']);
+      $filename = $p[count($p)-1];
+      $uniqueFilename = Utils::getUniqueFilename($filename, NOPE_UPLOADS_DIR);
+      file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($info->images[0]['value']));
+      $media->filename = $uniqueFilename;
+      $media->provider = $info->providerName;
+      $media->mimetype = $info->images[0]['mime'];
+      $media->size = $info->images[0]['size'];
+      $media->starred = false;
+      $media->setAuthor($currentUser);
+      // Why save media before tags? It is needed to generate ID, then build tag relations!
+      $media->save();
+      if($info->tags) {
+        $media->setTags($info->tags);
+        $media->save();
+      }
+      $media = Media::findById($media->id);
+    } catch(\Exception $e) {
+      throw $e;
+    }
+    return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
+  });
+
   $this->get('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.read')) {
       $content = Media::findById($args['id']);
     }
-    return $response->withBody(['currentUser' => $currentUser, "data" => $content]);
+    return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
 
   $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
-      $fields = ['title', 'description', 'tags'];
+      $fields = ['title', 'description', 'tags', 'starred'];
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
