@@ -43,8 +43,15 @@
                 </div>
                 <?php if($step === 2 && $ok ) { ?>
                   <?php if($user===false) { ?>
-                  <p>Something wrong.</p>
+                  <div class="alert alert-danger">Something wrong.</div>
                   <?php } ?>
+                  <div class="form-group" ng-class="{'has-error':(!installationForm.title.$valid && installationForm.title.$touched)}">
+                    <label class="control-label">Website title:</label>
+                    <input type="text" name="title" ng-model="user.title" class="form-control" placeholder="Website title" required />
+                    <div ng-messages="installationForm.title.$error" ng-if="installationForm.title.$touched" ng-cloak>
+                      <span class="help-block" ng-message="required">Title is required.</span>
+                    </div>
+                  </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.username.$valid && installationForm.username.$touched)}">
                     <label class="control-label">Username:</label>
                     <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username" required ng-pattern='<?php echo \Nope\Utils::USERNAME_REGEX_PATTERN; ?>' ng-trim="false" />
@@ -84,7 +91,7 @@
                     <?php if($ok) { ?>
                       <button class="btn btn-primary btn-block btn-lg">Go forward</button>
                     <?php } else { ?>
-                      <a href="" class="btn btn-warning btn-block btn-lg">Check again</a>
+                      <a href="<?php echo adminRoute('install'); ?>" class="btn btn-warning btn-block btn-lg">Check again</a>
                     <?php } ?>
                   <?php } ?>
                 </div>
