@@ -43,7 +43,7 @@
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.slug.$valid && contentForm.slug.$touched)}">
               <label class="control-label">Slug</label>
-              <input type="text" name="slug" class="form-control input-sm" ng-model="content.slug" required ng-pattern="/^[a-zA-Z0-9-_\/]+$/" ng-trim="false" />
+              <input type="text" name="slug" class="form-control input-sm" ng-model="content.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" />
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.format.$valid && contentForm.format.$touched)}">
               <label class="control-label">Format</label>

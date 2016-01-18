@@ -92,7 +92,6 @@ class Media extends Content {
     $json->isImage = $this->isImage();
     $json->isExternal = $this->isExternal();
     $json->metadata = json_decode($this->metadata);
-    $json->starred = (bool) $json->starred;
     unset($json->cover);
     return $json;
   }
@@ -106,16 +105,6 @@ class Media extends Content {
       throw $exception;
     }
     return true;
-  }
-
-  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc,id desc') {
-    $params = [];
-    $sql = self::__getSql($filters, $params);
-    if($orderBy) {
-      $sql[] = 'order by '.$orderBy;
-    }
-    $contentsList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
-    return self::__to($contentsList, $limit, $offset, $count);
   }
 
   static function __getSql($filters, &$params=[], $p = null) {

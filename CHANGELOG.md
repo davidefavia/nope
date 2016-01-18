@@ -1,3 +1,11 @@
+## v0.6.0 (2016-01-??)
+
+### Features
+- Installation: added website title field (#15).
+
+### Fixes
+- Installation: fixed `chmod` and `mkdir` warnings (#14).
+
 ## v0.5.0 (2016-01-18)
 
 ### Libraries

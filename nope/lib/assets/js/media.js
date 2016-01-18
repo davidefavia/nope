@@ -30,7 +30,7 @@
     /**
      * Controller
      */
-    .controller('MediaListController', ['$scope', '$rootScope', '$location', '$window', '$state', '$stateParams', '$nopeModal', 'Media', 'MediaList', function($scope, $rootScope, $location, $window, $state, $stateParams, $nopeModal, Media, MediaList) {
+    .controller('MediaListController', ['$scope', '$rootScope', '$location', '$window', '$state', '$stateParams', '$nopeModal', '$nopeUtils', 'Media', 'MediaList', function($scope, $rootScope, $location, $window, $state, $stateParams, $nopeModal, $nopeUtils, Media, MediaList) {
       $scope.contentType = 'media';
       $scope.selectedMedia = null;
       $scope.selectedMediaIndex = null;
@@ -46,9 +46,7 @@
 
       $scope.select = function(c,i) {
         if($rootScope.nope.isIframe) {
-          var $parent = $window.parent;
-          var el = $parent.angular.element($parent.document.getElementById('modal-content'));
-          var callerScope = el.isolateScope().$parent;
+          var callerScope = $nopeUtils.getContentModalCallerScope();
           $scope.selection = callerScope.selectedItem(c);
           callerScope.$apply();
         } else {

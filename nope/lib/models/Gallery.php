@@ -18,16 +18,6 @@ class Gallery extends Content {
     return $json;
   }
 
-  function validate() {
-    $contentValidator = v::attribute('title', v::length(1,255));
-    try {
-      $contentValidator->check((object) $this->model->export());
-    } catch(NestedValidationException $exception) {
-      throw $exception;
-    }
-    return true;
-  }
-
   function import($body, $fields) {
     if(in_array('media', $fields)) {
       $this->setMedia($body['media']);
@@ -48,35 +38,52 @@ class Gallery extends Content {
     return $m;
   }
 
-    private function setMedia($value) {
-      R::exec('DELETE FROM gallery_media where gallery_id='.$this->id);
-      if(count($value)) {
-        foreach($value as $media) {
-          $me = R::load('media', $media['id']);
-          $this->model->sharedMedia[] = $me;
-          /*$this->bean->link('gallery_media', [
-            'excluded' => $media['excluded']
-          ])->media = $me;*/
-        }
+  private function setMedia($value) {
+    R::exec('DELETE FROM gallery_media where gallery_id='.$this->id);
+    if(count($value)) {
+      foreach($value as $media) {
+        $me = R::load('media', $media['id']);
+        $this->model->sharedMedia[] = $me;
       }
     }
-
-  static public function findById($id) {
-    return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
   }
 
-  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
+  static function __getSql($filters, &$params=[], $p = null) {
+    $sql = [];
     $filters = (object) $filters;
-    $params = [];
-    /*if($filters->role) {
-      $sql[] = 'role = ?';
-      $params[] = $filters->role;
-    }*/
-    if($orderBy) {
-      $sql[] = 'order by '.$orderBy;
+    if($filters->author) {
+      $sql[] = $p.'author_id = ?';
+      $params[] = $filters->author->id;
     }
-    $users = R::findAll(self::MODELTYPE, implode(' ',$sql),$params);
-    return self::__to($users, $limit, $offset, $count);
+    if($filters->excluded) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
+      foreach ($filters->excluded as $value) {
+        $params[] = $value;
+      }
+    }
+    if($filters->text) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $like = '%' . $filters->text . '%';
+      $sql[] = '(title LIKE ? or body LIKE ?)';
+      $params[] = $like;
+      $params[] = $like;
+    }
+    return $sql;
+  }
+
+  function beforeSave() {
+    // Check unique slug!
+    $contentCheckBySlug = self::findBySlug($this->slug);
+    if((!$this->id && $contentCheckBySlug) || ($this->id && $contentCheckBySlug && (int) $contentCheckBySlug->id!==(int)$this->id)) {
+      $e = new \Exception("Error saving gallery due to existing slug.");
+      throw $e;
+    }
+    parent::beforeSave();
   }
 
 

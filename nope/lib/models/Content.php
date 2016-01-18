@@ -11,13 +11,24 @@ class Content extends Model {
   const MODELTYPE = 'content';
 
   function validate() {
-    $contentValidator = v::attribute('title', v::alnum()->noWhitespace()->length(1,255));
+    $contentValidator = v::attribute('title', v::length(1,255))
+      ->attribute('slug', v::regex(Utils::SLUG_REGEX_PATTERN));
     try {
       $contentValidator->check((object) $this->model->export());
     } catch(NestedValidationException $exception) {
       throw $exception;
     }
     return true;
+  }
+
+  function beforeSave() {
+    if($this->starred!==false && $this->starred!=true) {
+      $this->starred = false;
+    }
+    if(!$this->priority) {
+      $this->priority = 0;
+    }
+    parent::beforeSave();
   }
 
   function jsonSerialize() {
@@ -36,6 +47,8 @@ class Content extends Model {
     $json->cover = $cover;
     $a = (object) $json;
     unset($a->sharedTag);
+    $a->priority = (int) $a->priority;
+    $a->starred = (bool) $a->starred;
     return $a;
   }
 
@@ -118,6 +131,10 @@ class Content extends Model {
 
   static public function findBySlug($slug) {
     return self::__to(R::findOne(self::__getModelType(), 'slug = ?', [$slug]));
+  }
+
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc, priority desc, id desc') {
+    return parent::findAll($filters, $limit, $offset, $count, $orderBy);
   }
 
 }

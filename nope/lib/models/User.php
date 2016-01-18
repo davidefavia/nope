@@ -203,34 +203,26 @@ class User extends \Nope\Model {
     }
   }
 
-  static public function findById($id) {
-    return self::__to(R::findOne(self::MODELTYPE, 'id = ?', [$id]));
-  }
-
   static public function findByUsername($username) {
-    return self::__to(R::findOne(self::MODELTYPE, 'username = ?', [$username]));
+    return self::__to(R::findOne(self::__getModelType(), 'username = ?', [$username]));
   }
 
   static public function findByEmail($email) {
-    return self::__to(R::findOne(self::MODELTYPE, 'email = ?', [$email]));
+    return self::__to(R::findOne(self::__getModelType(), 'email = ?', [$email]));
   }
 
   static public function findByResetCode($resetCode) {
-    return self::__to(R::findOne(self::MODELTYPE, 'reset_code = ?', [$resetCode]));
+    return self::__to(R::findOne(self::__getModelType(), 'reset_code = ?', [$resetCode]));
   }
 
-  static public function findAll($filters=null, $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
+  static function __getSql($filters, &$params=[], $p = null) {
+    $sql = [];
     $filters = (object) $filters;
-    $params = [];
     if($filters->role) {
       $sql[] = 'role = ?';
       $params[] = $filters->role;
     }
-    if($orderBy) {
-      $sql[] = 'order by '.$orderBy;
-    }
-    $users = R::findAll(self::MODELTYPE, implode(' ',$sql),$params);
-    return self::__to($users, $limit, $offset, $count);
+    return $sql;
   }
 
 }

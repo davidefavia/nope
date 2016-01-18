@@ -71,6 +71,18 @@
     /**
      * Services
      */
+    .service('$nopeUtils', ['$window', function($window) {
+
+      var getContentModalCallerScope = function() {
+        var $parent = $window.parent;
+        var el = $parent.angular.element($parent.document.getElementById('modal-content'));
+        return el.isolateScope().$parent;
+      }
+
+      return {
+        getContentModalCallerScope : getContentModalCallerScope
+      }
+    }])
     .service('$nopeToast', ['$rootScope', '$compile', function($rootScope, $compile) {
 
       var bodyElement = angular.element(document.body);

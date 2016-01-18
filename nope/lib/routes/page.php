@@ -29,7 +29,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
   $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('page.create')) {
-      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
+      $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }
@@ -39,6 +39,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       $contentToCreate->setAuthor($currentUser);
       try {
         $contentToCreate->save();
+        if($body['tags']) {
+          $contentToCreate->setTags($body['tags']);
+          $contentToCreate->save();
+        }
       } catch(\Exception $e) {
         // Conflict with existing slug!
         return $response->withStatus(409, $e->getMessage());
@@ -72,7 +76,6 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
 
   $this->put('/{id}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
-    $body = $request->getParsedBody();
     if($currentUser->can('page.update')) {
       $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
@@ -80,6 +83,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       }
       $contentToUpdate = new Page($args['id']);
       if($contentToUpdate) {
+        $body = $request->getParsedBody();
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
         return $response->withJson(['currentUser' => $currentUser, 'data' => $contentToUpdate]);

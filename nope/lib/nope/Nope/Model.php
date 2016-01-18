@@ -103,4 +103,18 @@ abstract class Model implements \JsonSerializable {
     return self::__to(R::findOne(self::__getModelType(), 'id = ?', [$id]));
   }
 
+  static public function __getSql($filters, &$params=[], $p = null) {
+    return [];
+  }
+
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
+    $params = [];
+    $sql = self::__getSql($filters, $params);
+    if($orderBy) {
+      $sql[] = 'order by '.$orderBy;
+    }
+    $usersList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
+    return self::__to($usersList, $limit, $offset, $count);
+  }
+
 }

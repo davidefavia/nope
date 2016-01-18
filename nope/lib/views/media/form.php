@@ -24,15 +24,14 @@
             <a ng-href="{{media.absoluteUrl}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
           <span>
         </div>
-
       </div>
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" ng-model="media.title" required  />
+      <div class="form-group" ng-class="{'has-error':(!mediaForm.title.$valid && mediaForm.title.$touched)}">
+        <label class="control-label">Title</label>
+        <input type="text" name="title" class="form-control" ng-model="media.title" required />
       </div>
       <div class="form-group">
         <label>Description</label>
-        <textarea name="description" class="form-control" ng-model="media.description"></textarea>
+        <textarea name="body" class="form-control" ng-model="media.body"></textarea>
       </div>
       <div class="form-group">
         <label>Tags (comma separated)</label>
