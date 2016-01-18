@@ -13,6 +13,7 @@
 
 ### Fixes
 - Fixed wrong `Page` edit link on content detail.
+- Fixed default `priority` on `Page` creation.
 - Fixed missing `starred` field on `media` table during development phase.
 
 ## v0.4.0 (2016-01-13)

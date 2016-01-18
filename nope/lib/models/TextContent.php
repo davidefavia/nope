@@ -163,6 +163,9 @@ class TextContent extends Content {
     if(!$this->startPublishingDate) {
       $this->startPublishingDate = new \DateTime();
     }
+    if(!$this->priority) {
+      $this->priority = 0;
+    }
     parent::beforeSave();
   }
 
