@@ -11,6 +11,10 @@ class Media extends Content {
 
   const MODELTYPE = 'media';
 
+  function isExternal() {
+    return !is_null($this->provider);
+  }
+
   function getPath() {
     return NOPE_UPLOADS_DIR . $this->filename;
   }
@@ -21,10 +25,16 @@ class Media extends Content {
   }
 
   function getAbsoluteUrl($cache=true) {
+    if($this->isExternal()) {
+      return $this->url;
+    }
     return Utils::getBaseUrl() . $this->getUrl($cache);
   }
 
   function isImage() {
+    if($this->isExternal()) {
+      return $this->type === 'image';
+    }
     $needle = 'image/';
     $length = strlen($needle);
     return (substr($this->mimetype, 0, $length) === $needle);
@@ -80,6 +90,7 @@ class Media extends Content {
       $json->preview->$key = $this->getPreview($key);
     }
     $json->isImage = $this->isImage();
+    $json->isExternal = $this->isExternal();
     $json->metadata = json_decode($this->metadata);
     $json->starred = (bool) $json->starred;
     unset($json->cover);
@@ -131,7 +142,7 @@ class Media extends Content {
         $sql[] = $p.'mimetype NOT LIKE ?';
         $filters->mimetype = substr($filters->mimetype,1);
       } else {
-        $sql[] = $p.'mimetype LIKE ?';
+        $sql[] = $p.'mimetype LIKE ? and provider is null';
       }
       $params[] = '%' . $filters->mimetype . '%';
     }

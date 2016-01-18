@@ -43,7 +43,7 @@
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
               <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
             </div>
-            <a href="" ng-click="select(p,$index);" class="btn-select"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+            <a href="" ng-click="select(p,$index);" class="btn-select"><h4 class="list-group-item-heading"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}}</h4></a>
           </div>
         </div>
       </div>

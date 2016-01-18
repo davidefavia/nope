@@ -1,6 +1,4 @@
-<div style="text-align:center">
-  <img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
-</div>
+<img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
 
 ### :shit: Crapware warning! :shit:
 Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!
@@ -12,7 +10,8 @@ Almost badly written, badly commented and documented, not tested. I'm working on
 
 - PHP >= 5.5.x with:
   - *PDO* with *SQLite* extension,
-  - *GD* image processing library
+  - *GD* image processing library,
+  - *CURL* library
 - Apache2 >= 2.4.x with *mod_rewrite*
 - [composer][composer]
 
@@ -45,6 +44,7 @@ Simple installation process will drive you through requirements and folder permi
 - [PHPMailer][phpmailer]
 - [Stringy][stringy]
 - [Parsedown][parsedown]
+- [oscarotero\Embed][embed]
 - League\Event
 
 Administration interface is built on top of:
@@ -99,6 +99,7 @@ See [LICENSE](LICENSE) file.
 [angular]: https://angularjs.org/
 [bootstrap]: https://getcomposer.org/
 [composer]: http://getcomposer.org
+[embed]: https://github.com/oscarotero/Embed
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
 [image]: http://image.intervention.io/
 [parsedown]: https://github.com/erusev/parsedown

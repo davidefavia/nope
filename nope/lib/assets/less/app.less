@@ -518,6 +518,7 @@ textarea {
     .flex(.3);
   }
   .preview {
+    position: relative;
     min-height: 150px;
     background-repeat: no-repeat;
     background-position: center center;
@@ -528,6 +529,13 @@ textarea {
           font-size: 20px;
         }
       }
+    }
+    .provider {
+      position: absolute;
+      left: @gutter;
+      bottom: @gutter;
+      font-size: 20px;
+      color: #fff;
     }
   }
   .panel-body {

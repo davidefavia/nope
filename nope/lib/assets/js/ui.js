@@ -169,7 +169,7 @@
         restrict: 'E',
         replace: true,
         transclude: true,
-        template: '<div class="modal" nope-modal-close>\
+        template: '<div class="modal" ng-click="close($event);">\
        <div class="modal-dialog">\
          <div class="modal-content">\
            <div class="modal-header" ng-if="title">\
@@ -186,6 +186,12 @@
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           this.close = function() {
             $element.remove();
+          }
+
+          $scope.close = function($event) {
+            if(angular.element($event.target).hasClass('modal')) {
+              $element.remove();
+            }
           }
         }]
       }
@@ -213,10 +219,10 @@
         link: function($scope, $element, $attrs, nopeModalCtrl) {
           $element.on('click', function($event) {
             $event.stopPropagation();
+            $event.cancelBubble = true;
             $event.preventDefault();
             nopeModalCtrl.close();
           });
-
         }
       }
     }])
@@ -307,6 +313,35 @@
           $element.removeAttr('nope-upload');
           $compile($element)($scope);
         }
+      }
+    }])
+    .directive('nopeImport', ['Media', function(Media) {
+      return {
+        restrict: 'E',
+        template: '<form name="importForm" ng-submit="importMedia();">\
+          <div class="form-group">\
+            <label>or import from url:</label>\
+            <div class="input-group">\
+              <input type="url" class="form-control" ng-model="importUrl" required placeholder="Insert URL" >\
+              <div class="input-group-btn">\
+                <button class="btn btn-default" ng-disabled="importForm.$invalid">Import</button>\
+              </div>\
+            </div>\
+          </div>\
+        </form>',
+        replace: true,
+        scope: {
+          onDone: '&onDone'
+        },
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.importMedia = function() {
+            Media.import({
+              url : $scope.importUrl
+            }, function() {
+              $scope.onDone();
+            });
+          }
+        }]
       }
     }])
     .directive('nopeZoom', ['$nopeModal', function($nopeModal) {

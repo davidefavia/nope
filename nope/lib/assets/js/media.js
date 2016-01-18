@@ -63,6 +63,7 @@
           id: $scope.contentToDelete.id
         }, function() {
           $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
+          $scope.theModal.hide();
           if($scope.selectedMedia && $scope.selectedMedia.id === $scope.contentToDelete.id) {
             $scope.selectedMedia = null;
             $scope.selectedMediaIndex = null;
@@ -81,7 +82,8 @@
         <a class="btn btn-danger" ng-click="deleteContentOnClick();">Yes, delete</a>\
       </nope-modal-footer>\
      </nope-modal>', $scope).then(function(modal) {
-          modal.show();
+         $scope.theModal = modal;
+         $scope.theModal.show();
         });
       };
 
@@ -164,6 +166,10 @@
       }, {
         update: {
           method: 'PUT'
+        },
+        import : {
+          method: 'POST',
+          url : 'content/media/import'
         }
       });
     }]);

@@ -12,6 +12,7 @@
         <div class="toolbar">
           <a ng-click="media.starred=!media.starred;" class="btn btn-star btn-lg pull-right"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
         </div>
+        <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>
       </div>
     </div>
     <div class="panel-body">

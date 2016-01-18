@@ -56,18 +56,51 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $media->size = $size;
         $media->starred = false;
         $media->setAuthor($currentUser);
-        /*if($tags) {
-        	$media->setTags($tags);
-        }*/
         $media->save();
         $media = Media::findById($media->id);
       } catch(Exception $e) {
-        #unlink($uploadfile);
+        @unlink($uploadfile);
         throw $e;
       }
     } else {
       @unlink($uploadfile);
       throw new \Exception();
+    }
+    return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
+  });
+
+  $this->post('/import', function($request, $response) {
+    $currentUser = User::getAuthenticated();
+    if(!$currentUser->can('media.create')) {
+      return $response->withStatus(403);
+    }
+    $body = (object) $request->getParsedBody();
+    try {
+      $info = \Embed\Embed::create($body->url);
+      $media = new Media();
+      $media->title = $info->title;
+      $media->description = $info->description;
+      $media->url = $info->url;
+      $media->type = $info->type;
+      $p = explode('/', $info->images[0]['value']);
+      $filename = $p[count($p)-1];
+      $uniqueFilename = Utils::getUniqueFilename($filename, NOPE_UPLOADS_DIR);
+      file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($info->images[0]['value']));
+      $media->filename = $uniqueFilename;
+      $media->provider = $info->providerName;
+      $media->mimetype = $info->images[0]['mime'];
+      $media->size = $info->images[0]['size'];
+      $media->starred = false;
+      $media->setAuthor($currentUser);
+      // Why save media before tags? It is needed to generate ID, then build tag relations!
+      $media->save();
+      if($info->tags) {
+        $media->setTags($info->tags);
+        $media->save();
+      }
+      $media = Media::findById($media->id);
+    } catch(\Exception $e) {
+      throw $e;
     }
     return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
   });
