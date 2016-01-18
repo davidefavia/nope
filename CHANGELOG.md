@@ -1,7 +1,14 @@
-## v0.5.0 (2016-01-??)
+## v0.5.0 (2016-01-18)
+
+### Libraries
+- Added **Embed** version 2.6.1.
+
+### Breaking changes
+- `Content::setTags` is now a public method.
 
 ### Features
 - Better and more complete `Media` model with corresponding UI.
+- Import media from external providers.
 - Open contents list inside modal for selection.
 
 ### Fixes
