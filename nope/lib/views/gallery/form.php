@@ -1,16 +1,34 @@
-<form name="galleryForm" ng-submit="save()" class="content-detail">
+<form name="galleryForm" ng-submit="save()" id="gallery-detail" class="content-detail gallery-detail">
   <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="toolbar">
+    <div class="panel-heading content-author">
+      <div class="toolbar pull-right">
         <a ng-click="gallery.starred=!gallery.starred;" class="btn btn-star"><i class="fa" ng-class="{'fa-star-o':!gallery.starred,'fa-star':gallery.starred}"></i></a>
       </div>
-      <div class="form-group" ng-class="{'has-error':(!galleryForm.title.$valid && galleryForm.title.$touched)}">
-        <label class="control-label">Title</label>
-        <input type="text" name="title" class="form-control" ng-model="gallery.title" required />
+      <div class="list-group pull-left">
+        <div class="list-group-item clearfix" ng-class="{'has-image':gallery.author.cover}">
+          <img ng-src="{{gallery.author.cover.preview.icon}}" class="img-circle" ng-if="gallery.author.cover" />
+          Created by <span class="fullname">{{gallery.author.prettyName || gallery.author.username}}</span>
+          <span>{{gallery.creationDate | nopeMoment}}</span>
+        </div>
       </div>
-      <div class="form-group" ng-class="{'has-error':(!galleryForm.slug.$valid && galleryForm.slug.$touched)}">
-        <label class="control-label">Slug</label>
-        <input type="text" name="slug" class="form-control" ng-model="gallery.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" />
+    </div>
+    <div class="panel-body">
+      <div class="form-group" ng-class="{'has-error':(!galleryForm.title.$valid && galleryForm.title.$touched)}">
+        <input type="text" name="title" class="form-control input-lg" placeholder="Gallery title" ng-model="gallery.title" required />
+      </div>
+      <div class="row">
+        <div class="col col-md-9">
+          <div class="form-group" ng-class="{'has-error':(!galleryForm.slug.$valid && galleryForm.slug.$touched)}">
+            <label class="control-label">Slug</label>
+            <input type="text" name="slug" class="form-control" ng-model="gallery.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" />
+          </div>
+        </div>
+        <div class="col col-md-3">
+          <div class="form-group">
+            <label class="control-label">Priority</label>
+            <input type="text" name="slug" class="form-control" ng-model="gallery.priority" ng-pattern="/^[0-9]+$/" />
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label>Body</label>
@@ -22,7 +40,7 @@
       </div>
       <div class="form-group">
         <label>Cover</label>
-        <nope-model href="#/media" ng-model="gallery.cover" multiple="false" label="Add cover" preview="icon"></nope-model>
+        <nope-model href="#/media" ng-model="gallery.cover" multiple="false" label="Add gallery cover" preview="icon"></nope-model>
       </div>
       <div class="form-group">
         <label>Media</label>

@@ -185,9 +185,6 @@
         type: '@type',
         id: '@id'
       }, {
-        getAll: {
-          isArray: true
-        },
         update: {
           method: 'PUT'
         },

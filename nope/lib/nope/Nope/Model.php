@@ -109,7 +109,8 @@ abstract class Model implements \JsonSerializable {
 
   static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {
     $params = [];
-    $sql = self::__getSql($filters, $params);
+    $c = get_called_class();
+    $sql = $c::__getSql($filters, $params);
     if($orderBy) {
       $sql[] = 'order by '.$orderBy;
     }

@@ -12,7 +12,7 @@ class Media extends Content {
   const MODELTYPE = 'media';
 
   function isExternal() {
-    return !is_null($this->provider);
+    return ((string) $this->provider)!='';
   }
 
   function getPath() {
@@ -128,23 +128,31 @@ class Media extends Content {
         $sql[] = 'and';
       }
       if(substr($filters->mimetype,0,1)==='!') {
-        $sql[] = $p.'mimetype NOT LIKE ?';
+        $sql[] = '('.$p.'mimetype NOT LIKE ? or '.$p.'provider IS NOT NULL)';
         $filters->mimetype = substr($filters->mimetype,1);
+        $params[] = '%' . $filters->mimetype . '%';
+      } elseif($filters->mimetype==='provider') {
+        $sql[] = '('.$p.'provider IS NOT NULL)';
       } else {
-        $sql[] = $p.'mimetype LIKE ? and provider is null';
+        $sql[] = '('.$p.'mimetype LIKE ? and '.$p.'provider is NULL)';
+        $params[] = '%' . $filters->mimetype . '%';
       }
-      $params[] = '%' . $filters->mimetype . '%';
+
     }
     if($filters->text) {
       if(count($sql)) {
         $sql[] = 'and';
       }
       $like = '%' . $filters->text . '%';
-      $sql[] = '(title LIKE ? or description LIKE ?)';
+      $sql[] = '(title LIKE ? or body LIKE ?)';
       $params[] = $like;
       $params[] = $like;
     }
     return $sql;
+  }
+
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc, id desc') {
+    return parent::findAll($filters, $limit, $offset, $count, $orderBy);
   }
 
 }

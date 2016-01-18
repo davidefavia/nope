@@ -21,6 +21,9 @@
           <label class="radio-inline">
             <input type="radio" ng-model="q.mimetype" value="!image/"> Not images
           </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="q.mimetype" value="provider"> Only from providers
+          </label>
         </div>
       </div>
     </form>

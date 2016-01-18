@@ -550,12 +550,35 @@ textarea {
   }
 }
 
+
+
 #gallery.no-items {
   margin:0;
 }
 
 #gallery-detail {
   width: 100%;
+  .flex(1);
+  .panel-heading {
+    padding:0;
+    .list-group-item {
+      margin: 10px 15px;
+    }
+    .toolbar {
+      margin: 10px 15px;
+    }
+    .flex(.3);
+  }
+  .panel-body {
+    padding-bottom:0;
+    .flex(.7);
+  }
+  .panel-footer {
+    padding:0;
+    .form-group {
+      margin: 10px 15px;
+    }
+  }
 }
 
 .modal {

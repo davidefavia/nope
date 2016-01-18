@@ -36,7 +36,7 @@
       $scope.selectedMediaIndex = null;
       $scope.contentsList = MediaList;
 
-      if($location.search()) {
+      if($location.search() && Object.keys($location.search()).length) {
         $scope.q = $location.search();
         $scope.acceptedFiles = $location.search().mimetype + '*';
         $scope.hideMimetypeOptions = true;
