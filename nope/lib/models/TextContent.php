@@ -14,7 +14,12 @@ class TextContent extends Content {
     $json = parent::jsonSerialize();
     $json->realStatus = $this->calculateStatus();
     $json->parsedBody = $this->getParsedBody();
+    $json->fullUrl = $this->getFullUrl();
     return $json;
+  }
+
+  function getFullUrl() {
+    return Utils::getFullBaseUrl() . $this->slug;
   }
 
   function getParsedBody() {

@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 12;
+    $rpp = 8;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('media.read')) {
       return $response->withStatus(403);

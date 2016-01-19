@@ -15,7 +15,7 @@
           }
         })
         .state('app.content.detail', {
-          url: '/view/:id',
+          url: '/view/{id:int}',
           views: {
             'content@app.content': {
               templateUrl: function($stateParams) {
@@ -25,8 +25,8 @@
             }
           }
         })
-        .state('app.contentcreate', {
-          url: 'content/:contentType/create',
+        .state('app.content.create', {
+          url: '/create',
           views: {
             'content@app': {
               templateUrl: function($stateParams) {
@@ -36,8 +36,8 @@
             }
           }
         })
-        .state('app.contentedit', {
-          url: 'content/:contentType/edit/:id',
+        .state('app.content.edit', {
+          url: '/edit/{id:int}',
           views: {
             'content@app': {
               templateUrl: function($stateParams) {
@@ -51,33 +51,31 @@
     /**
      * Controller
      */
-    .controller('ContentsListController', ['$scope', '$state', '$stateParams', '$nopeModal', 'Content', function($scope, $state, $stateParams, $nopeModal, Content) {
+    .controller('ContentsListController', ['$scope', '$location', '$state', '$stateParams', '$nopeModal', 'Content', function($scope, $location, $state, $stateParams, $nopeModal, Content) {
       $scope.contentType = $stateParams.contentType;
       $scope.contentsList = [];
-      $scope.q = {};
+      $scope.q = $location.search();
 
       $scope.search = function(q, page) {
         page = page || 1;
-        if (page === 1) {
-          $scope.contentsList = [];
-        }
         Content.query(angular.extend({
           type: $stateParams.contentType,
           page: page
         }, q), function(data, headers) {
           $scope.metadata = angular.fromJson(headers().link);
-          $scope.contentsList = $scope.contentsList.concat(data);
+          $scope.contentsList = (page===1?[]:$scope.contentsList).concat(data);
         });
       }
 
       $scope.search($scope.q);
 
-      $scope.deleteContentOnClick = function() {
-        Content.delete({
+      $scope.deleteContentOnClick = function(p) {
+        var title = p.title;
+        return Content.delete({
           type: $stateParams.contentType,
-          id: $scope.contentToDelete.id
+          id: p.id
         }, function() {
-          $scope.$emit('nope.toast.success', 'Content deleted.');
+          $scope.$emit('nope.toast.success', 'Content "'+title+'" deleted.');
           $state.go('app.content', {
             type: $stateParams.contentType
           }, {
@@ -90,36 +88,37 @@
         Content.update({
           type: $stateParams.contentType
         }, p, function(data) {
-          var msg = (data.starred ? 'starred' : 'unstarred');
-          $scope.$emit('nope.toast.success', 'Content "' + data.title + '" ' + msg + '.');
+          $scope.$emit('nope.toast.success', 'Content "' + data.title + '" updated.');
+          if(i===undefined) {
+            angular.forEach($scope.contentsList, function(item,index) {
+              if(item.id===data.id) {
+                i = index;
+              }
+            });
+          }
+          if(i!==undefined) {
+            $scope.contentsList[i] = data;
+          } else {
+            // Needed to avoid strange reordering due to 'starred' content sored before than others.
+            $scope.search($scope.q);
+          }
           $scope.$broadcast('nope.content.updated', data);
-          $scope.contentsList[i] = data;
         });
       }
 
-      $scope.deleteContent = function(c) {
-        $scope.contentToDelete = c;
-        $nopeModal.fromTemplate('<nope-modal title="Delete content">\
-      <nope-modal-body><p>Are you sure to delete content "{{contentToDelete.title}}"?</p></nope-modal-body>\
-      <nope-modal-footer>\
-        <a class="btn btn-default" nope-modal-close>Close</a>\
-        <a class="btn btn-danger" ng-click="deleteContentOnClick();">Yes, delete</a>\
-      </nope-modal-footer>\
-     </nope-modal>', $scope).then(function(modal) {
-          modal.show();
-        });
-      };
     }])
     .controller('ContentCreateController', ['$scope', '$rootScope', '$state', '$stateParams', 'Content', function($scope, $rootScope, $state, $stateParams, Content) {
       $scope.content = new Content();
       $scope.content.author = $rootScope.currentUser;
+      $scope.content.format = 'html';
+      $scope.content.status = 'draft';
 
       $scope.save = function() {
         Content.save({
           type: $stateParams.contentType
         }, $scope.content, function(data) {
           $scope.$emit('nope.toast.success', 'Content "' + data.title + '" created.');
-          $state.go('app.contentedit', {
+          $state.go('app.content.edit', {
             contentType: $stateParams.contentType,
             id: data.id
           });
@@ -161,21 +160,20 @@
     }])
     .controller('ContentDetailController', ['$scope', '$stateParams', 'Content', function($scope, $stateParams, Content) {
 
-      $scope.getContent = function() {
-        Content.get({
-          type: $stateParams.contentType,
-          id: $stateParams.id
-        }, function(data) {
-          $scope.content = data;
-          $scope.$parent.selectedContent = $scope.content;
-        });
-      }
-
-      $scope.$on('nope.content.updated', function(e, data) {
-        $scope.getContent();
+      Content.get({
+        type: $stateParams.contentType,
+        id: $stateParams.id
+      }, function(data) {
+        $scope.content = data;
+        $scope.$parent.selectedContent = $scope.content;
       });
 
-      $scope.getContent();
+      $scope.$on('nope.content.updated', function(e, data) {
+        if(data.id === $stateParams.id) {
+          $scope.content = data;
+          $scope.$parent.selectedContent = $scope.content;
+        }
+      });
     }])
     /**
      * Services

@@ -4,12 +4,20 @@
       <div class="col col-md-9">
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="toolbar">
-              <a ng-click="content.starred=!content.starred;" class="btn btn-star pull-right"><i class="fa" ng-class="{'fa-star-o':!content.starred,'fa-star':content.starred}"></i></a>
-            </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.title.$valid && contentForm.title.$touched)}">
-              <label class="control-label">Title</label>
-              <input type="text" name="title" class="form-control input-lg" ng-model="content.title" required />
+              <div class="input-group input-group-lg">
+                <input type="text" name="title" class="form-control" ng-model="content.title" required placeholder="Page title" />
+                <span class="input-group-btn">
+                  <a ng-click="content.starred=!content.starred;" class="btn btn-default star"><i class="fa" ng-class="{'fa-star-o':!content.starred,'fa-star':content.starred}"></i></a>
+                </span>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error':(!contentForm.slug.$valid && contentForm.slug.$touched)}">
+              <label class="control-label">Slug</label>
+              <div class="input-group input-group-sm">
+                <span class="input-group-addon"><?php echo \Nope\Utils::getFullBaseUrl(); ?></span>
+                <input type="text" name="slug" class="form-control" ng-model="content.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" placeholder="insert-content-slug-here" />
+              </div>
             </div>
             <div class="form-group">
               <label>Body</label>
@@ -25,14 +33,7 @@
       <div class="col col-md-3">
         <div class="panel panel-default">
           <div class="panel-heading content-author">
-            <div class="list-group">
-              <div class="list-group-item clearfix" ng-class="{'has-image':content.author.cover}">
-                <img ng-src="{{content.author.cover.preview.icon}}" class="img-circle" ng-if="content.author.cover" />
-                Created by <span class="fullname">{{content.author.prettyName || content.author.username}}</span>
-                <span ng-if="content.id">{{content.creationDate | nopeMoment:'fromNow'}}</span>
-                <span ng-if="!content.id">now</span>
-              </div>
-            </div>
+            <nope-author content="content"></nope-author>
           </div>
           <div class="panel-body">
             <div class="form-group content-featured-image">
@@ -40,10 +41,6 @@
                 <a href="" ng-click="content.cover=null" class="btn btn-danger btn-xs"><i class="fa fa-times-circle"></i></a>
               </div>
               <nope-model href="#/media?mimetype=image/" ng-model="content.cover" multiple="false" label="Add featured image"></nope-model>
-            </div>
-            <div class="form-group" ng-class="{'has-error':(!contentForm.slug.$valid && contentForm.slug.$touched)}">
-              <label class="control-label">Slug</label>
-              <input type="text" name="slug" class="form-control input-sm" ng-model="content.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" />
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.format.$valid && contentForm.format.$touched)}">
               <label class="control-label">Format</label>

@@ -1,21 +1,15 @@
-<form name="mediaForm" ng-submit="save()" id="media-detail" class="content-detail">
+<form name="mediaForm" ng-submit="$parent.save(media)">
   <div class="panel panel-default">
     <div class="panel-heading content-author">
-      <div class="list-group">
-        <div class="list-group-item clearfix" ng-class="{'has-image':media.author.cover}">
-          <img ng-src="{{media.author.cover.preview.icon}}" class="img-circle" ng-if="media.author.cover" />
-          Created by <span class="fullname">{{media.author.prettyName || media.author.username}}</span>
-          <span>{{media.creationDate | nopeMoment:'fromNow'}}</span>
-        </div>
-      </div>
-      <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
+      <nope-author content="media"></nope-author>
+    </div>
+    <div class="panel-body">
+      <div class="media-preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
         <div class="toolbar">
-          <a ng-click="media.starred=!media.starred;" class="btn btn-star btn-lg pull-right"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
+          <a ng-click="media.starred=!media.starred;" class="btn star btn-lg pull-right"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
         </div>
         <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>
       </div>
-    </div>
-    <div class="panel-body">
       <div class="form-group">
         <label>URL</label>
         <div class="input-group input-group-sm">
@@ -39,12 +33,7 @@
       </div>
     </div>
     <div class="panel-footer">
-      <div class="form-group clearfix">
-        <div class="pull-right">
-          <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
-          <button class="btn" ng-disabled="mediaForm.$invalid" ng-class="{'btn-success':!mediaForm.$invalid}">Save</button>
-        </div>
-      </div>
+      <button class="btn btn-block" ng-disabled="mediaForm.$invalid" ng-class="{'btn-success':!mediaForm.$invalid}">Save</button>
     </div>
   </div>
 </form>

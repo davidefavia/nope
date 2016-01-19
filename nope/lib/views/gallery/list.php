@@ -22,12 +22,14 @@
           <p class="list-group-item-text">Media: {{p.media.length}}</p>
           <p class="list-group-item-text">Modified on: {{p.lastModificationDate | nopeMoment}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
-            <a ng-href="#/{{contentType}}/view/{{p.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-            <a href="" ng-click="deleteContent(p);" class="btn btn-default" nope-can="page.delete"><i class="fa fa-trash"></i></a>
+            <a ng-href="#/{{contentType}}/view/{{p.id}}" class="btn"><i class="fa fa-pencil"></i></a>
+            <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
+            <a href="" nope-content-delete="deleteContentOnClick(p);" ng-model="p" class="btn"><i class="fa fa-trash"></i></a>
           </div>
         </div>
       </div>
     </div>
+    <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div class="detail-column col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
     <no-empty icon="object-group">

@@ -1,16 +1,10 @@
-<form name="galleryForm" ng-submit="save()" id="gallery-detail" class="content-detail gallery-detail">
+<form name="galleryForm" ng-submit="$parent.save(gallery);">
   <div class="panel panel-default">
     <div class="panel-heading content-author">
-      <div class="toolbar pull-right">
-        <a ng-click="gallery.starred=!gallery.starred;" class="btn btn-star"><i class="fa" ng-class="{'fa-star-o':!gallery.starred,'fa-star':gallery.starred}"></i></a>
+      <div class="btn-group btn-group-xs toolbar pull-right">
+        <a ng-click="gallery.starred=!gallery.starred;" class="btn star"><i class="fa" ng-class="{'fa-star-o':!gallery.starred,'fa-star':gallery.starred}"></i></a>
       </div>
-      <div class="list-group pull-left">
-        <div class="list-group-item clearfix" ng-class="{'has-image':gallery.author.cover}">
-          <img ng-src="{{gallery.author.cover.preview.icon}}" class="img-circle" ng-if="gallery.author.cover" />
-          Created by <span class="fullname">{{gallery.author.prettyName || gallery.author.username}}</span>
-          <span>{{gallery.creationDate | nopeMoment}}</span>
-        </div>
-      </div>
+      <nope-author content="gallery" class="pull-left"></nope-author>
     </div>
     <div class="panel-body">
       <div class="form-group" ng-class="{'has-error':(!galleryForm.title.$valid && galleryForm.title.$touched)}">

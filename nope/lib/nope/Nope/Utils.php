@@ -150,4 +150,8 @@ class Utils {
     );
   }
 
+  static function getFullBaseUrl() {
+    return self::getBaseUrl() . NOPE_BASE_PATH ;
+  }
+
 }

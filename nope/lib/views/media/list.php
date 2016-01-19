@@ -1,4 +1,4 @@
-<div id="media" class="row" ng-class="{'not-selected':!selectedMedia}">
+<div id="media" class="row" ng-class="{'has-detail':selectedMedia}">
   <div class="col list-column" ng-class="{'col-md-9 col-sm-8':selectedMedia}">
     <form name="searchForm" ng-submit="search(q);">
       <div class="input-group" nope-can="{{contentType}}.read">
@@ -40,7 +40,7 @@
             <div class="btn-group btn-group-xs" ng-if="!nope.isIframe">
               <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn btn-default btn-star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
               <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
-              <a href="" class="btn btn-danger" ng-click="deleteContent(p);"><i class="fa fa-trash"></i></a>
+              <a href="" class="btn btn-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
             </div>
             <div ng-if="nope.isIframe" class="pull-right">
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>

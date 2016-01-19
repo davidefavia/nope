@@ -381,7 +381,7 @@
         replace: true,
         require: 'ngModel',
         template: '<div>\
-          <ul dnd-list="ngModel" class="list-group list-group-contents multiple" ng-show="ngModel && preview" ng-if="multiple">\
+          <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">\
             <li class="list-group-item" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
               <i class="fa fa-bars handle"></i>\
               <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
@@ -522,6 +522,40 @@
           $element.on('focus', function(e) {
             $element[0].select();
           });
+        }]
+      }
+    }])
+    .directive('nopeAuthor', [function() {
+      return {
+        restrict : 'E',
+        replace: true,
+        templateUrl : 'view/directive/author.html',
+        scope : {
+          content : '='
+        }
+      }
+    }])
+    .directive('nopeContentDelete', ['$nopeModal', function($nopeModal) {
+      return {
+        restrict : 'A',
+        require : 'ngModel',
+        scope : {
+          ngModel : '=',
+          deleteContentOnClick : '&nopeContentDelete'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $element.on('click', function() {
+            $nopeModal.fromTemplateUrl('view/modal/content-delete.html', $scope).then(function(modal) {
+              $scope.theModal = modal;
+              $scope.theModal.show();
+            });
+          });
+
+          $scope.deleteContent = function() {
+            $scope.deleteContentOnClick($scope.ngModel).$promise.then(function() {
+              $scope.theModal.hide();
+            });
+          }
         }]
       }
     }])
