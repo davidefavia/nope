@@ -42,7 +42,7 @@
     return this;
   }
 
-  angular.module('nope.ui', [])
+  angular.module('nope.ui', ['dndLists'])
     /**
      * Filters
      */
@@ -380,25 +380,30 @@
         restrict: 'E',
         replace: true,
         require: 'ngModel',
-        template: '<div><div class="list-group list-group-contents" ng-class="{\'is-multiple\':multiple}" ng-show="ngModel && preview">\
-        <div class="list-group-item" ng-repeat="item in ngModel track by $index" ng-if="multiple">\
-          <img class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
-          <span class="title">{{item.title}}</span>\
-          <div class="btn-group btn-group-xs btn-toolbar">\
-            <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
-            <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
-            <a href="" class="btn btn-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
-          </div>\
-        </div>\
-        <div class="list-group-item" ng-if="!multiple">\
-          <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
-          <span class="title">{{ngModel.title}}</span>\
-          <div class="btn-group btn-group-xs btn-toolbar">\
-            <a href="" class="btn btn-danger btn-xs" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
-          </div>\
-        </div>\
-      </div>\
-      <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a></div>',
+        template: '<div>\
+          <ul dnd-list="ngModel" class="list-group list-group-contents multiple" ng-show="ngModel && preview" ng-if="multiple">\
+            <li class="list-group-item" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
+              <i class="fa fa-bars handle"></i>\
+              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
+              <span dnd-nodrag class="title">{{item.title}}</span>\
+              <div dnd-nodrag class="btn-group btn-group-xs btn-toolbar">\
+                <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
+                <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
+                <a href="" class="btn btn-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
+              </div>\
+            </li>\
+          </ul>\
+          <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">\
+            <li class="list-group-item">\
+              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
+              <span class="title">{{ngModel.title}}</span>\
+              <div class="btn-group btn-group-xs btn-toolbar">\
+                <a href="" class="btn btn-danger btn-xs" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
+              </div>\
+            </li>\
+          </ul>\
+          <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a>\
+        </div>',
         scope: {
           multiple: '=',
           ngModel: '=',

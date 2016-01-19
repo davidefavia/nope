@@ -623,3 +623,20 @@ textarea {
     }
   }
 }
+
+ul[dnd-list] {
+  position: relative;
+  & > li {
+    position: relative;
+    &.dndPlaceholder {
+      display: block;
+      background-color: #ddd;
+      min-height: 78px;
+    }
+    .handle {
+      cursor: move;
+      margin-right: 10px;
+      color: @gray-light;
+    }
+  }
+}
