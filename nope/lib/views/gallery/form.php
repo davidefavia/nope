@@ -42,10 +42,8 @@
       </div>
     </div>
     <div class="panel-footer">
-      <div class="form-group clearfix">
-        <div class="pull-right">
-          <button class="btn" ng-disabled="galleryForm.$invalid" ng-class="{'btn-success':!galleryForm.$invalid}">Save</button>
-        </div>
+      <div class="form-group">
+        <button class="btn btn-default btn-block" ng-disabled="galleryForm.$invalid" ng-class="{'btn-success':!galleryForm.$invalid}">Save</button>
       </div>
     </div>
   </div>

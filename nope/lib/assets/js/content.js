@@ -99,7 +99,7 @@
           if(i!==undefined) {
             $scope.contentsList[i] = data;
           } else {
-            // Needed to avoid strange reordering due to 'starred' content sored before than others.
+            // Needed to avoid strange reordering due to 'starred' content sorted before than others.
             $scope.search($scope.q);
           }
           $scope.$broadcast('nope.content.updated', data);

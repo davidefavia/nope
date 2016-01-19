@@ -88,6 +88,9 @@
           }
           if(i!==undefined) {
             $scope.contentsList[i] = data;
+          } else {
+            // Needed to avoid strange reordering due to 'starred' content sorted before than others.
+            $scope.search($scope.q);
           }
           $scope.$broadcast('nope.media.updated', data);
         });

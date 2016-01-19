@@ -1,5 +1,11 @@
 ## v0.6.0 (2016-01-??)
 
+### Libraries
+- Added **angular-drag-and-drop-lists** version 1.3.0.
+
+### Breaking changes
+- Javascript **heavy** refactoring.
+
 ### Features
 - Installation: added website title field (#15).
 
