@@ -1,6 +1,6 @@
-<form name="galleryForm" ng-submit="$parent.save(gallery);">
+<form name="galleryForm" ng-submit="save();">
   <div class="panel panel-default">
-    <div class="panel-heading content-author">
+    <div class="panel-heading content-author" ng-if="gallery.id">
       <div class="btn-group btn-group-xs toolbar pull-right">
         <a ng-click="gallery.starred=!gallery.starred;" class="btn star"><i class="fa" ng-class="{'fa-star-o':!gallery.starred,'fa-star':gallery.starred}"></i></a>
         <a href="" nope-content-delete="$parent.deleteContentOnClick(gallery);" ng-model="gallery" class="btn text-danger"><i class="fa fa-trash"></i></a>

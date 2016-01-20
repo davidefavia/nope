@@ -52,11 +52,6 @@
           templateUrl : 'view/dashboard.html',
           //controller: 'DashboardController'
         }
-      },
-      resolve : {
-        UsersList : function(User) {
-          return User.getAll().$promise;
-        }
       }
     })
     .state('app.user', {
@@ -69,7 +64,7 @@
       },
       resolve : {
         UsersList : function(User) {
-          return User.getAll().$promise;
+          return User.query().$promise;
         }
       }
     })
@@ -83,7 +78,7 @@
       }
     })
     .state('app.user.detail', {
-      url : '/:id',
+      url : '/{id:int}',
       views : {
         'content@app.user' : {
           templateUrl : 'view/user/form.html',
@@ -147,34 +142,65 @@
      }
 
    }])
-   .controller('UserController', ['$scope', '$state', '$nopeModal', 'User', 'UsersList', function($scope, $state, $nopeModal, User, UsersList) {
-     $scope.usersList = UsersList;
+   .controller('UserController', ['$scope', '$location', '$state', '$nopeModal', 'User', function($scope, $location, $state, $nopeModal, User) {
+     $scope.usersList = [];
+     $scope.q = $location.search();
+     $scope.selection = [];
 
-     $scope.deleteUserOnClick = function() {
-       User.delete({id:$scope.userToDelete.id}, function() {
-         User.getAll(function(data) {
-           $scope.$emit('nope.toast.success', 'User deleted.');
-           UsersList = data;
-           $scope.usersList = UsersList;
-           $state.go('app.user');
+     $scope.select = function(c,i) {
+       if($rootScope.nope.isIframe) {
+         var callerScope = $nopeUtils.getContentModalCallerScope();
+         $scope.selection = callerScope.selectedItem(c);
+         callerScope.$apply();
+       } else {
+         $state.go('app.user.detail', {id:c.id});
+       }
+     }
+
+     $scope.deleteUserOnClick = function(p) {
+       var username = p.username;
+       return User.delete({
+         id: p.id
+       }, function() {
+         $scope.$emit('nope.toast.success', 'User "' + username + '" deleted.');
+         $state.go('app.user', {}, {
+           reload: true
          });
        });
      }
 
-     $scope.deleteUser = function(u) {
-       $scope.userToDelete = u;
-       $nopeModal.fromTemplate('<nope-modal title="Delete user">\
-       <nope-modal-body><p>Are you sure to delete user "{{userToDelete.getFullName()}}"?</p></nope-modal-body>\
-       <nope-modal-footer>\
-         <a class="btn btn-default" nope-modal-close>Close</a>\
-         <a class="btn btn-danger" ng-click="deleteUserOnClick();">Yes, delete</a>\
-       </nope-modal-footer>\
-      </nope-modal>', $scope).then(function(modal) {
-        modal.show();
-      });
-     };
+     $scope.search = function(q, page) {
+       page = page || 1;
+       User.query(angular.extend({
+         page : page
+       }, q), function(data, headers) {
+         $scope.metadata = angular.fromJson(headers().link);
+         $scope.usersList = (page===1?[]:$scope.usersList).concat(data);
+       });
+     }
+
+     $scope.search($scope.q);
+
+     $scope.save = function(p, i) {
+       User.update(p, function(data) {
+         $scope.$emit('nope.toast.success', 'User "' + data.username + '" updated.');
+         if(i===undefined) {
+           angular.forEach($scope.usersList, function(item,index) {
+             if(item.id===data.id) {
+               i = index;
+             }
+           })
+         }
+         if(i!==undefined) {
+           $scope.usersList[i] = data;
+         } else {
+           $scope.search($scope.q);
+         }
+         $scope.$broadcast('nope.user.updated', data);
+       });
+     }
    }])
-   .controller('UserCreateController', ['$scope', '$state', '$nopeToast', 'RolesList', 'User', 'UsersList', function($scope, $state, $nopeToast, RolesList, User, UsersList) {
+   .controller('UserCreateController', ['$scope', '$state', '$nopeToast', 'RolesList', 'User', function($scope, $state, $nopeToast, RolesList, User) {
      $scope.user = new User();
      $scope.user.email = '';
      $scope.$parent.selectedUser = $scope.user;
@@ -182,39 +208,30 @@
 
      $scope.save = function() {
        User.save($scope.user, function(data) {
-         $scope.$emit('nope.toast.success', 'User created.');
-         UsersList.push(data);
+         $scope.$emit('nope.toast.success', 'User "'+data.username+'" created.');
          $state.go('app.user.detail', {id:data.id});
        });
      }
    }])
-   .controller('UserDetailController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$nopeToast', 'RolesList', 'User', 'UsersList', function($scope, $filter, $timeout, $state, $stateParams, $nopeToast, RolesList, User, UsersList) {
-     $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
-     $scope.$parent.selectedUser = $scope.user;
+   .controller('UserDetailController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$nopeToast', 'RolesList', 'User', function($scope, $filter, $timeout, $state, $stateParams, $nopeToast, RolesList, User) {
      $scope.rolesList = RolesList;
-     $scope.changed = false;
 
-     $scope.$watch('user', function(n,o) {
-       if(!angular.equals(n,o)) {
-          $scope.changed = true;
+     User.get({
+       id: $stateParams.id
+     }, function(data) {
+       $scope.user = data;
+       $scope.$parent.selectedUser = $scope.user;
+     });
+
+     $scope.$on('nope.user.updated', function(e, data) {
+       if(data.id === $stateParams.id) {
+         $scope.user = data;
+         $scope.$parent.selectedUser = $scope.user;
        }
-     }, true);
-
-     $scope.reset = function() {
-       $state.go('app.user.detail', {id:$stateParams.id}, {
-         reload: true
-       });
-     }
+     });
 
      $scope.save = function() {
-       User.update($scope.user, function(data) {
-         $scope.$emit('nope.toast.success', 'User updated.');
-         $scope.user = $filter('filter')(UsersList, {id:$stateParams.id})[0];
-         //$scope.user = data;
-         $timeout(function() {
-           $scope.changed = false;
-         }, 100);
-       });
+       $scope.$parent.save($scope.user);
      }
    }])
    /**
@@ -233,9 +250,6 @@
         logout : {
           url : 'user/logout',
           cache : false
-        },
-        getAll : {
-          isArray : true
         },
         update : {
           method : 'PUT'
@@ -347,7 +361,7 @@
 
      $rootScope.$on('nope.error', function(e, reason) {
        $rootScope.errorReason = reason;
-       $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}" nope-modal-close>\
+       $nopeModal.fromTemplate('<nope-modal title="Error {{errorReason.status}}">\
        <nope-modal-body>\
         <p ng-if="!errorReason.data.exception.length">{{errorReason.statusText}}</p>\
         <p ng-if="errorReason.data.exception.length">{{errorReason.data.exception[0].message}}</p>\

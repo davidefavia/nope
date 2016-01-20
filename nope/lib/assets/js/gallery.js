@@ -100,7 +100,7 @@
 
       $scope.save = function() {
         Gallery.save($scope.gallery, function(data) {
-          $scope.$emit('nope.toast.success', 'Gallery created.');
+          $scope.$emit('nope.toast.success', 'Gallery "'+data.title+'" created.');
           $state.go('app.gallery.detail', {
             id: data.id
           }, {
@@ -124,6 +124,10 @@
           $scope.$parent.selectedGallery = $scope.gallery;
         }
       });
+
+      $scope.save = function() {
+        $scope.$parent.save($scope.gallery)
+      }
 
     }])
     /**

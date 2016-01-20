@@ -1,3 +1,11 @@
+## v0.7.0 (2016-01-??)
+
+### Features
+- Better and more complete `User` model with corresponding UI (#17).
+
+### Fixes
+- Fixed wrong pagination limit.
+
 ## v0.6.0 (2016-01-20)
 
 ### Libraries
