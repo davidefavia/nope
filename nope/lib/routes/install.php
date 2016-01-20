@@ -96,7 +96,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     if($request->isPost() && $data['ok']) {
       $data['step'] = 2;
       $body = $request->getParsedBody();
-      if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email'])) {
+      if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email']) && $body['title']) {
         $user = new User();
         $user->username = $body['username'];
         $user->setPassword($body['password']);
@@ -111,6 +111,12 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         $setting->group = 'nope';
         $setting->key = 'installation';
         $setting->value = new \DateTime();
+        $setting->save();
+
+        $setting = new Setting();
+        $setting->group = 'nope';
+        $setting->key = 'title';
+        $setting->value = $body['title'];
         $setting->save();
 
         return redirect($request, $response, NOPE_ADMIN_ROUTE);

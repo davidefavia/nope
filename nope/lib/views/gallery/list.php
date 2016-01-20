@@ -1,28 +1,35 @@
-<div id="gallery" class="row" ng-class="{'no-items':!contentsList.length}">
-  <div class="list-column col col-md-4 col-sm-6" ng-if="contentsList.length">
+<div id="gallery" class="row">
+  <div class="list-column col col-md-4 col-sm-6">
     <div class="searchbar">
-      <div class="form-group" nope-can="{{contentType}}.read">
-        <input type="text" class="form-control" ng-model="q.title" placeholder="Filter {{contentType}} by title" />
-      </div>
+      <form name="searchForm" ng-submit="search(q);">
+        <div class="input-group" nope-can="{{contentType}}.read">
+          <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
+          <div class="input-group-btn">
+            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </form>
       <a href="#/gallery/create" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!filteredContentsList.length && q.title">No {{contentType}} found with filter "{{q.title}}".</div>
-      <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedGallery.id}" ng-repeat="p in filteredContentsList = (contentsList | filter : q)" ng-show="filteredContentsList.length">
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q">No {{contentType}} found with filter "{{q}}".</div>
+      <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedGallery.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" alt="...">
         </div>
         <div class="media-body">
-          <a ng-href="#/{{contentType}}/view/{{p.id}}"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+          <a href="" ng-click="select(p,$index)"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
           <p class="list-group-item-text">Media: {{p.media.length}}</p>
-          <p class="list-group-item-text">Modified on: {{p.lastModificationDate | nopeDate:medium}}</p>
+          <p class="list-group-item-text">Modified {{p.lastModificationDate | nopeMoment}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
-            <a ng-href="#/{{contentType}}/view/{{p.id}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-            <a href="" ng-click="deleteContent(p);" class="btn btn-default" nope-can="page.delete"><i class="fa fa-trash"></i></a>
+            <a ng-href="#/{{contentType}}/view/{{p.id}}" class="btn"><i class="fa fa-pencil"></i></a>
+            <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
+            <a href="" nope-content-delete="deleteContentOnClick(p);" ng-model="p" class="btn text-danger"><i class="fa fa-trash"></i></a>
           </div>
         </div>
       </div>
     </div>
+    <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div class="detail-column col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
     <no-empty icon="object-group">

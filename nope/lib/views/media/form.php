@@ -1,21 +1,19 @@
-<form name="mediaForm" ng-submit="save()" id="media-detail" class="content-detail">
+<form name="mediaForm" ng-submit="$parent.save(media)">
   <div class="panel panel-default">
     <div class="panel-heading content-author">
-      <div class="list-group">
-        <div class="list-group-item clearfix" ng-class="{'has-image':media.author.cover}">
-          <img ng-src="{{media.author.cover.preview.icon}}" class="img-circle" ng-if="media.author.cover" />
-          Created by <span class="fullname">{{media.author.prettyName || media.author.username}}</span>
-          <span>{{media.creationDate | nopeMoment:'fromNow'}}</span>
-        </div>
-      </div>
-      <div class="preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
-        <div class="toolbar">
-          <a ng-click="media.starred=!media.starred;" class="btn btn-star btn-lg pull-right"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
-        </div>
-        <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>
+      <nope-author content="media" class="pull-left"></nope-author>
+      <div class="btn-group btn-group-xs toolbar pull-right">
+        <a href="" class="btn text-danger" nope-content-delete="$parent.deleteContentOnClick(media);" ng-model="media"><i class="fa fa-trash"></i></a>
       </div>
     </div>
     <div class="panel-body">
+      <div class="media-preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
+        <div class="btn-group btn-group-xs toolbar pull-right">
+          <a ng-click="media.starred=!media.starred;" class="btn star"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
+          <a href="" nope-zoom="media.url" class="btn" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>
+        </div>
+        <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>
+      </div>
       <div class="form-group">
         <label>URL</label>
         <div class="input-group input-group-sm">
@@ -24,15 +22,14 @@
             <a ng-href="{{media.absoluteUrl}}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
           <span>
         </div>
-
       </div>
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" ng-model="media.title" required  />
+      <div class="form-group" ng-class="{'has-error':(!mediaForm.title.$valid && mediaForm.title.$touched)}">
+        <label class="control-label">Title</label>
+        <input type="text" name="title" class="form-control" ng-model="media.title" required />
       </div>
       <div class="form-group">
         <label>Description</label>
-        <textarea name="description" class="form-control" ng-model="media.description"></textarea>
+        <textarea name="body" class="form-control" ng-model="media.body"></textarea>
       </div>
       <div class="form-group">
         <label>Tags (comma separated)</label>
@@ -40,12 +37,7 @@
       </div>
     </div>
     <div class="panel-footer">
-      <div class="form-group clearfix">
-        <div class="pull-right">
-          <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
-          <button class="btn" ng-disabled="mediaForm.$invalid" ng-class="{'btn-success':!mediaForm.$invalid}">Save</button>
-        </div>
-      </div>
+      <button class="btn btn-block" ng-disabled="mediaForm.$invalid" ng-class="{'btn-success':!mediaForm.$invalid}">Save</button>
     </div>
   </div>
 </form>

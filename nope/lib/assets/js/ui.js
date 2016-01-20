@@ -42,7 +42,7 @@
     return this;
   }
 
-  angular.module('nope.ui', [])
+  angular.module('nope.ui', ['dndLists'])
     /**
      * Filters
      */
@@ -71,6 +71,18 @@
     /**
      * Services
      */
+    .service('$nopeUtils', ['$window', function($window) {
+
+      var getContentModalCallerScope = function() {
+        var $parent = $window.parent;
+        var el = $parent.angular.element($parent.document.getElementById('modal-content'));
+        return el.isolateScope().$parent;
+      }
+
+      return {
+        getContentModalCallerScope : getContentModalCallerScope
+      }
+    }])
     .service('$nopeToast', ['$rootScope', '$compile', function($rootScope, $compile) {
 
       var bodyElement = angular.element(document.body);
@@ -368,25 +380,30 @@
         restrict: 'E',
         replace: true,
         require: 'ngModel',
-        template: '<div><div class="list-group list-group-contents" ng-class="{\'is-multiple\':multiple}" ng-show="ngModel && preview">\
-        <div class="list-group-item" ng-repeat="item in ngModel track by $index" ng-if="multiple">\
-          <img class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
-          <span class="title">{{item.title}}</span>\
-          <div class="btn-group btn-group-xs btn-toolbar">\
-            <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
-            <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
-            <a href="" class="btn btn-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
-          </div>\
-        </div>\
-        <div class="list-group-item" ng-if="!multiple">\
-          <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
-          <span class="title">{{ngModel.title}}</span>\
-          <div class="btn-group btn-group-xs btn-toolbar">\
-            <a href="" class="btn btn-danger btn-xs" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
-          </div>\
-        </div>\
-      </div>\
-      <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a></div>',
+        template: '<div>\
+          <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">\
+            <li class="list-group-item" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
+              <i class="fa fa-bars handle"></i>\
+              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
+              <span dnd-nodrag class="title">{{item.title}}</span>\
+              <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
+                <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
+              </div>\
+            </li>\
+          </ul>\
+          <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">\
+            <li class="list-group-item">\
+              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
+              <span class="title">{{ngModel.title}}</span>\
+              <div class="btn-group btn-group-xs toolbar pull-right">\
+                <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
+              </div>\
+            </li>\
+          </ul>\
+          <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a>\
+        </div>',
         scope: {
           multiple: '=',
           ngModel: '=',
@@ -505,6 +522,40 @@
           $element.on('focus', function(e) {
             $element[0].select();
           });
+        }]
+      }
+    }])
+    .directive('nopeAuthor', [function() {
+      return {
+        restrict : 'E',
+        replace: true,
+        templateUrl : 'view/directive/author.html',
+        scope : {
+          content : '='
+        }
+      }
+    }])
+    .directive('nopeContentDelete', ['$nopeModal', function($nopeModal) {
+      return {
+        restrict : 'A',
+        require : 'ngModel',
+        scope : {
+          ngModel : '=',
+          deleteContentOnClick : '&nopeContentDelete'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $element.on('click', function() {
+            $nopeModal.fromTemplateUrl('view/modal/content-delete.html', $scope).then(function(modal) {
+              $scope.theModal = modal;
+              $scope.theModal.show();
+            });
+          });
+
+          $scope.deleteContent = function() {
+            $scope.deleteContentOnClick($scope.ngModel).$promise.then(function() {
+              $scope.theModal.hide();
+            });
+          }
         }]
       }
     }])

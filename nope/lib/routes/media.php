@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 12;
+    $rpp = 8;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('media.read')) {
       return $response->withStatus(403);
@@ -79,7 +79,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       $info = \Embed\Embed::create($body->url);
       $media = new Media();
       $media->title = $info->title;
-      $media->description = $info->description;
+      $media->body = $info->description;
       $media->url = $info->url;
       $media->type = $info->type;
       $p = explode('/', $info->images[0]['value']);
@@ -117,7 +117,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
-      $fields = ['title', 'description', 'tags', 'starred'];
+      $fields = ['title', 'body', 'tags', 'starred'];
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);

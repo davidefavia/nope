@@ -92,12 +92,12 @@ class Utils {
   }
 
   static function makePathWriteable($path, $permissions = 0755) {
-    chmod($path, $permissions);
+    @chmod($path, $permissions);
   }
 
   static function createFolderIfDoesntExist($path, $permissions = 0755) {
     if(!file_exists($path)) {
-      mkdir($path, $permissions);
+      @mkdir($path, $permissions);
     } else {
       self::makePathWriteable($path, $permissions);
     }
@@ -148,6 +148,10 @@ class Utils {
       isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
       $_SERVER['SERVER_NAME']
     );
+  }
+
+  static function getFullBaseUrl() {
+    return self::getBaseUrl() . NOPE_BASE_PATH ;
   }
 
 }

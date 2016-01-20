@@ -14,9 +14,12 @@ class TextContent extends Content {
     $json = parent::jsonSerialize();
     $json->realStatus = $this->calculateStatus();
     $json->parsedBody = $this->getParsedBody();
-    $json->starred = (bool) $json->starred;
-    $json->priority = (int) $json->priority;
+    $json->fullUrl = $this->getFullUrl();
     return $json;
+  }
+
+  function getFullUrl() {
+    return Utils::getFullBaseUrl() . $this->slug;
   }
 
   function getParsedBody() {
@@ -46,16 +49,6 @@ class TextContent extends Content {
       throw $exception;
     }
     return true;
-  }
-
-  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='starred desc, priority desc, id desc') {
-    $params = [];
-    $sql = self::__getSql($filters, $params);
-    if($orderBy) {
-      $sql[] = 'order by '.$orderBy;
-    }
-    $contentsList = R::findAll(self::__getModelType(), implode(' ',$sql),$params);
-    return self::__to($contentsList, $limit, $offset, $count);
   }
 
   static function __getSql($filters, &$params=[], $p = null) {
@@ -162,9 +155,6 @@ class TextContent extends Content {
     }
     if(!$this->startPublishingDate) {
       $this->startPublishingDate = new \DateTime();
-    }
-    if(!$this->priority) {
-      $this->priority = 0;
     }
     parent::beforeSave();
   }

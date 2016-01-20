@@ -10,11 +10,6 @@
               templateUrl: 'view/gallery/list.html',
               controller: 'GalleriesListController'
             }
-          },
-          resolve : {
-            GalleriesList : ['Gallery', function(Gallery) {
-              return Gallery.getAll().$promise;
-            }]
           }
         })
         .state('app.gallery.create', {
@@ -27,61 +22,76 @@
           }
         })
         .state('app.gallery.detail', {
-          url: '/view/:id',
+          url: '/view/{id:int}',
           views: {
             'content': {
               templateUrl: 'view/gallery/form.html',
               controller: 'GalleryDetailController'
             }
           }
-        })
-        ;
+        });
     }])
     /**
      * Controller
      */
-    .controller('GalleriesListController', ['$scope', '$q', '$state', '$stateParams', '$nopeModal', 'Gallery', 'GalleriesList', function($scope, $q, $state, $stateParams, $nopeModal, Gallery, GalleriesList) {
+    .controller('GalleriesListController', ['$scope', '$rootScope', '$location', '$state', '$stateParams', '$nopeModal', '$nopeUtils', 'Gallery', function($scope, $rootScope, $location, $state, $stateParams, $nopeModal,  $nopeUtils, Gallery) {
       $scope.contentType = 'gallery';
-      $scope.selectedGallery = null;
-      $scope.contentsList = GalleriesList;
+      $scope.contentsList = [];
+      $scope.q = $location.search();
+      $scope.selection = [];
 
-      $scope.deleteContentOnClick = function() {
-        Gallery.delete({
-          id: $scope.contentToDelete.id
+      $scope.select = function(c,i) {
+        if($rootScope.nope.isIframe) {
+          var callerScope = $nopeUtils.getContentModalCallerScope();
+          $scope.selection = callerScope.selectedItem(c);
+          callerScope.$apply();
+        } else {
+          $state.go('app.gallery.detail', {id:c.id});
+        }
+      }
+
+      $scope.deleteContentOnClick = function(p) {
+        var title = p.title;
+        return Gallery.delete({
+          id: p.id
         }, function() {
-          $scope.$emit('nope.toast.success', 'Gallery deleted.');
-          if($scope.selectedGallery && $scope.selectedGallery.id === $scope.contentToDelete.id) {
-            $scope.selectedGallery = null;
+          $scope.$emit('nope.toast.success', 'Gallery "' + title + '" deleted.');
+          $state.go('app.gallery', {}, {
+            reload: true
+          });
+        });
+      }
+
+      $scope.search = function(q, page) {
+        page = page || 1;
+        Gallery.query(angular.extend({
+          page : page
+        }, q), function(data, headers) {
+          $scope.metadata = angular.fromJson(headers().link);
+          $scope.contentsList = (page===1?[]:$scope.contentsList).concat(data);
+        });
+      }
+
+      $scope.search($scope.q);
+
+      $scope.save = function(p, i) {
+        Gallery.update(p, function(data) {
+          $scope.$emit('nope.toast.success', 'Gallery "' + data.title + '" updated.');
+          if(i===undefined) {
+            angular.forEach($scope.contentsList, function(item,index) {
+              if(item.id===data.id) {
+                i = index;
+              }
+            })
           }
-          $scope.getAllContents();
+          if(i!==undefined) {
+            $scope.contentsList[i] = data;
+          } else {
+            // Needed to avoid strange reordering due to 'starred' content sorted before than others.
+            $scope.search($scope.q);
+          }
+          $scope.$broadcast('nope.gallery.updated', data);
         });
-      }
-
-      $scope.deleteContent = function(c) {
-        $scope.contentToDelete = c;
-        $nopeModal.fromTemplate('<nope-modal title="Delete gallery">\
-      <nope-modal-body><p>Are you sure to delete gallery "{{contentToDelete.title}}"?</p></nope-modal-body>\
-      <nope-modal-footer>\
-        <a class="btn btn-default" nope-modal-close>Close</a>\
-        <a class="btn btn-danger" ng-click="deleteContentOnClick();">Yes, delete</a>\
-      </nope-modal-footer>\
-     </nope-modal>', $scope).then(function(modal) {
-          modal.show();
-        });
-      };
-
-      $scope.onUploadDone = function() {
-        $scope.getAllContents();
-      }
-
-      $scope.getAllContents = function() {
-        var q = $q.defer();
-        Gallery.getAll(function(data) {
-          $scope.contentsList = data;
-          GalleriesList = $scope.contentsList;
-          q.resolve();
-        });
-        return q.promise;
       }
 
     }])
@@ -91,23 +101,30 @@
       $scope.save = function() {
         Gallery.save($scope.gallery, function(data) {
           $scope.$emit('nope.toast.success', 'Gallery created.');
-          $state.go('app.gallery.detail', {id:data.id}, {reload:true});
+          $state.go('app.gallery.detail', {
+            id: data.id
+          }, {
+            reload: true
+          });
         });
       }
     }])
-    .controller('GalleryDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Gallery', 'GalleriesList', function($scope, $filter, $state, $stateParams, Gallery, GalleriesList) {
-      $scope.gallery = $filter('filter')(GalleriesList, {
-        id: parseInt($stateParams.id,10)
-      })[0];
-      $scope.$parent.selectedGallery = $scope.gallery;
+    .controller('GalleryDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Gallery', function($scope, $filter, $state, $stateParams, Gallery) {
 
-      $scope.save = function() {
-        Gallery.update($scope.gallery, function(data) {
-          $scope.$emit('nope.toast.success', 'Gallery updated.');
+      Gallery.get({
+        id: $stateParams.id
+      }, function(data) {
+        $scope.gallery = data;
+        $scope.$parent.selectedGallery = $scope.gallery;
+      });
+
+      $scope.$on('nope.gallery.updated', function(e, data) {
+        if(data.id === $stateParams.id) {
           $scope.gallery = data;
           $scope.$parent.selectedGallery = $scope.gallery;
-        });
-      }
+        }
+      });
+
     }])
     /**
      * Services
@@ -116,9 +133,6 @@
       return $resource('content/gallery/:id', {
         id: '@id'
       }, {
-        getAll: {
-          isArray: true
-        },
         update: {
           method: 'PUT'
         }
