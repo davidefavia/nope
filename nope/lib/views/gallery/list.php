@@ -20,11 +20,11 @@
         <div class="media-body">
           <a href="" ng-click="select(p,$index)"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
           <p class="list-group-item-text">Media: {{p.media.length}}</p>
-          <p class="list-group-item-text">Modified on: {{p.lastModificationDate | nopeMoment}}</p>
+          <p class="list-group-item-text">Modified {{p.lastModificationDate | nopeMoment}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
             <a ng-href="#/{{contentType}}/view/{{p.id}}" class="btn"><i class="fa fa-pencil"></i></a>
             <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
-            <a href="" nope-content-delete="deleteContentOnClick(p);" ng-model="p" class="btn"><i class="fa fa-trash"></i></a>
+            <a href="" nope-content-delete="deleteContentOnClick(p);" ng-model="p" class="btn text-danger"><i class="fa fa-trash"></i></a>
           </div>
         </div>
       </div>

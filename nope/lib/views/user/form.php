@@ -1,9 +1,7 @@
 <form name="userForm" ng-submit="save()" class="content-detail">
   <div class="panel panel-default">
     <div class="panel-heading" ng-if="user.id">
-      <div class="form-group">
         <p class="form-control-static" ng-if="user.id">{{user.username}}</p>
-      </div>
     </div>
     <div class="panel-body">
       <div class="form-group" ng-if="!user.id">
@@ -48,11 +46,8 @@
       </div>
     </div>
     <div class="panel-footer">
-      <div class="form-group clearfix">
-        <div class="pull-right">
-          <a href="" class="btn btn-warning" ng-if="changed" ng-click="reset();">Reset changes</a>
-          <button class="btn" ng-disabled="userForm.$invalid" ng-class="{'btn-success':!userForm.$invalid}">Save</button>
-        </div>
+      <div class="form-group">
+        <button class="btn btn-block" ng-disabled="userForm.$invalid" ng-class="{'btn-success':!userForm.$invalid}">Save</button>
       </div>
     </div>
   </div>

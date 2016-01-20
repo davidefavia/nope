@@ -1,4 +1,4 @@
-## v0.6.0 (2016-01-??)
+## v0.6.0 (2016-01-20)
 
 ### Libraries
 - Added **angular-drag-and-drop-lists** version 1.3.0.
@@ -7,6 +7,7 @@
 - Javascript **heavy** refactoring.
 
 ### Features
+- Better and more complete `Gallery` model with corresponding UI (#16).
 - Installation: added website title field (#15).
 
 ### Fixes

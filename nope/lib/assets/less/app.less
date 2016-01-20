@@ -213,19 +213,17 @@ label {
           }
           .btn-group {
             bottom:auto;
-            right: 5px;
+            right: 0;
             left:auto;
-            top: 5px;
+            top: 0;
             position: absolute;
             z-index: 1000;
-            .nope-zoom {
+          }
+          .toolbar {
+            background: rgba(0,0,0,.25);
+            margin: 10px;
+            a:not(.text-danger) {
               color: #fff;
-              background-color: rgba(0,0,0,.75);
-            }
-            .btn-star {
-              .fa-star {
-                color: @brand-warning;
-              }
             }
           }
           a.btn-select {
@@ -285,6 +283,12 @@ label {
   a {
     color: @gray-light;
   }
+  .text-danger {
+    color: @brand-danger;
+    &:hover {
+      color: darken(@brand-danger,10%);
+    }
+  }
 }
 .panel-heading {
   .toolbar {
@@ -311,11 +315,17 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 40px;
-    .btn-toolbar {
+    .toolbar {
       position: absolute;
       right: @gutter;
       top: 50%;
       margin-top: -12px;
+      .text-danger {
+        color: @brand-danger;
+        &:hover {
+          color: darken(@brand-danger,10%);
+        }
+      }
     }
 
   }
@@ -410,19 +420,19 @@ label {
   position: relative;
   min-height: 150px;
   .bg-cover();
-  .toolbar {
-    .btn {
-      i {
-        font-size: 20px;
-      }
-    }
-  }
   .provider {
     position: absolute;
     left: @gutter;
     bottom: @gutter;
     font-size: 20px;
     color: #fff;
+  }
+  .toolbar {
+    background: rgba(0,0,0,.25);
+    margin: 7px;
+    a {
+      color: #fff;
+    }
   }
 }
 .panel-body {

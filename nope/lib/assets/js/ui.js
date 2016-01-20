@@ -386,10 +386,10 @@
               <i class="fa fa-bars handle"></i>\
               <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
               <span dnd-nodrag class="title">{{item.title}}</span>\
-              <div dnd-nodrag class="btn-group btn-group-xs btn-toolbar">\
-                <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
-                <a href="" class="btn btn-default" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
-                <a href="" class="btn btn-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
+              <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
+                <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
               </div>\
             </li>\
           </ul>\
@@ -397,8 +397,8 @@
             <li class="list-group-item">\
               <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
               <span class="title">{{ngModel.title}}</span>\
-              <div class="btn-group btn-group-xs btn-toolbar">\
-                <a href="" class="btn btn-danger btn-xs" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
+              <div class="btn-group btn-group-xs toolbar pull-right">\
+                <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
               </div>\
             </li>\
           </ul>\
