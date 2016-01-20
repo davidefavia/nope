@@ -126,6 +126,16 @@ label {
   }
 }
 
+.help-block {
+  font-size: 11px;
+  margin-bottom: 0;
+  code {
+    background: none;
+    font-weight: bold;
+    color: @gray-light;
+  }
+}
+
 #dashboard {
   h2 {
     &:first-child {
@@ -267,9 +277,6 @@ label {
     margin-bottom: @gutter;
     .input-group {
       margin-bottom: @gutter;
-      .dropdown-menu {
-        display:block;
-      }
     }
   }
   &>.list-group {
@@ -373,6 +380,9 @@ label {
       }
       span.fullname {
         font-weight: bold;
+      }
+      h4.fullname {
+        margin-top: 5px;
       }
       font-size: 11px;
     }

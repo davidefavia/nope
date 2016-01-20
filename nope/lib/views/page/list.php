@@ -23,7 +23,7 @@
       <a href="#/content/page/create" class="btn btn-sm btn-block btn-default" nope-can="{{contentType}}.create">Create new {{contentType}} <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length">No {{contentType}} found<span ng-if="(q.query || q.status)"> with filter "{{q}}"</span>.</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.status)">No {{contentType}} found with filter "{{q}}".</div>
       <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" alt="...">

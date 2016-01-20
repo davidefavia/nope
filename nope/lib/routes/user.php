@@ -7,19 +7,24 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 10;
+    $rpp = 1;
     $currentUser = User::getAuthenticated();
     if($currentUser->can('user.read')) {
       $queryParams = (object) $request->getQueryParams();
       $params = Utils::getPaginationTerms($request, $rpp);
       $usersList = User::findAll([
-        'excluded' => explode(',', $queryParams->excluded)
+        'excluded' => explode(',', $queryParams->excluded),
+        'text' => $params->query
       ], $params->limit, $params->offset, $count);
       $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     } else {
       $usersList = [$currentUser];
     }
-    return $response->withJson(['currentUser' => $currentUser, "data" => $usersList]);
+    return $response->withJson([
+      'currentUser' => $currentUser,
+      'metadata' => $metadata,
+      'data' => $usersList
+    ])->withHeader('Link', json_encode($metadata));
   });
 
   $this->post('', function($request, $response, $args) {
@@ -84,6 +89,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
       $userToUpdate = new User($args['id']);
       if($userToUpdate) {
         $userToUpdate->import($body, $fields);
+        if($body['password'] && $body['confirm'] && v::identical($body['password'])->validate($body['confirm'])) {
+          $userToUpdate->setPassword($body['password']);
+        }
         $userToUpdate->save();
         if($currentUser->id == $userToUpdate->id) {
           $userToUpdate->saveInSession();

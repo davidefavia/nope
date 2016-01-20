@@ -222,7 +222,29 @@ class User extends \Nope\Model {
       $sql[] = 'role = ?';
       $params[] = $filters->role;
     }
+    if($filters->text) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = '('.$p.'username like ? OR pretty_name like ?)';
+      $like = '%' . $filters->text . '%';
+      $params[] = $like;
+      $params[] = $like;
+    }
+    if($filters->excluded) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
+      foreach ($filters->excluded as $value) {
+        $params[] = $value;
+      }
+    }
     return $sql;
+  }
+
+  static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id asc') {
+    return parent::findAll($filters, $limit, $offset, $count, $orderBy);
   }
 
 }

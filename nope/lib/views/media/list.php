@@ -30,7 +30,7 @@
       </form>
     </div>
     <div class="media-list list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q.query">No {{contentType}} found with filter "{{q}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No {{contentType}} found with filter "{{q}}".</div>
       <div ng-if="!contentsList.length">
         <no-empty icon="upload">
           <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>

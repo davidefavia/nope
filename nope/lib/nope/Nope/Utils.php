@@ -118,7 +118,7 @@ class Utils {
   static function getPaginationTerms($request, $rpp = 6) {
     $params = (object) $request->getQueryParams();
     $page = (int) ($params->page? : 1);
-    $limit = $page * $rpp;
+    $limit = $rpp;
     $offset = ($page-1) * $rpp;
     return (object) [
       'query' => (string) $params->query,

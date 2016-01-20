@@ -559,5 +559,29 @@
         }]
       }
     }])
+    .directive('nopeUserDelete', ['$nopeModal', function($nopeModal) {
+      return {
+        restrict : 'A',
+        require : 'ngModel',
+        scope : {
+          ngModel : '=',
+          deleteUserOnClick : '&nopeUserDelete'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $element.on('click', function() {
+            $nopeModal.fromTemplateUrl('view/modal/user-delete.html', $scope).then(function(modal) {
+              $scope.theModal = modal;
+              $scope.theModal.show();
+            });
+          });
+
+          $scope.deleteUser = function() {
+            $scope.deleteUserOnClick($scope.ngModel).$promise.then(function() {
+              $scope.theModal.hide();
+            });
+          }
+        }]
+      }
+    }])
     ;
 })()
