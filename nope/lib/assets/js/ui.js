@@ -42,7 +42,7 @@
     return this;
   }
 
-  angular.module('nope.ui', ['dndLists'])
+  angular.module('nope.ui', [])
     /**
      * Filters
      */

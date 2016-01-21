@@ -5,7 +5,8 @@
 
   angular.module('nope.app', [
     'nope.ui',
-    'ngFileUpload'
+    'ngFileUpload',
+    'dndLists'
   ])
   .constant('BasePath', window.NOPE_BASE_PATH)
   .constant('AssetsPath', window.NOPE_TEMPLATES_PATH)

@@ -1,3 +1,11 @@
+## v0.8.0 (2016-01-??)
+
+### Features
+- `Setting` model and UI.
+
+### Fixes
+- Fixed wrong `Media::isImage` method check.
+
 ## v0.7.0 (2016-01-20)
 
 ### Features

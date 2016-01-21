@@ -35,7 +35,7 @@ class Nope {
    */
   static function isAlredyInstalled() {
     if(R::testConnection()) {
-      $setting = \Nope\Setting::getByKey('installation');
+      $setting = \Nope\Setting::findByKey('installation');
       return !is_null($setting->value);
     } else {
       return false;
@@ -164,6 +164,10 @@ class Nope {
   static function registerMenuItem($item, $priority) {
     self::getInstance()->addConfigWithException('nope.admin.menu', $priority, $item, 'Menu item size already exists at priority '.$priority);
     ksort(self::getInstance()->config['nope.admin.menu']);
+  }
+
+  static function registerSetting($setting, $priority = null) {
+    self::getInstance()->addConfig('nope.settings',$setting, $priority);
   }
 
 }

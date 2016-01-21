@@ -108,15 +108,15 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
         User::authenticate($user);
 
         $setting = new Setting();
-        $setting->group = 'nope';
-        $setting->key = 'installation';
+        $setting->settingkey = 'installation';
         $setting->value = new \DateTime();
         $setting->save();
 
         $setting = new Setting();
-        $setting->group = 'nope';
-        $setting->key = 'title';
-        $setting->value = $body['title'];
+        $setting->settingkey = 'nope';
+        $setting->value = (object) [
+          'headline' => $body['title']
+        ];
         $setting->save();
 
         return redirect($request, $response, NOPE_ADMIN_ROUTE);
