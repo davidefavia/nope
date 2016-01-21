@@ -104,7 +104,6 @@
       <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
       <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
       <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
-      <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
       <script>
         angular.module('nope.app', ['ngMessages', 'nope.ui'])
         ;

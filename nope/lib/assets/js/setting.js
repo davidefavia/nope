@@ -13,11 +13,11 @@
           }
         })
         .state('app.setting.detail', {
-          url: '/view/:key',
+          url: '/view/:settingkey',
           views: {
             'content': {
               templateUrl: function($stateParams) {
-                return 'view/setting/detail/'+$stateParams.key+'.html'
+                return 'view/setting/detail/'+$stateParams.settingkey+'.html'
               },
               controller: 'SettingDetailController'
             }
@@ -36,19 +36,27 @@
     .controller('SettingDetailController', ['$scope', '$stateParams', 'Setting', function($scope, $stateParams, Setting) {
 
       Setting.get({
-        key: $stateParams.key
+        settingkey: $stateParams.settingkey
       }, function(data) {
         $scope.setting = data;
         $scope.$parent.selectedSetting = $scope.setting;
       });
+
+      $scope.save = function() {
+        Setting.update($scope.setting, function(data) {
+          $scope.$emit('nope.toast.success', 'Setting updated.');
+          $scope.setting = data;
+          $scope.$parent.selectedSetting = $scope.setting;
+        });
+      }
 
     }])
     /**
      * Services
      */
     .service('Setting', ['$resource', function($resource) {
-      return $resource('setting/:key', {
-        key: '@key'
+      return $resource('setting/:settingkey', {
+        settingkey: '@settingkey'
       }, {
         update: {
           method: 'PUT'

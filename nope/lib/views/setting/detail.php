@@ -13,8 +13,10 @@ $fields = $setting->getFields();
       <?php foreach($fields as $field) { ?>
       <div class="form-group">
         <label class="control-label"><?php echo $field->properties->label; ?></label>
-        <p><?php echo $field->properties->description; ?></p>
-        <?php echo $field->draw('setting.value'); ?>
+        <?php if($field->properties->description) { ?>
+          <p class="control-description"><?php echo $field->properties->description; ?></p>
+        <?php } ?>
+        <?php echo $field->draw('setting.value.'); ?>
       </div>
       <?php } ?>
     </div>

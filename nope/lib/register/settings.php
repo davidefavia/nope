@@ -25,9 +25,10 @@ $nopeSettings->addField(new Setting\Field('description', [
 $nopeSettings->addField(new Setting\Field('cover', [
   'label' => 'Website cover',
   'type' => 'model',
+  'model' => '\Nope\Media',
   'attributes' => [
     'href' => '#/media',
-    'multiple' => 'false',
+    'multiple' => false,
     'label' => 'Add website cover',
     'preview' => 'icon'
   ]

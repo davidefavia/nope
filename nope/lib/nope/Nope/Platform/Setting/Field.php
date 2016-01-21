@@ -8,13 +8,11 @@ class Field {
 
   public $id;
   public $properties = [];
+  public $instance;
 
   function __construct($id, $properties = []) {
     $this->id = $id;
     $this->properties = (object) $properties;
-  }
-
-  function draw($ngModel) {
     switch($this->properties->type) {
       default:
         $type = 'input';
@@ -25,8 +23,20 @@ class Field {
         break;
     }
     $className = 'Nope\Platform\Setting\Field\\' . S::upperCaseFirst($type);
-    $instance = new $className($this->id, $this->properties, $ngModel);
-    return $instance->draw();
+    $this->instance = new $className($this->id, $this->properties);
+  }
+
+  function draw($ngModel = null) {
+    $this->instance->setNgModel($ngModel);
+    return $this->instance->draw();
+  }
+
+  function toValue($v) {
+    return $this->instance->toValue($v);
+  }
+
+  function fromValue($v) {
+    return $this->instance->fromValue($v);
   }
 
 }

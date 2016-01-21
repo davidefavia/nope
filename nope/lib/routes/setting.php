@@ -29,14 +29,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
 
   $this->put('/{key}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
-    if($currentUser->can('gallery.update')) {
-      $fields = ['title', 'body', 'tags', 'slug', 'starred', 'priority'];
-      if($currentUser->can('media.read')) {
-        $fields[] = 'cover';
-        $fields[] = 'media';
-      }
+    if($currentUser->can('setting.update')) {
+      $fields = ['settingkey', 'value'];
       try {
-        $contentToUpdate = new Gallery($args['id']);
+        $contentToUpdate = Setting::findByKey($args['key']);
         if($contentToUpdate) {
           $body = $request->getParsedBody();
           $contentToUpdate->import($body, $fields);
@@ -46,8 +42,8 @@ $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
           return $response->withStatus(404);
         }
       } catch(\Exception $e) {
-        // Conflict with existing slug!
-        return $response->withStatus(409, $e->getMessage());
+        // Validation exception.
+        return $response->withStatus(400, $e->getMessage());
       }
     } else {
       return $response->withStatus(403);
