@@ -3,6 +3,7 @@
 namespace Nope;
 
 use Respect\Validation\Validator as v;
+use Intervention\Image\ImageManagerStatic as Image;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
@@ -123,6 +124,29 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
         return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
+      } else {
+        return $response->withStatus(404);
+      }
+    } else {
+      return $response->withStatus(403);
+    }
+  });
+
+  $this->put('/{id}/edit', function($request, $response, $args) {
+    $currentUser = User::getAuthenticated();
+    $body = $request->getParsedBody();
+    if($currentUser->can('media.update')) {
+      $contentToUpdate = new Media($args['id']);
+      if($contentToUpdate) {
+        $path = $contentToUpdate->getPath();
+        $img = Image::make($path);
+        // rotate image 90 degrees clockwise
+        $img->rotate(-90);
+        $img->save($path, 100);
+        return $response->withJson([
+          'currentUser' => $currentUser,
+          'data' => $contentToUpdate
+        ]);
       } else {
         return $response->withStatus(404);
       }

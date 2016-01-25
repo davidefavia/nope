@@ -10,6 +10,7 @@
       <div class="media-preview" style="{{'background-image: url('+media.preview.thumb+');'}}">
         <div class="btn-group btn-group-xs toolbar pull-right">
           <a ng-click="media.starred=!media.starred;" class="btn star"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
+          <a href="" nope-image-edit="media" class="btn"><i class="fa fa-paint-brush"></i></a>
           <a href="" nope-zoom="media.url" class="btn" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>
         </div>
         <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>

@@ -583,5 +583,38 @@
         }]
       }
     }])
+    .directive('nopeImageEdit', ['$rootScope', '$nopeModal', 'Media', function($rootScope, $nopeModal, Media) {
+      return {
+        restrict : 'A',
+        scope : {
+          ngModel : '=nopeImageEdit'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.theImage = {};
+
+          $element.on('click', function() {
+            $scope.theImage.imageUrl = $scope.ngModel.url + '?_t_=' + new Date().getTime();
+            $nopeModal.fromTemplateUrl('view/modal/image-edit.html', $scope).then(function(modal) {
+              $scope.theModal = modal;
+              $scope.theModal.show();
+            });
+          });
+
+          $scope.save = function(d) {
+            Media.editImage({
+              rotate : d,
+              id : $scope.ngModel.id
+            }, $scope.ngModel, function(data) {
+              var t = '?__t__=' + (new Date()).getTime();
+              data.preview.thumb = data.preview.thumb + t;
+              data.url = data.url + t;
+              $scope.theImage.imageUrl = data.url;
+              $rootScope.$broadcast('nope.media.image.edited', data);
+            });
+          }
+
+        }]
+      }
+    }])
     ;
 })()

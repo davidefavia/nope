@@ -71,6 +71,9 @@
         }, q), function(data, headers) {
           $scope.metadata = angular.fromJson(headers().link);
           $scope.contentsList = (page===1?[]:$scope.contentsList).concat(data);
+          angular.forEach($scope.contentsList, function(value, index) {
+            $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb + '?_t_=' + (new Date()).getTime();
+          });
         });
       }
 
@@ -96,6 +99,14 @@
         });
       }
 
+      $scope.$on('nope.media.image.edited', function(e,data) {
+        angular.forEach($scope.contentsList, function(item,index) {
+          if(item.id===data.id) {
+            $scope.contentsList[index].preview.thumb = data.preview.thumb;
+          }
+        });
+      });
+
     }])
     .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
 
@@ -112,6 +123,12 @@
           $scope.$parent.selectedMedia = $scope.media;
         }
       });
+
+      $scope.$on('nope.media.image.edited', function(e, data) {
+        if(data.id === $stateParams.id) {
+          $scope.media.preview.thumb = data.preview.thumb;
+        }
+      });
     }])
     /**
      * Services
@@ -126,6 +143,14 @@
         import : {
           method: 'POST',
           url : 'content/media/import'
+        },
+        editImage : {
+          method : 'PUT',
+          url : 'content/media/:id/edit',
+          params : {
+            id: '@id',
+            rotate : '@rotate'
+          }
         }
       });
     }]);

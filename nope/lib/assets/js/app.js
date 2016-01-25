@@ -337,6 +337,9 @@
            var User = $injector.get('User');
            $rootScope.currentUser = new User();
            $rootScope.currentUser = angular.extend($rootScope.currentUser, response.data.currentUser);
+           if($rootScope.currentUser.cover) {
+             $rootScope.currentUser.cover.preview.profile = $rootScope.currentUser.cover.preview.profile + '?__t__=' + (new Date()).getTime();
+           }
            response.data = response.data.data;
          }
          return response;

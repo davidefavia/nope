@@ -2,6 +2,7 @@
 
 ### Features
 - `Setting` model and UI.
+- `Media` thumbnail basic editing: rotation clockwise and counterclockwise.
 
 ### Fixes
 - Fixed wrong `Media::isImage` method check.

@@ -492,6 +492,27 @@ label {
       }
     }
   }
+  &.image-editing {
+    .modal-body {
+      &>div {
+        text-align: center;
+        width: 100%;
+        display:block;
+        img {
+          max-height: 300px;
+        }
+        &:not(.btn-group) {
+          margin-bottom: 10px;
+        }
+        &.btn-group {
+          .btn {
+            float:none;
+          }
+        }
+      }
+
+    }
+  }
 }
 
 ul[dnd-list] {
