@@ -99,13 +99,28 @@
         });
       }
 
-      $scope.$on('nope.media.image.edited', function(e,data) {
-        angular.forEach($scope.contentsList, function(item,index) {
-          if(item.id===data.id) {
-            $scope.contentsList[index].preview.thumb = data.preview.thumb;
+      $scope.rotate = function(p, d, i) {
+        Media.editImage({
+          rotate : d,
+          id : p.id
+        }, p, function(data) {
+          var t = '?__t__=' + (new Date()).getTime();
+          data.preview.thumb = data.preview.thumb + t;
+          data.url = data.url + t;
+          $scope.$emit('nope.toast.success', 'Media "'+data.title+'" updated.');
+          if(i===undefined) {
+            angular.forEach($scope.contentsList, function(item,index) {
+              if(item.id===data.id) {
+                i = index;
+              }
+            })
           }
+          if(i!==undefined) {
+            $scope.contentsList[i] = data;
+          }
+          $scope.$broadcast('nope.media.updated', data);
         });
-      });
+      }
 
     }])
     .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
@@ -123,12 +138,7 @@
           $scope.$parent.selectedMedia = $scope.media;
         }
       });
-
-      $scope.$on('nope.media.image.edited', function(e, data) {
-        if(data.id === $stateParams.id) {
-          $scope.media.preview.thumb = data.preview.thumb;
-        }
-      });
+      
     }])
     /**
      * Services

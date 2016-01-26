@@ -45,7 +45,7 @@
             </div>
             <div class="btn-group btn-group-xs toolbar" ng-if="!nope.isIframe">
               <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
-              <a href="" nope-image-edit="p" class="btn"><i class="fa fa-paint-brush"></i></a>
+              <a href="" class="btn" ng-click="rotate(p,-90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-right"></i></a>
               <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
               <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
             </div>
