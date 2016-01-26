@@ -15,15 +15,22 @@ class Field {
     $this->properties = (object) $properties;
     switch($this->properties->type) {
       default:
+      case 'input':
         $type = 'input';
         break;
       case 'text':
       case 'model':
+      case 'pair':
+      case 'table':
         $type = $this->properties->type;
         break;
     }
     $className = 'Nope\Platform\Setting\Field\\' . S::upperCaseFirst($type);
     $this->instance = new $className($this->id, $this->properties);
+  }
+
+  function isGroup() {
+    return false;
   }
 
   function draw($ngModel = null) {

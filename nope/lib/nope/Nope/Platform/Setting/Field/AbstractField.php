@@ -47,7 +47,6 @@ abstract class AbstractField {
   }
 
   protected function getAttributesList() {
-    $this->properties->attributes['class'] .= ' form-control';
     $attrs = [];
     foreach($this->properties->attributes as $key => $value) {
       if($value===true || $value===false) {
@@ -63,10 +62,16 @@ abstract class AbstractField {
     $ngModel = $ngRepeat.'[$index]';
     $this->properties->attributes['ng-model'] = $ngModel;
     $pushed = 'null';
-    if($this->properties->type==='model') {
-      $pushed = '{}';
+    if(get_class($this)==='\Nope\Platform\Setting\Field\Group') {
       if($this->properties->attributes['multiple']) {
-        $pushed = '[]';
+        $pushed = '{}';
+      }
+    } else {
+      if($this->properties->type==='model') {
+        $pushed = '{}';
+        if($this->properties->attributes['multiple']) {
+          $pushed = '[]';
+        }
       }
     }
     return '<div class="list-group" ng-if="'.$ngRepeat.'.length">

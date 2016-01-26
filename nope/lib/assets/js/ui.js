@@ -19,19 +19,19 @@
     return this;
   }
   Array.prototype.swapCols = function(a, b) {
-    for (i = 0; i < this.length; i++) {
+    for (var i = 0; i < this.length; i++) {
       this[i].swapItems(a, b);
     }
     return this;
   }
   Array.prototype.addCol = function() {
-    for (i = 0; i < this.length; i++) {
+    for (var i = 0; i < this.length; i++) {
       this[i].push("");
     }
     return this;
   }
   Array.prototype.removeCol = function(index) {
-    for (i = 0; i < this.length; i++) {
+    for (var i = 0; i < this.length; i++) {
       this[i].splice(index, 1);
     }
     return this;
