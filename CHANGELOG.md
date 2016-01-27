@@ -1,3 +1,9 @@
+## v0.9.0 (2016-02-??)
+
+### Libraries
+- Updated **angular** to version 1.4.9.
+- Updated `composer` libraries.
+
 ## v0.8.0 (2016-01-27)
 
 ### Features
