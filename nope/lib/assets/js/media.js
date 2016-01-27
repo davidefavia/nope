@@ -48,7 +48,7 @@
 
       $scope.deleteContentOnClick = function(p) {
         var t = p.title;
-        Media.delete({
+        return Media.delete({
           id: p.id
         }, function() {
           $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
@@ -138,7 +138,7 @@
           $scope.$parent.selectedMedia = $scope.media;
         }
       });
-      
+
     }])
     /**
      * Services

@@ -13,7 +13,7 @@
           <a href="" class="btn" ng-click="$parent.rotate(media,-90);" ng-if="media.isImage"><i class="fa fa-rotate-right"></i></a>
           <a href="" nope-zoom="media.url" class="btn" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>
         </div>
-        <i class="provider fa {{'fa-'+(media.provider | lowercase)}}" ng-if="media.provider"></i>
+        <span class="provider"ng-if="media.provider" ><i class="fa {{'fa-'+(media.provider | lowercase)}}" ></i> {{media.provider}}</span>
       </div>
       <div class="form-group">
         <label>URL</label>

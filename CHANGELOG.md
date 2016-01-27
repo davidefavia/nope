@@ -8,6 +8,7 @@
 
 ### Fixes
 - Fixed wrong `Media::isImage` method check.
+- Fixed empty `title` or `filename` too long exceptions on `Media` import (#18).
 
 ## v0.7.0 (2016-01-20)
 
