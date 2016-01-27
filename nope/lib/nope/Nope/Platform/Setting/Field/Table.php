@@ -24,14 +24,14 @@ class Table extends AbstractField {
     }
     $maxRows = $this->properties->maxRows;
     return '<table '. $this->getAttributesList() .' >
-      <thead>
+      <thead ng-if="'.$ngModel.'.length">
         <tr>
           '.$header.'
           '.($reOrderRows?'<th></th>':'').'
         </tr>
       </thead>
       <tbody>
-      '.($fixedColumns?'':'<tr>
+      '.($fixedColumns?'':'<tr ng-if="'.$ngModel.'.length && '.$ngModel.'[0].length>1">
           <td ng-repeat="col in '.$ngModel.'[0] track by $index" ng-init="colIndex=$index;">
             <div class="btn-group btn-group-xs toolbar">
               <a href="" class="btn" ng-click="'.$ngModel.'.swapCols(colIndex, colIndex-1);" ng-if="!$first"><i class="fa fa-arrow-left"></i></a>
@@ -78,8 +78,8 @@ class Table extends AbstractField {
       }
       return $v;
     } else {
-      if(!is_array($v[0])) {
-        return [$v];
+      if(!is_array($v)) {
+        return [];
       }
       return $v;
     }
@@ -88,12 +88,12 @@ class Table extends AbstractField {
   function fromValue($v) {
     if($this->properties->multiple) {
       if(is_null($v)) {
-        return [[]];
+        return [];
       }
       return $v;
     } else {
-      if(!is_array($v[0])) {
-        return [$v];
+      if(is_null($v)) {
+        return [];
       }
       return $v;
     }

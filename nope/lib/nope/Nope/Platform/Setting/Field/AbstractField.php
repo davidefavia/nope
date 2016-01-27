@@ -25,9 +25,6 @@ abstract class AbstractField {
       }
       return $v;
     } else {
-      if(is_array($v)) {
-        return $v[0];
-      }
       return $v;
     }
   }
@@ -39,9 +36,6 @@ abstract class AbstractField {
       }
       return $v;
     } else {
-      if(is_array($v)) {
-        return $v[0];
-      }
       return $v;
     }
   }
@@ -59,7 +53,7 @@ abstract class AbstractField {
 
   function drawMultiple() {
     $ngRepeat = $this->properties->attributes['ng-model'];
-    $ngModel = $ngRepeat.'[$index]';
+    $ngModel = $ngRepeat.'[multipleIndex]';
     $this->properties->attributes['ng-model'] = $ngModel;
     $pushed = 'null';
     if(get_class($this)==='\Nope\Platform\Setting\Field\Group') {
@@ -72,19 +66,27 @@ abstract class AbstractField {
         if($this->properties->attributes['multiple']) {
           $pushed = '[]';
         }
+      } elseif($this->properties->type==='table') {
+        if($this->properties->multiple) {
+          $pushed = '[]';
+        }
+      } elseif($this->properties->type==='pair') {
+        if($this->properties->multiple) {
+          $pushed = '[]';
+        }
       }
     }
     return '<div class="list-group" ng-if="'.$ngRepeat.'.length">
-      <div class="list-group-item clearfix" ng-repeat="item in '.$ngRepeat.' track by $index">
+      <div class="list-group-item clearfix" ng-repeat="item in '.$ngRepeat.' track by $index" ng-init="multipleIndex=$index;">
         <div class="row">
           <div class="col col-md-10">
             ' . $this->drawSingle() . '
           </div>
           <div class="col col-md-2">
             <div class="btn-group btn-group-xs toolbar pull-right">
-              <a href="" class="btn" ng-click="'.$ngRepeat.'.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>
-              <a href="" class="btn" ng-click="'.$ngRepeat.'.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>
-              <a href="" class="btn text-danger" ng-click="'.$ngRepeat.'.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>
+              <a href="" class="btn" ng-click="'.$ngRepeat.'.swapItems(multipleIndex, multipleIndex-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>
+              <a href="" class="btn" ng-click="'.$ngRepeat.'.swapItems(multipleIndex, multipleIndex+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>
+              <a href="" class="btn text-danger" ng-click="'.$ngRepeat.'.removeItemAt(multipleIndex);"><i class="fa fa-times-circle"></i></a>
             </div>
           </div>
         </div>

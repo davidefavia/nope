@@ -15,7 +15,7 @@ class Pair extends AbstractField {
     }
     $maxRows = $this->properties->maxRows;
     return '<table '. $this->getAttributesList() .' >
-      <thead>
+      <thead ng-if="'.$ngModel.'.length">
         <tr>
           '.$header.'
           <th></th>
@@ -23,8 +23,11 @@ class Pair extends AbstractField {
       </thead>
       <tbody>
         <tr ng-repeat="row in '.$ngModel.' '.($maxRows?' | limitTo:' . $maxRows:'').' track by $index" ng-init="rowIndex=$index;">
-          <td ng-repeat="col in [0,1] track by $index" ng-init="colIndex=$index;">
-            <input type="text" class="form-control input-sm" ng-model="'.$ngModel.'[rowIndex][colIndex]" />
+          <td>
+            <input type="text" class="form-control input-sm" ng-model="'.$ngModel.'[rowIndex].key" />
+          </td>
+          <td>
+            <textarea class="form-control input-sm" ng-model="'.$ngModel.'[rowIndex].value" rows="2"></textarea>
           </td>
           <td>
             <div class="btn-group btn-group-xs toolbar">
@@ -34,7 +37,7 @@ class Pair extends AbstractField {
         </tr>
         <tr '.($maxRows?'ng-if="'.$ngModel.'.length<'.$maxRows.'"':'').'>
           <td colspan="3">
-            <a href="" ng-click="'.$ngModel.'.addRow();" class="btn btn-default btn-block btn-sm">Add pair <i class="fa fa-arrow-down"></i></a>
+            <a href="" ng-click="'.$ngModel.'.push({key:\'\',value:\'\'});" class="btn btn-default btn-block btn-sm">Add pair <i class="fa fa-arrow-down"></i></a>
           </td>
         </tr>
       </tbody>
@@ -42,10 +45,10 @@ class Pair extends AbstractField {
   }
 
   function toValue($v) {
+    if(is_null($v)) {
+      return [];
+    }
     if($this->properties->multiple) {
-      if(is_null($v)) {
-        return [];
-      }
       return $v;
     } else {
       return $v;
@@ -53,15 +56,12 @@ class Pair extends AbstractField {
   }
 
   function fromValue($v) {
+    if(is_null($v)) {
+      return [];
+    }
     if($this->properties->multiple) {
-      if(is_null($v)) {
-        return [];
-      }
       return $v;
     } else {
-      if(!is_array($v[0])) {
-        return [];
-      }
       return $v;
     }
   }

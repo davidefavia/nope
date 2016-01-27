@@ -2,6 +2,7 @@
 
 ### Features
 - `Setting` model and UI.
+- Platform settings type: `input`, `text`, `pair`, `table`, `model`, `group`, `select`, `checkbox`.
 - `Media` thumbnail basic editing: rotation clockwise and counterclockwise.
 
 ### Fixes
