@@ -25,6 +25,12 @@ class Setting extends \Nope\Model {
     return $json;
   }
 
+  function toJson() {
+    $json = parent::jsonSerialize();
+    $json->value = $this->fromJsonValue($json->value);
+    return $json;
+  }
+
   function beforeSave() {
     $this->value = $this->toJsonValue();
     parent::beforeSave();
@@ -52,7 +58,7 @@ class Setting extends \Nope\Model {
     return json_encode($json);
   }
 
-  private function fromJsonValue($value) {
+  private function fromJsonValue($value, $hashedKeys = false) {
     $settingsList = \Nope::getConfig('nope.settings');
     $json = [];
     $value = json_decode($value) ;
@@ -62,7 +68,7 @@ class Setting extends \Nope\Model {
         if(count($fields)) {
           foreach ($fields as $field) {
             $theValue = $value->{$field->id};
-            $json[$field->id] = $field->fromValue($theValue);
+            $json[$field->id] = $field->fromValue($theValue, $hashedKeys);
           }
         }
       }

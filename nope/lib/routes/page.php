@@ -33,6 +33,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
       }
+      if($currentUser->can('page.custom')) {
+        $fields[] = 'custom';
+      }
       $contentToCreate = new Page();
       $body = $request->getParsedBody();
       $contentToCreate->import($body, $fields);
@@ -80,6 +83,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
       $fields = ['title', 'body', 'slug', 'startPublishingDate', 'endPublishingDate', 'status', 'summary', 'tags', 'format', 'starred', 'priority'];
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
+      }
+      if($currentUser->can('page.custom')) {
+        $fields[] = 'custom';
       }
       $contentToUpdate = new Page($args['id']);
       if($contentToUpdate) {

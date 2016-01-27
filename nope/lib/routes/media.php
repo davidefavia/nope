@@ -119,6 +119,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
       $fields = ['title', 'body', 'tags', 'starred'];
+      if($currentUser->can('media.custom')) {
+        $fields[] = 'custom';
+      }
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);

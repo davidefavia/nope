@@ -10,7 +10,12 @@ $fields = $setting->getFields();
       <?php echo $properties->label; ?>
     </div>
     <div class="panel-body">
-      <?php include 'box.php'; ?>
+      <?php
+
+      $ngModel = 'setting.value';
+      include 'box.php';
+
+      ?>
     </div>
     <div class="panel-footer">
       <button class="btn btn-block" ng-disabled="settingForm.$invalid" ng-class="{'btn-success':!settingForm.$invalid}">Save</button>

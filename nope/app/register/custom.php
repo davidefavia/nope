@@ -1,0 +1,3 @@
+<?php
+
+// Register custom here.

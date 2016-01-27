@@ -34,6 +34,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
       $userToCreate = new User();
       $body = $request->getParsedBody();
       if(v::identical($body['password'])->validate($body['confirm']) && $body['role']!=='admin') {
+        if($currentUser->can('user.custom')) {
+          $fields[] = 'custom';
+        }
         $userToCreate->import($body, $fields);
         $userToCreate->setPassword($body['password']);
         try {
@@ -71,12 +74,12 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
     if($currentUser->can('user.update') || $currentUser->id == $args['id']) {
       if($currentUser->isAdmin()) {
         if($currentUser->id == $args['id']) {
-          $fields = ['email','description','prettyName','cover'];
+          $fields = ['email','description','prettyName','cover', 'custom'];
         } else {
           if($body['role'] === 'admin') {
             return $response->withStatus(400);
           } else {
-            $fields = ['email','description','enabled','prettyName','role','cover'];
+            $fields = ['email','description','enabled','prettyName','role','cover', 'custom'];
           }
         }
       } else {
@@ -84,6 +87,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
           $fields = ['email','description','prettyName','cover'];
         } else {
           $fields = ['email','description','prettyName'];
+        }
+        if($currentUser->can('user.custom')) {
+          $fields[] = 'custom';
         }
       }
       $userToUpdate = new User($args['id']);

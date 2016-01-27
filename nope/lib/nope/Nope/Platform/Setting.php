@@ -25,5 +25,28 @@ class Setting {
     return $this->fields;
   }
 
+  function toJson($v) {
+    if(count($this->fields)) {
+      $p = [];
+      foreach($this->fields as $field) {
+        $p[$field->id] = $field->toValue($v[$field->id]);
+      }
+      return json_encode($p);
+    }
+    return null;
+  }
+
+  function fromJson($v) {
+    if(count($this->fields)) {
+      $v = json_decode($v);
+      $p = [];
+      foreach($this->fields as $field) {
+        $p[$field->id] = $field->toValue($v->{$field->id});
+      }
+      return $p;
+    }
+    return null;
+  }
+
 
 }

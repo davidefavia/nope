@@ -1,8 +1,9 @@
-## v0.8.0 (2016-01-??)
+## v0.8.0 (2016-01-27)
 
 ### Features
-- `Setting` model and UI.
+- `Setting` model and UI (#19).
 - Platform settings type: `input`, `text`, `pair`, `table`, `model`, `group`, `select`, `checkbox`.
+- Custom settings for each model (#19).
 - `Media` thumbnail basic editing: rotation clockwise and counterclockwise.
 
 ### Fixes

@@ -120,6 +120,8 @@ class Content extends Model {
           $this->setTags($body[$f]);
         } elseif($f === 'cover') {
           $this->setCover($body[$f]);
+        } elseif($f === 'custom') {
+          $this->setModelSettings($body[$f]);
         } else {
           if(array_key_exists($f, $body)) {
             $this->$f = $body[$f];

@@ -4,7 +4,7 @@
     <?php if($field->properties->description) { ?>
       <p class="control-description"><?php echo $field->properties->description; ?></p>
     <?php } ?>
-    <?php echo $field->draw('setting.value.'); ?>
+    <?php echo $field->draw($ngModel); ?>
   </div>
   <?php } else { ?>
   <div class="form-group">
@@ -12,7 +12,7 @@
     <?php if($field->properties->description) { ?>
       <p class="control-description"><?php echo $field->properties->description; ?></p>
     <?php } ?>
-    <?php echo $field->draw('setting.value.'); ?>
+    <?php echo $field->draw($ngModel); ?>
   </div>
   <?php } ?>
 <?php } ?>
