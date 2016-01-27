@@ -48,7 +48,7 @@
 
       $scope.deleteContentOnClick = function(p) {
         var t = p.title;
-        Media.delete({
+        return Media.delete({
           id: p.id
         }, function() {
           $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
@@ -71,6 +71,9 @@
         }, q), function(data, headers) {
           $scope.metadata = angular.fromJson(headers().link);
           $scope.contentsList = (page===1?[]:$scope.contentsList).concat(data);
+          angular.forEach($scope.contentsList, function(value, index) {
+            $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb + '?_t_=' + (new Date()).getTime();
+          });
         });
       }
 
@@ -96,6 +99,29 @@
         });
       }
 
+      $scope.rotate = function(p, d, i) {
+        Media.editImage({
+          rotate : d,
+          id : p.id
+        }, p, function(data) {
+          var t = '?__t__=' + (new Date()).getTime();
+          data.preview.thumb = data.preview.thumb + t;
+          data.url = data.url + t;
+          $scope.$emit('nope.toast.success', 'Media "'+data.title+'" updated.');
+          if(i===undefined) {
+            angular.forEach($scope.contentsList, function(item,index) {
+              if(item.id===data.id) {
+                i = index;
+              }
+            })
+          }
+          if(i!==undefined) {
+            $scope.contentsList[i] = data;
+          }
+          $scope.$broadcast('nope.media.updated', data);
+        });
+      }
+
     }])
     .controller('MediaDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Media', function($scope, $filter, $state, $stateParams, Media) {
 
@@ -112,6 +138,7 @@
           $scope.$parent.selectedMedia = $scope.media;
         }
       });
+
     }])
     /**
      * Services
@@ -126,6 +153,14 @@
         import : {
           method: 'POST',
           url : 'content/media/import'
+        },
+        editImage : {
+          method : 'PUT',
+          url : 'content/media/:id/edit',
+          params : {
+            id: '@id',
+            rotate : '@rotate'
+          }
         }
       });
     }]);

@@ -71,4 +71,26 @@ class View {
     return $response;
   }
 
+  static function renderCustomBox($key, $modelName, $template = null)
+  {
+    if(is_null($template)) {
+      $template = NOPE_LIB_VIEWS_PATH . 'setting/box.php';
+    }
+    if(file_exists($template)) {
+      $custom = \Nope::getCustom($key);
+      if($custom) {
+        ob_start();
+        $fields = $custom->getFields();
+        $ngModel = $modelName;
+        include_once $template;
+        $renderedTemplate = ob_get_contents();
+        ob_end_clean();
+        return $renderedTemplate;
+      }
+      return false;
+    } else {
+      throw new \Exception("Error Processing Request", 1);
+    }
+  }
+
 }

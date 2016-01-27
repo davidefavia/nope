@@ -74,7 +74,7 @@
   'permission' => '',
   'role' => 'admin',
   'activeWhen' => 'selectedPath.indexOf(\'/setting\')!==-1',
-  'icon' => 'fa fa-gear',
+  'icon' => 'fa fa-gears',
   'attrs' => [
     'href' => '#/setting'
   ]

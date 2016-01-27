@@ -33,6 +33,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
         $fields[] = 'cover';
         $fields[] = 'media';
       }
+      if($currentUser->can('media.custom')) {
+        $fields[] = 'custom';
+      }
       $contentToCreate = new Gallery();
       $body = $request->getParsedBody();
       $contentToCreate->import($body, $fields);
@@ -68,6 +71,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
       if($currentUser->can('media.read')) {
         $fields[] = 'cover';
         $fields[] = 'media';
+      }
+      if($currentUser->can('media.custom')) {
+        $fields[] = 'custom';
       }
       try {
         $contentToUpdate = new Gallery($args['id']);

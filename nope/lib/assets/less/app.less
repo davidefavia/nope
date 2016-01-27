@@ -432,10 +432,12 @@ label {
   .bg-cover();
   .provider {
     position: absolute;
-    left: @gutter;
-    bottom: @gutter;
-    font-size: 20px;
+    left: 7px;
+    bottom: 7px;
+    font-size: 12px;
     color: #fff;
+    background: rgba(0,0,0,.25);
+    padding: 3px 7px;
   }
   .toolbar {
     background: rgba(0,0,0,.25);
@@ -517,4 +519,9 @@ ul[dnd-list] {
 
 #media:not(.has-detail) {
   margin:0;
+}
+
+.control-description {
+  font-size: 12px;
+  color: @gray-light;
 }

@@ -29,6 +29,15 @@
             </div>
           </div>
         </div>
+        <?php
+          $html = \Nope\View::renderCustomBox('page', 'content.custom.');
+          if($html) { ?>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <?php echo $html; ?>
+            </div>
+          </div>
+        <?php } ?>
       </div>
       <div class="col col-md-3">
         <div class="panel panel-default">

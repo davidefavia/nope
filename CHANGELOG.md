@@ -1,3 +1,15 @@
+## v0.8.0 (2016-01-27)
+
+### Features
+- `Setting` model and UI (#19).
+- Platform settings type: `input`, `text`, `pair`, `table`, `model`, `group`, `select`, `checkbox`.
+- Custom settings for each model (#19).
+- `Media` thumbnail basic editing: rotation clockwise and counterclockwise.
+
+### Fixes
+- Fixed wrong `Media::isImage` method check.
+- Fixed empty `title` or `filename` too long exceptions on `Media` import (#18).
+
 ## v0.7.0 (2016-01-20)
 
 ### Features

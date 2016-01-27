@@ -1,4 +1,6 @@
-<img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
+<h1 align="center">
+  <img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
+</h1>
 
 ### :shit: Crapware warning! :shit:
 Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!

@@ -64,6 +64,7 @@ abstract class Model implements \JsonSerializable {
   public function jsonSerialize() {
     $json = (object) $this->model->export();
     $json->id = (int) $json->id;
+    $json->custom = $this->getModelSettings($json->custom);
     $tmp = [];
     foreach ($json as $key => $value) {
       $tmp[(string) S::camelize($key)] = $value;
@@ -93,6 +94,24 @@ abstract class Model implements \JsonSerializable {
       $this->creationDate = new \DateTime();
     }
     $this->lastModificationDate = new \DateTime();
+  }
+
+  function getModelSettings($custom) {
+    $setting = \Nope::getCustom(self::__getModelType());
+    if(!is_null($setting)) {
+        return $setting->fromJson($custom);
+    } else {
+        return null;
+    }
+  }
+
+  function setModelSettings($value) {
+    $setting = \Nope::getCustom(self::__getModelType());
+    if(!is_null($setting)) {
+        $this->custom = $setting->toJson($value);
+    } else {
+        $this->custom = null;
+    }
   }
 
   public function delete() {

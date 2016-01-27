@@ -3,6 +3,8 @@
 namespace Nope;
 
 use Respect\Validation\Validator as v;
+use Intervention\Image\ImageManagerStatic as Image;
+use Stringy\StaticStringy as S;
 
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
@@ -76,20 +78,21 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     }
     $body = (object) $request->getParsedBody();
     try {
-      $info = \Embed\Embed::create($body->url);
       $media = new Media();
-      $media->title = $info->title;
+      $info = \Embed\Embed::create($body->url);
+      $imageUrl = $info->images[0]['value'];
+      $media->title = (string) S::truncate($info->title, 255);
       $media->body = $info->description;
-      $media->url = $info->url;
       $media->type = $info->type;
       $p = explode('/', $info->images[0]['value']);
       $filename = $p[count($p)-1];
-      $uniqueFilename = Utils::getUniqueFilename($filename, NOPE_UPLOADS_DIR);
-      file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($info->images[0]['value']));
-      $media->filename = $uniqueFilename;
       $media->provider = $info->providerName;
       $media->mimetype = $info->images[0]['mime'];
       $media->size = $info->images[0]['size'];
+      $uniqueFilename = Utils::getUniqueFilename((string) S::truncate($filename, 100), NOPE_UPLOADS_DIR);
+      file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($imageUrl));
+      $media->filename = $uniqueFilename;
+      $media->url = $info->url;
       $media->starred = false;
       $media->setAuthor($currentUser);
       // Why save media before tags? It is needed to generate ID, then build tag relations!
@@ -118,11 +121,37 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
       $fields = ['title', 'body', 'tags', 'starred'];
+      if($currentUser->can('media.custom')) {
+        $fields[] = 'custom';
+      }
       $contentToUpdate = new Media($args['id']);
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
         return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
+      } else {
+        return $response->withStatus(404);
+      }
+    } else {
+      return $response->withStatus(403);
+    }
+  });
+
+  $this->put('/{id}/edit', function($request, $response, $args) {
+    $currentUser = User::getAuthenticated();
+    $body = $request->getParsedBody();
+    if($currentUser->can('media.update')) {
+      $contentToUpdate = new Media($args['id']);
+      if($contentToUpdate) {
+        $path = $contentToUpdate->getPath();
+        $img = Image::make($path);
+        // rotate image 90 degrees clockwise
+        $img->rotate(-90);
+        $img->save($path, 100);
+        return $response->withJson([
+          'currentUser' => $currentUser,
+          'data' => $contentToUpdate
+        ]);
       } else {
         return $response->withStatus(404);
       }

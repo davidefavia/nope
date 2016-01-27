@@ -33,7 +33,7 @@ class Media extends Content {
 
   function isImage() {
     if($this->isExternal()) {
-      return $this->type === 'image';
+      return $this->type === 'photo';
     }
     $needle = 'image/';
     $length = strlen($needle);
