@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.container {
+  max-width: 80rem;
+}
+
+header {
+  text-align:center;
+  padding-top: 10rem;
+}

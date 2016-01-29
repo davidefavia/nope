@@ -22,5 +22,14 @@ $nopeSettings->addField(new Setting\Field('description', [
     'rows' => 5
   ]
 ]));
+$nopeSettings->addField(new Setting\Field('homepage', [
+  'label' => 'Homepage',
+  'description' => 'Choose which content will be your homepage.',
+  'type' => 'model',
+  'attributes' => [
+    'href' => '#/content/page',
+    'preview' => 'icon'
+  ]
+]));
 
 \Nope::registerSetting($nopeSettings);

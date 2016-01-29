@@ -405,12 +405,12 @@
           <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a>\
         </div>',
         scope: {
-          multiple: '=',
+          multiple: '=?',
           ngModel: '=',
-          title: '=',
-          preview: '@',
-          label: '@',
-          url: '@href'
+          title: '=?',
+          preview: '@?',
+          label: '@?',
+          url: '@?href'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var theModal;

@@ -2,6 +2,8 @@
 
 namespace Nope\Platform\Setting\Field;
 
+use Stringy\Stringy as S;
+
 abstract class AbstractField {
 
   protected $id;

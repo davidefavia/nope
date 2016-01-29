@@ -69,7 +69,8 @@ class Model extends AbstractField {
             $p[$i] = [];
             foreach ($key as $j => $key2) {
               if($key2) {
-                $p[$i][] = new $this->properties->model($key2);
+                $model = new $this->properties->model($key2);
+                $p[$i][] = $model->toJson();
               }
             }
           }
@@ -78,7 +79,8 @@ class Model extends AbstractField {
         if(is_array($v)) {
           foreach ($v as $key) {
             if($key) {
-              $p[] = new $this->properties->model($key);
+              $model = new $this->properties->model($key);
+              $p[] = $model->toJson();
             }
           }
         }
@@ -86,7 +88,8 @@ class Model extends AbstractField {
       return $p;
     } else {
       if(!is_array($v) && $v) {
-        return new $this->properties->model($v);
+        $model = new $this->properties->model($v);
+        return $model->toJson();
       }
     }
   }

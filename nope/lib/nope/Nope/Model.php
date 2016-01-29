@@ -58,7 +58,6 @@ abstract class Model implements \JsonSerializable {
     return $item;
   }
 
-
   abstract public function validate();
 
   public function jsonSerialize() {
@@ -69,7 +68,14 @@ abstract class Model implements \JsonSerializable {
     foreach ($json as $key => $value) {
       $tmp[(string) S::camelize($key)] = $value;
     }
+    $tmp['creationDate'] = new DateTime($tmp['creationDate']);
+    $tmp['lastModificationDate'] = new DateTime($tmp['lastModificationDate']);
     return (object) $tmp;
+  }
+
+  function toJson() {
+    $c = get_called_class();
+    return $c::jsonSerialize();
   }
 
   public function save() {

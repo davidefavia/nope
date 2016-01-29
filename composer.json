@@ -20,7 +20,8 @@
     "phpmailer/phpmailer": "^5.2",
     "danielstjules/stringy": "~2.2",
     "erusev/parsedown": "^1.6",
-    "embed/embed": "^2.6"
+    "embed/embed": "^2.6",
+    "nesbot/carbon": "^1.21"
   },
   "autoload": {
     "psr-4": {

@@ -19,3 +19,7 @@ function adminRoute($route) {
 function redirect($request, $response, $path) {
   return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . $path);
 }
+
+function asset($fileName) {
+  return NOPE_THEME_PATH . $fileName;
+}
