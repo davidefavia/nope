@@ -12,6 +12,7 @@ class Model extends AbstractField {
 
   function getAttributesList() {
     $attrs = [];
+    $this->properties->attributes['model'] = $this->properties->model;
     foreach($this->properties->attributes as $key => $value) {
       if($value===true || $value===false) {
         $value = ($value?'true':'false');
@@ -21,6 +22,8 @@ class Model extends AbstractField {
         if($this->properties->attributes['multiple']) {
           $value .= (S::contains($key, '?') ? '&':'?') . 'excluded={{('.$p.' | nopeGetIds).join(\',\')}}';
         }
+      } elseif($key === 'model') {
+        $value = S::slugify($value);
       }
       $attrs[] = $key . '="'.$value.'"';
     }

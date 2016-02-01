@@ -4,14 +4,16 @@ namespace Nope;
 
 $app->get('/', function ($request, $response) {
   $setting = Query\Setting::findByKey('nope');
-  $page = Query\Page::findBySlug('home');
-  if($page && (string) $page->status === 'published') {
+  $themeSetting = Query\Setting::findByKey('theme');
+  $page = Query\Page::findBySlug($setting->value->homepage->slug);
+  if($page && (string) $page->realStatus === 'published') {
     return $this->view->render($response, 'index.php', [
       'content' => $page,
-      'setting' => $setting->value
+      'setting' => $setting->value,
+      'themeSetting' => $themeSetting->value
     ]);
   } else {
-    return $response->withStatus(404);
+    return $this->view->render($response->withStatus(404), '404.php');
   }
 });
 
@@ -22,6 +24,6 @@ $app->get('/{slug:[a-zA-Z0-9-_\/]+}', function ($request, $response, $args) {
       'content' => $page
     ]);
   } else {
-    return $response->withStatus(404);
+    return $this->view->render($response->withStatus(404), '404.php');
   }
 });

@@ -366,6 +366,7 @@
           $element.addClass('nope-zoom');
           $element.on('click', function(e) {
             e.preventDefault();
+            $scope.path = $scope.path + '?__t__=' + (new Date()).getTime();
             $nopeModal.fromTemplate('<nope-modal class="zoom">\
           <nope-modal-body><img class="img-responsive" ng-src="{{path}}" /></nope-modal-body>\
           </nope-modal>', $scope).then(function(modal) {
@@ -384,7 +385,7 @@
           <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">\
             <li class="list-group-item" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
               <i class="fa fa-bars handle"></i>\
-              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
+              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview && item.preview[preview]" />\
               <span dnd-nodrag class="title">{{item.title}}</span>\
               <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
                 <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
@@ -395,7 +396,7 @@
           </ul>\
           <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">\
             <li class="list-group-item">\
-              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
+              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview && ngModel.preview[preview]" />\
               <span class="title">{{ngModel.title}}</span>\
               <div class="btn-group btn-group-xs toolbar pull-right">\
                 <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
@@ -410,7 +411,8 @@
           title: '=?',
           preview: '@?',
           label: '@?',
-          url: '@?href'
+          url: '@?href',
+          model: '@?'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var theModal;

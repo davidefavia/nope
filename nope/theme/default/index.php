@@ -3,6 +3,9 @@
   <header>
     <section class="container">
       <h1><?php echo $setting->headline; ?></h1>
+      <?php if($themeSetting->cover) { ?>
+        <img src="<?php echo $themeSetting->cover->url; ?>" class="responsive" />
+      <?php } ?>
     </section>
   </header>
   <section class="container">

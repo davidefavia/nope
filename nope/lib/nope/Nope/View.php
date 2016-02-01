@@ -39,7 +39,6 @@ class View {
       return $renderedTemplate;
     } else {
       throw new \Exception("Error Processing Request", 1);
-
     }
   }
 

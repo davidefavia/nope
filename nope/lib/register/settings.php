@@ -26,9 +26,12 @@ $nopeSettings->addField(new Setting\Field('homepage', [
   'label' => 'Homepage',
   'description' => 'Choose which content will be your homepage.',
   'type' => 'model',
+  'model' => '\Nope\Page',
   'attributes' => [
     'href' => '#/content/page',
-    'preview' => 'icon'
+    'preview' => 'icon',
+    'label' => 'Add homepage',
+    'multiple' => false
   ]
 ]));
 

@@ -137,6 +137,8 @@ if(!$isNopeEmbedded) {
       require $file;
     }
   }
+  require NOPE_THEME_DIR . 'theme.php';
+  $theme = new \Nope\Theme();
   $app->add(new Nope\Middleware\Install());
   $app->run();
 }

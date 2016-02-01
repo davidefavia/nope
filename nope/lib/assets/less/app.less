@@ -469,6 +469,13 @@ label {
     }
   }
   &.content {
+    &.content-nopepage,
+    &.content-nopegallery,
+    &.content-nopeuser {
+      .modal-dialog {
+        width: 50%;
+      }
+    }
     .modal-dialog {
       width: 90%;
       margin: 30px auto;
@@ -524,4 +531,10 @@ ul[dnd-list] {
 .control-description {
   font-size: 12px;
   color: @gray-light;
+}
+
+.is-iframe {
+  #page {
+    margin:0;
+  }
 }

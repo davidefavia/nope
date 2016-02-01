@@ -23,6 +23,16 @@ $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('setting.read')) {
       $content = Setting::findByKey($args['key']);
+      if(!$content) {
+        $settingsList = \Nope::getConfig('nope.settings');
+        foreach ($settingsList as $key => $value) {
+          if($value->settingkey === $args['key']) {
+            $content = new Setting();
+            $content->settingkey = $args['key'];
+            $content->save();
+          }
+        }
+      }
     }
     return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
