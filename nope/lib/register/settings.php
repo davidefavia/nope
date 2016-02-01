@@ -3,7 +3,7 @@
 namespace Nope\Platform;
 
 $nopeSettings = new Setting('nope', [
-  'label' => 'Platform',
+  'label' => '<i class="fa fa-gears"></i> Platform',
   'description' => 'General settings',
   'role' => 'admin'
 ]);

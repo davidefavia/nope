@@ -145,13 +145,17 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       if($contentToUpdate) {
         $path = $contentToUpdate->getPath();
         $img = Image::make($path);
-        // rotate image 90 degrees clockwise
-        $img->rotate(-90);
-        $img->save($path, 100);
-        return $response->withJson([
-          'currentUser' => $currentUser,
-          'data' => $contentToUpdate
-        ]);
+        $queryParams = (object) $request->getQueryParams();
+        if($queryParams->rotate) {
+          $img->rotate($queryParams->rotate);
+          $img->save($path, 100);
+          return $response->withJson([
+            'currentUser' => $currentUser,
+            'data' => $contentToUpdate
+          ]);
+        } else {
+          return $response->withStatus(400, 'Rotation angle must differ from zero.');
+        }
       } else {
         return $response->withStatus(404);
       }

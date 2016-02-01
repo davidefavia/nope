@@ -170,12 +170,22 @@ class Nope {
     self::getInstance()->addConfig('nope.settings',$setting, $priority);
   }
 
+  static function getSettings() {
+    $list = [];
+    $settingsList = self::getInstance()->config['nope.settings'];
+    krsort($settingsList);
+    foreach($settingsList as $key => $setting) {
+      $list[] = $setting;
+    }
+    return $list;
+  }
+
   static function registerCustom($key, $setting) {
     self::getInstance()->config['nope.custom'][$key] = $setting;
   }
 
   static function getCustom($key) {
-  return self::getInstance()->getConfig('nope.custom')[$key];
+    return self::getInstance()->getConfig('nope.custom')[$key];
   }
 
 }

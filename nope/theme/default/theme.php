@@ -25,7 +25,7 @@ class Theme {
       ]
     ]));
 
-    \Nope::registerSetting($settings);
+    \Nope::registerSetting($settings, 1000);
   }
 
 }

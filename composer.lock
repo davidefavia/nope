@@ -159,16 +159,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd"
+                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd",
-                "reference": "4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
+                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2016-01-06 18:43:22"
+            "time": "2016-01-31 18:44:52"
         },
         {
             "name": "erusev/parsedown",

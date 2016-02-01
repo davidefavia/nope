@@ -12,7 +12,9 @@ $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
     if(!$currentUser->can('setting.read')) {
       return $response->withStatus(403);
     }
-    $settingsList = \Nope::getConfig('nope.settings');
+    $settingsList = \Nope::getSettings();
+    #var_dump($settingsList);
+    #die();
     return $response->withJson([
       'currentUser' => $currentUser,
       'data' => $settingsList
@@ -24,7 +26,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
     if($currentUser->can('setting.read')) {
       $content = Setting::findByKey($args['key']);
       if(!$content) {
-        $settingsList = \Nope::getConfig('nope.settings');
+        $settingsList = \Nope::getSettings();
         foreach ($settingsList as $key => $value) {
           if($value->settingkey === $args['key']) {
             $content = new Setting();
