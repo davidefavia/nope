@@ -2,10 +2,12 @@
 <main class="wrapper">
   <header>
     <section class="container">
-      <h1><?php echo $setting->headline; ?></h1>
-      <?php if($themeSetting->cover) { ?>
-        <?php echo doWidget('[n:media template="caption" id="'.$themeSetting->cover->id.'"]'); ?>
+      <?php if($themeSetting->cover) {
+        $cover = $themeSetting->cover;
+      ?>
+        <img src="<?php echo $cover->preview->thumb; ?>" title="<?php echo $cover->title; ?>" class="rounded" />
       <?php } ?>
+      <h1><?php echo $setting->headline; ?></h1>
     </section>
   </header>
   <section class="container">
