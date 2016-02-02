@@ -188,4 +188,8 @@ class Nope {
     return self::getInstance()->getConfig('nope.custom')[$key];
   }
 
+  static function registerWidget($name, $item = true) {
+    self::getInstance()->addConfig('nope.widgets', $item, $name);
+  }
+
 }

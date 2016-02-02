@@ -4,15 +4,15 @@
     <section class="container">
       <h1><?php echo $setting->headline; ?></h1>
       <?php if($themeSetting->cover) { ?>
-        <img src="<?php echo $themeSetting->cover->url; ?>" class="responsive" />
+        <?php echo doWidget('[n:media template="caption" id="'.$themeSetting->cover->id.'"]'); ?>
       <?php } ?>
     </section>
   </header>
   <section class="container">
     <article>
-      <h5><?php echo $content->title; ?></h5>
-      <h6>Published <?php echo $content->startPublishingDate->diffForHumans(); ?></h6>
-      <?php echo $content->body; ?>
+      <h2><?php echo $content->title; ?></h2>
+      <h3>Published <?php echo $content->startPublishingDate->diffForHumans(); ?></h3>
+      <?php echo $content->parsedBody; ?>
     </article>
   </section>
 </main>

@@ -20,6 +20,8 @@ class Text extends String {
     if(count($textFormats)) {
       foreach ($textFormats as $key => $value) {
         if($value['key'] === $this->format) {
+          $this->str = doPaths($this->str);
+          $this->str = doWidget($this->str);
           if($value['parser']=== false) {
             return new self($this->str);
           } else {

@@ -11,6 +11,33 @@ header {
 
 img.responsive {
   display: block;
-  max-width: 100%; // Part 1: Set a maximum relative to the parent
-  height: auto; // Part 2: Scale the height according to the width, otherwise you get stretching
+  max-width: 100%; /* Part 1: Set a maximum relative to the parent */
+  height: auto; /* Part 2: Scale the height according to the width, otherwise you get stretching */
+}
+
+/* widgets */
+.widget-media, .widget-youtube {
+  padding: 4px;
+  border: 1px solid #ccc;
+  background: #e8e5e5;
+  border-radius: 3px;
+  margin: 10px 0;
+}
+.widget-media p {
+  margin: 4px 0 0 0;
+  font-size: 11px;
+}
+.widget-youtube iframe {
+  margin:0;
+  padding:0;
+}
+
+article {
+  margin-top: 20px;
+}
+article h2 {
+  font-size: 3rem;
+}
+article h3 {
+  font-size: 2rem;
 }

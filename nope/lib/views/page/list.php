@@ -38,7 +38,7 @@
             <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
           </div>
           <div ng-if="!nope.isIframe" class="btn-group btn-group-xs pull-right toolbar">
-            <a ng-href="{{p.fullUrl}}" class="btn" target="_blank"><i class="fa fa-link"></i></a>
+            <a ng-href="{{p.fullUrl + '?preview=1'}}" class="btn" target="_blank"><i class="fa fa-link"></i></a>
             <a ng-href="#/content/{{contentType}}/edit/{{p.id}}" class="btn"><i class="fa fa-pencil"></i></a>
             <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
             <a href="" nope-content-delete="deleteContentOnClick(p)" ng-model="p" class="btn text-danger" ><i class="fa fa-trash"></i></a>

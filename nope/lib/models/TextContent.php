@@ -12,9 +12,9 @@ class TextContent extends Content {
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
-    $json->body = new Text($json->body, (string) $json->format);
+    #$json->body = new Text($json->body, (string) $json->format);
     $json->realStatus = new String($this->calculateStatus());
-    $json->parsedBody = $json->body->toHTML();
+    $json->parsedBody = (new Text($json->body, (string) $json->format))->toHTML();
     $json->fullUrl = new String($this->getFullUrl());
     $json->status = new String($this->status);
     $json->format = new String($this->format);

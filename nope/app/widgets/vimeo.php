@@ -1,0 +1,1 @@
+<iframe src="//player.vimeo.com/video/<?php echo $attributes->id; ?>?color=<?php echo ($attributes->color?:'c9ff23'); ?>" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
