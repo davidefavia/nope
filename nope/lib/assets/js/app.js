@@ -79,7 +79,7 @@
       }
     })
     .state('app.user.detail', {
-      url : '/{id:int}',
+      url : '/view/{id:int}',
       views : {
         'content@app.user' : {
           templateUrl : 'view/user/form.html',

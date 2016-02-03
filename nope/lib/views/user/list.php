@@ -18,7 +18,7 @@
           <img class="media-object img-circle" ng-src="{{u.cover.preview.icon}}" alt="...">
         </div>
         <div class="media-body">
-          <a ng-href="#/user/{{u.id}}"><h4 class="list-group-item-heading"><i class="fa small" ng-class="{'fa-ban text-danger':!u.enabled,'fa-check text-success':u.enabled}"></i> {{u.username}}</h4></a>
+          <a ng-href="#/user/view/{{u.id}}"><h4 class="list-group-item-heading"><i class="fa small" ng-class="{'fa-ban text-danger':!u.enabled,'fa-check text-success':u.enabled}"></i> {{u.username}}</h4></a>
           <p class="list-group-item-text" ng-if="u.prettyName">{{u.prettyName}}</p>
           <div class="btn-group btn-group-xs pull-right toolbar">
             <a ng-href="#/user/{{u.id}}" class="btn"><i class="fa fa-pencil"></i></a>

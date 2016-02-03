@@ -126,7 +126,7 @@
       });
 
       $scope.save = function() {
-        $scope.$parent.save($scope.gallery)
+        $scope.$parent.save($scope.gallery);
       }
 
     }])
