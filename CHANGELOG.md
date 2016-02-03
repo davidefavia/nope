@@ -9,6 +9,7 @@
 - Added `Nope\String`, `Nope\Text`, `Nope\DateTime` classes.
 - Added `Nope\Query` class to obtain items different from JSON-encoded data.
 - Default theme based on [milligram](https://github.com/milligram/milligram).
+- Added `less` watch and compile for default theme.
 
 ## v0.8.0 (2016-01-27)
 

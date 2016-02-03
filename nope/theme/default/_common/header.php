@@ -13,6 +13,7 @@ if($content) {
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
   <link rel="stylesheet" href="<?php echo asset('assets/css/normalize.css'); ?>">
   <link rel="stylesheet" href="<?php echo asset('assets/css/milligram.min.css'); ?>">
-  <link rel="stylesheet" href="<?php echo asset('assets/css/style.css'); ?>">
+  <link rel="stylesheet" href="<?php echo asset('assets/css/style.min.css'); ?>">
 </head>
 <body>
+  <main class="wrapper">
