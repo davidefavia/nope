@@ -33,7 +33,8 @@ use RedBeanPHP\R as R;
 
 date_default_timezone_set(NOPE_DATETIME_TIMEZONE);
 
-define('NOPE_THEME_DEFAULT_PATH', NOPE_DIR . 'theme/'. NOPE_THEME .'/');
+define('NOPE_THEME_DIR', NOPE_DIR . 'theme/'. NOPE_THEME .'/');
+define('NOPE_THEME_PATH', NOPE_PATH . 'theme/'. NOPE_THEME .'/');
 define('NOPE_APP_VIEWS_PATH', NOPE_APP_DIR . 'views/');
 define('NOPE_LIB_VIEWS_PATH', NOPE_LIB_DIR . 'views/');
 
@@ -66,7 +67,7 @@ if(!$isNopeEmbedded) {
       NOPE_LIB_VIEWS_PATH,
       NOPE_APP_VIEWS_PATH
     ], [
-      NOPE_THEME_DEFAULT_PATH
+      NOPE_THEME_DIR
     ]);
     return $view;
   };
@@ -136,6 +137,8 @@ if(!$isNopeEmbedded) {
       require $file;
     }
   }
+  require NOPE_THEME_DIR . 'theme.php';
+  $theme = new \Nope\Theme();
   $app->add(new Nope\Middleware\Install());
   $app->run();
 }

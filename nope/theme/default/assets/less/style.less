@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+.container {
+  max-width: 80rem;
+}
+
+header {
+  text-align:center;
+  padding-top: 5rem;
+}
+
+img.responsive {
+  display: block;
+  max-width: 100%; /* Part 1: Set a maximum relative to the parent */
+  height: auto; /* Part 2: Scale the height according to the width, otherwise you get stretching */
+}
+img.rounded {
+  padding: 4px;
+  border: 1px solid #ccc;
+  background: #e8e5e5;
+  border-radius: 50%;
+  width: 100px;
+}
+
+/* widgets */
+.widget {
+  margin-bottom: 2.5rem;
+  &.widget-media, &.widget-youtube {
+    padding: 4px;
+    border: 1px solid #ccc;
+    background: #e8e5e5;
+    border-radius: 3px;
+  }
+  &.widget-media {
+    p {
+      margin: 4px 0 0 0;
+      font-size: 11px;
+    }
+  }
+  &.widget-youtube {
+    iframe {
+      margin:0;
+      padding:0;
+    }
+  }
+}
+
+article {
+  margin-top: 20px;
+}
+article h2 {
+  font-size: 3rem;
+}
+article h3 {
+  font-size: 2rem;
+}
+footer {
+  text-align: center;
+  font-size: 12px;
+  margin: 20px 0;
+}

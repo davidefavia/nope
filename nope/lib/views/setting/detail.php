@@ -12,7 +12,7 @@ $fields = $setting->getFields();
     <div class="panel-body">
       <?php
 
-      $ngModel = 'setting.value';
+      $ngModel = 'setting.value.';
       include 'box.php';
 
       ?>

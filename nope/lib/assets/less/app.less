@@ -451,6 +451,14 @@ label {
   .media-preview {
     margin: -@gutter -@gutter @gutter -@gutter;
   }
+  &.content-preview {
+    padding:0;
+    iframe {
+      width: 100%;
+      min-height: 500px;
+      border:0;
+    }
+  }
 }
 
 .modal {
@@ -469,6 +477,13 @@ label {
     }
   }
   &.content {
+    &.content-nopepage,
+    &.content-nopegallery,
+    &.content-nopeuser {
+      .modal-dialog {
+        width: 50%;
+      }
+    }
     .modal-dialog {
       width: 90%;
       margin: 30px auto;
@@ -524,4 +539,10 @@ ul[dnd-list] {
 .control-description {
   font-size: 12px;
   color: @gray-light;
+}
+
+.is-iframe {
+  #page, #gallery, #user {
+    margin:0;
+  }
 }

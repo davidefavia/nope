@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0602b77e82369e26f7fda0bd39c868ff",
-    "content-hash": "f44c4234efea157df5db985b19b7f245",
+    "hash": "5b6920ebf815a618d0c21f95994a0135",
+    "content-hash": "8191b87bb8ffaf85c32b1979d990f862",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -159,16 +159,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd"
+                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd",
-                "reference": "4952e36a27fb47d68956eb5be2c1fe02dd7c5ccd",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
+                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2016-01-06 18:43:22"
+            "time": "2016-01-31 18:44:52"
         },
         {
             "name": "erusev/parsedown",
@@ -256,12 +256,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "f1f572ddac226d047d730444927794321ee9aca6"
+                "reference": "621b14a3ab694cb116175ca27345ddbc47624fda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/f1f572ddac226d047d730444927794321ee9aca6",
-                "reference": "f1f572ddac226d047d730444927794321ee9aca6",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/621b14a3ab694cb116175ca27345ddbc47624fda",
+                "reference": "621b14a3ab694cb116175ca27345ddbc47624fda",
                 "shasum": ""
             },
             "require": {
@@ -289,20 +289,20 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2015-12-28 19:46:34"
+            "time": "2016-01-23 19:23:47"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "4d0bdbe1206df7440219ce14c972aa57cc5e4982"
+                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/4d0bdbe1206df7440219ce14c972aa57cc5e4982",
-                "reference": "4d0bdbe1206df7440219ce14c972aa57cc5e4982",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5d04bdd2881ac89abde1fb78cc234bce24327bb",
+                "reference": "f5d04bdd2881ac89abde1fb78cc234bce24327bb",
                 "shasum": ""
             },
             "require": {
@@ -347,7 +347,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2015-11-03 01:34:55"
+            "time": "2016-01-23 01:23:02"
         },
         {
             "name": "illuminate/cache",
@@ -1199,16 +1199,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25"
+                "reference": "1289d16209491b584839022f29257ad859b8532d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/49ff736bd5d41f45240cec77b44967d76e0c3d25",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
+                "reference": "1289d16209491b584839022f29257ad859b8532d",
                 "shasum": ""
             },
             "require": {
@@ -1220,7 +1220,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1254,20 +1254,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-20 09:19:13"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f"
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
-                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/4d891fff050101a53a4caabb03277284942d1ad9",
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9",
                 "shasum": ""
             },
             "require": {
@@ -1277,7 +1277,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1310,20 +1310,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-12-18 15:10:25"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "4271c55cbc0a77b2641f861b978123e46b3da969"
+                "reference": "8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/4271c55cbc0a77b2641f861b978123e46b3da969",
-                "reference": "4271c55cbc0a77b2641f861b978123e46b3da969",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4",
+                "reference": "8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4",
                 "shasum": ""
             },
             "require": {
@@ -1332,7 +1332,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1362,7 +1362,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2015-11-04 20:28:58"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/translation",

@@ -47,6 +47,7 @@ Simple installation process will drive you through requirements and folder permi
 - [Stringy][stringy]
 - [Parsedown][parsedown]
 - [oscarotero\Embed][embed]
+- [Carbon][carbon]
 - League\Event
 
 Administration interface is built on top of:
@@ -54,6 +55,8 @@ Administration interface is built on top of:
 - [AngularJS][angular]
 - [Bootstrap 3][bootstrap]
 - [Font Awesome][fontawesome]
+
+Default theme uses [milligram][milligram].
 
 ## Why (if anyone is interested)?
 
@@ -100,10 +103,12 @@ See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
 [bootstrap]: https://getcomposer.org/
+[carbon]: https://github.com/briannesbitt/Carbon
 [composer]: http://getcomposer.org
 [embed]: https://github.com/oscarotero/Embed
 [fontawesome]: https://fortawesome.github.io/Font-Awesome/
 [image]: http://image.intervention.io/
+[milligram]: https://github.com/milligram/milligram
 [parsedown]: https://github.com/erusev/parsedown
 [phpmailer]: https://github.com/PHPMailer/PHPMailer
 [redbeanphp]: http://www.redbeanphp.com/

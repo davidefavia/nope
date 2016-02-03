@@ -366,6 +366,7 @@
           $element.addClass('nope-zoom');
           $element.on('click', function(e) {
             e.preventDefault();
+            $scope.path = $scope.path + '?__t__=' + (new Date()).getTime();
             $nopeModal.fromTemplate('<nope-modal class="zoom">\
           <nope-modal-body><img class="img-responsive" ng-src="{{path}}" /></nope-modal-body>\
           </nope-modal>', $scope).then(function(modal) {
@@ -384,8 +385,8 @@
           <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">\
             <li class="list-group-item" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
               <i class="fa fa-bars handle"></i>\
-              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview" />\
-              <span dnd-nodrag class="title">{{item.title}}</span>\
+              <img dnd-nodrag class="img-thumbnail preview" ng-src="{{item.preview[preview]}}" ng-if="hasPreview && item.preview[preview]" />\
+              <span dnd-nodrag class="title">{{item[titleField]}}</span>\
               <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
                 <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
                 <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
@@ -395,8 +396,8 @@
           </ul>\
           <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">\
             <li class="list-group-item">\
-              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview" />\
-              <span class="title">{{ngModel.title}}</span>\
+              <img class="img-thumbnail preview" ng-src="{{ngModel.preview[preview]}}" ng-if="hasPreview && ngModel.preview[preview]" />\
+              <span class="title">{{ngModel[titleField]}}</span>\
               <div class="btn-group btn-group-xs toolbar pull-right">\
                 <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>\
               </div>\
@@ -405,12 +406,13 @@
           <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || \'Add\'}} <i class="fa fa-plus"></i></a>\
         </div>',
         scope: {
-          multiple: '=',
+          multiple: '=?',
           ngModel: '=',
-          title: '=',
-          preview: '@',
-          label: '@',
-          url: '@href'
+          title: '@?',
+          preview: '@?',
+          label: '@?',
+          url: '@?href',
+          model: '@?'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var theModal;

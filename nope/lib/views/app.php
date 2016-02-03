@@ -2,7 +2,7 @@
   <div class="row">
     <div id="sidebar" class="col col-md-2 col-sm-3" ng-if="!nope.isIframe">
       <div id="welcome">
-        <a href="#/user/{{currentUser.id}}">
+        <a href="#/user/view/{{currentUser.id}}">
           <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
         </a>
         <p><a ng-href="#/user/{{currentUser.id}}">{{currentUser.getFullName()}}</a></p>

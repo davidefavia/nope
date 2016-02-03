@@ -12,6 +12,7 @@ class Model extends AbstractField {
 
   function getAttributesList() {
     $attrs = [];
+    $this->properties->attributes['model'] = $this->properties->model;
     foreach($this->properties->attributes as $key => $value) {
       if($value===true || $value===false) {
         $value = ($value?'true':'false');
@@ -21,6 +22,8 @@ class Model extends AbstractField {
         if($this->properties->attributes['multiple']) {
           $value .= (S::contains($key, '?') ? '&':'?') . 'excluded={{('.$p.' | nopeGetIds).join(\',\')}}';
         }
+      } elseif($key === 'model') {
+        $value = S::slugify($value);
       }
       $attrs[] = $key . '="'.$value.'"';
     }
@@ -69,7 +72,8 @@ class Model extends AbstractField {
             $p[$i] = [];
             foreach ($key as $j => $key2) {
               if($key2) {
-                $p[$i][] = new $this->properties->model($key2);
+                $model = new $this->properties->model($key2);
+                $p[$i][] = $model->toJson();
               }
             }
           }
@@ -78,7 +82,8 @@ class Model extends AbstractField {
         if(is_array($v)) {
           foreach ($v as $key) {
             if($key) {
-              $p[] = new $this->properties->model($key);
+              $model = new $this->properties->model($key);
+              $p[] = $model->toJson();
             }
           }
         }
@@ -86,7 +91,8 @@ class Model extends AbstractField {
       return $p;
     } else {
       if(!is_array($v) && $v) {
-        return new $this->properties->model($v);
+        $model = new $this->properties->model($v);
+        return $model->toJson();
       }
     }
   }

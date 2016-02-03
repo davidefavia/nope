@@ -12,30 +12,17 @@ class TextContent extends Content {
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
-    $json->realStatus = $this->calculateStatus();
-    $json->parsedBody = $this->getParsedBody();
-    $json->fullUrl = $this->getFullUrl();
+    #$json->body = new Text($json->body, (string) $json->format);
+    $json->realStatus = new String($this->calculateStatus());
+    $json->parsedBody = (new Text($json->body, (string) $json->format))->toHTML();
+    $json->fullUrl = new String($this->getFullUrl());
+    $json->status = new String($this->status);
+    $json->format = new String($this->format);
     return $json;
   }
 
   function getFullUrl() {
     return Utils::getFullBaseUrl() . $this->slug;
-  }
-
-  function getParsedBody() {
-    if(!$this->format) {
-      return $this->body;
-    }
-    $textFormats = \Nope::getConfig('nope.content.format');
-    foreach ($textFormats as $key => $value) {
-      if($value['key'] === $this->format) {
-        if($value['parser']=== false) {
-          return $this->body;
-        } else {
-          return $value['parser']->text($this->body);
-        }
-      }
-    }
   }
 
   function validate() {
@@ -154,7 +141,7 @@ class TextContent extends Content {
       throw $e;
     }
     if(!$this->startPublishingDate) {
-      $this->startPublishingDate = new \DateTime();
+      $this->startPublishingDate = new \Nope\DateTime();
     }
     parent::beforeSave();
   }

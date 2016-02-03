@@ -13,7 +13,7 @@
       window.NOPE_TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
     </script>
   </head>
-  <body>
+  <body <?php if($isIframe==='true') { ?>class="is-iframe"<?php } ?>>
     <ui-view></ui-view>
     <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
     <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>

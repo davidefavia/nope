@@ -22,13 +22,12 @@ class Setting extends \Nope\Model {
   function jsonSerialize() {
     $json = parent::jsonSerialize();
     $json->value = $this->fromJsonValue($json->value);
+    unset($json->custom);
     return $json;
   }
 
   function toJson() {
-    $json = parent::jsonSerialize();
-    $json->value = $this->fromJsonValue($json->value);
-    return $json;
+    return self::jsonSerialize();
   }
 
   function beforeSave() {
@@ -73,7 +72,7 @@ class Setting extends \Nope\Model {
         }
       }
     }
-    return $json;
+    return (object) $json;
   }
 
 }

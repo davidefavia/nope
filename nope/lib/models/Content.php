@@ -5,6 +5,7 @@ namespace Nope;
 use \RedBeanPHP\R as R;
 use \Respect\Validation\Validator as v;
 use \Respect\Validation\Exceptions\NestedValidationException;
+use Stringy\Stringy as S;
 
 class Content extends Model {
 
@@ -33,6 +34,8 @@ class Content extends Model {
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
+    $json->title = new \Nope\String($json->title);
+    $json->slug = new \Nope\String($json->slug);
     $author = $this->getAuthor();
     unset($json->authorId);
     $json->author = $author;
@@ -49,6 +52,8 @@ class Content extends Model {
     unset($a->sharedTag);
     $a->priority = (int) $a->priority;
     $a->starred = (bool) $a->starred;
+    $a->startPublishingDate = new DateTime($a->startPublishingDate);
+    $a->endPublishingDate = ((string) $a->endPublishingDate==''?null:new DateTime($a->endPublishingDate));
     return $a;
   }
 

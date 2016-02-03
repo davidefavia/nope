@@ -83,11 +83,11 @@ class Media extends Content {
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
-    $json->url = $this->getUrl();
-    $json->absoluteUrl = $this->getAbsoluteUrl();
+    $json->url = new String($this->getUrl());
+    $json->absoluteUrl = new String($this->getAbsoluteUrl());
     $json->preview = (object) [];
     foreach (\Nope::getConfig('nope.media.size') as $key => $value) {
-      $json->preview->$key = $this->getPreview($key);
+      $json->preview->$key = new String($this->getPreview($key));
     }
     $json->isImage = $this->isImage();
     $json->isExternal = $this->isExternal();

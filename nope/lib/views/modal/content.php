@@ -1,4 +1,4 @@
-<nope-modal class="content" id="modal-content">
+<nope-modal class="content {{model?'content-'+model:''}}" id="modal-content">
   <nope-modal-body>
     <iframe ng-src="{{url}}"></iframe>
   </nope-modal-body>

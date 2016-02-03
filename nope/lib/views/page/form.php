@@ -13,7 +13,10 @@
               </div>
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.slug.$valid && contentForm.slug.$touched)}">
-              <label class="control-label">Slug</label>
+              <label class="control-label">
+                Slug
+                <a ng-href="{{'<?php echo \Nope\Utils::getFullBaseUrl(); ?>' + content.slug + '?preview=1'}}" class="btn btn-xs btn-link" target="_blank"><i class="fa fa-link"></i></a>
+              </label>
               <div class="input-group input-group-sm">
                 <span class="input-group-addon"><?php echo \Nope\Utils::getFullBaseUrl(); ?></span>
                 <input type="text" name="slug" class="form-control" ng-model="content.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" placeholder="insert-content-slug-here" />
