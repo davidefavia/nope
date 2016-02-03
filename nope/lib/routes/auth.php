@@ -38,21 +38,22 @@ $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->post('/recovery', function ($request, $response) {
     $body = $request->getParsedBody();
-    #$body = $request->getQueryParams();
     if(v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email'])) {
       $userByEmail = User::findByEmail($body['email']);
       if((int) $userByEmail->enabled) {
         // Send email!
         try {
           $code = Utils::generateSalt(time().$userByEmail->username, $userByEmail->salt);
-          $userByEmail->reset_code = $code;
+          $userByEmail->resetCode = $code;
           $userByEmail->save();
           $toName = $userByEmail->pretty_name?:$userByEmail->username;
           $this->mailer->addAddress($userByEmail->email, $toName);
           $this->mailer->isHTML(false);
           $this->mailer->Subject = 'Nope: forgotten password';
           $this->mailer->Body = "Copy link into your browser to reset password:\n\n".Utils::getFullRequestUri($request, NOPE_ADMIN_ROUTE).'/#/login/'.$code;
-          $this->mailer->send();
+          if(!$this->mailer->send()) {
+            return $response->withStatus(500, $this->mailer->ErrorInfo);
+          }
         } catch (phpmailerException $e) {
           throw $e; //Pretty error messages from PHPMailer
         } catch (Exception $e) {

@@ -24,11 +24,11 @@
             </div>
             <div class="form-group">
               <label>Body</label>
-              <textarea name="body" class="form-control" ng-model="content.body" rows="20"></textarea>
+              <textarea name="body" class="form-control" ng-model="content.body" rows="20" placeholder="Content body"></textarea>
             </div>
             <div class="form-group">
               <label>Tags (comma separated)</label>
-              <input type="text" name="tags" class="form-control" ng-model="content.tags" />
+              <input type="text" name="tags" class="form-control" ng-model="content.tags" placeholder="Tags (comma separated)" />
             </div>
           </div>
         </div>
@@ -57,6 +57,7 @@
             <div class="form-group" ng-class="{'has-error':(!contentForm.format.$valid && contentForm.format.$touched)}">
               <label class="control-label">Format</label>
               <select class="form-control input-sm" ng-model="content.format" required>
+                <option value="" disabled>Select format</option>
                 <option ng-repeat="t in textFormats" value="{{t.key}}">{{t.label}}</option>
               </select>
             </div>
@@ -64,6 +65,7 @@
               <label class="control-label">Status</label>
               <nope-publishing ng-model="content"></nope-publishing>
               <select class="form-control input-sm" ng-model="content.status" required ng-blur="getRealStatus()">
+                <option value="" disabled>Select status</option>
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
               </select>
@@ -78,11 +80,11 @@
             </div>
             <div class="form-group" ng-class="{'has-error':(!contentForm.priority.$valid && contentForm.priority.$touched)}">
               <label class="control-label">Priority</label>
-              <input type="text" name="priority" class="form-control input-sm" ng-model="content.priority" ng-pattern="/^[0-9]+$/" />
+              <input type="text" name="priority" class="form-control input-sm" ng-model="content.priority" ng-pattern="/^[0-9]+$/" placeholder="Priority: higher first" />
             </div>
             <div class="form-group">
               <label>Summary</label>
-              <textarea name="summary" class="form-control" ng-model="content.summary" rows="4"></textarea>
+              <textarea name="summary" class="form-control" ng-model="content.summary" rows="5" placeholder="Content summary"></textarea>
             </div>
             <div class="form-group">
               <button class="btn btn-block" ng-disabled="contentForm.$invalid" ng-class="{'btn-success':!contentForm.$invalid}">Save</button>

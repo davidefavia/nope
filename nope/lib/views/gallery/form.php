@@ -15,23 +15,23 @@
         <div class="col col-md-9">
           <div class="form-group" ng-class="{'has-error':(!galleryForm.slug.$valid && galleryForm.slug.$touched)}">
             <label class="control-label">Slug</label>
-            <input type="text" name="slug" class="form-control" ng-model="gallery.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" />
+            <input type="text" name="slug" class="form-control" ng-model="gallery.slug" required ng-pattern="<?php echo \Nope\Utils::SLUG_REGEX_PATTERN; ?>" ng-trim="false" placeholder="Gallery slug" />
           </div>
         </div>
         <div class="col col-md-3">
           <div class="form-group">
             <label class="control-label">Priority</label>
-            <input type="text" name="slug" class="form-control" ng-model="gallery.priority" ng-pattern="/^[0-9]+$/" />
+            <input type="text" name="slug" class="form-control" ng-model="gallery.priority" ng-pattern="/^[0-9]+$/" placeholder="Priority: higher first" />
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label>Body</label>
-        <textarea name="body" class="form-control" ng-model="gallery.body"></textarea>
+        <label>Description</label>
+        <textarea name="body" class="form-control" ng-model="gallery.body" placeholder="Gallery description" rows="5"></textarea>
       </div>
       <div class="form-group">
         <label>Tags (comma separated)</label>
-        <input type="text" name="tags" class="form-control" ng-model="gallery.tags" />
+        <input type="text" name="tags" class="form-control" ng-model="gallery.tags" placeholder="Tags (comma separated)" />
       </div>
       <div class="form-group">
         <label>Cover</label>
