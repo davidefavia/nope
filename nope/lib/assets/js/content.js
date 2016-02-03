@@ -55,20 +55,6 @@
       $scope.contentType = $stateParams.contentType;
       $scope.contentsList = [];
       $scope.q = $location.search();
-      $scope.selection = [];
-
-      $scope.select = function(c,i) {
-        if($rootScope.nope.isIframe) {
-          var callerScope = $nopeUtils.getContentModalCallerScope();
-          $scope.selection = callerScope.selectedItem(c);
-          callerScope.$apply();
-        } else {
-          $state.go('app.content.detail', {
-            id:c.id,
-            contentType: $stateParams.contentType
-          });
-        }
-      }
 
       $scope.search = function(q, page) {
         page = page || 1;

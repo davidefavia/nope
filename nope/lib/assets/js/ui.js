@@ -585,5 +585,28 @@
         }]
       }
     }])
+    .directive('nopeContentSelection', ['$rootScope', '$nopeUtils', function($rootScope, $nopeUtils) {
+      return {
+        restrict : 'A',
+        require : 'ngModel',
+        scope : {
+          selection : '=ngModel',
+          item : '=nopeContentSelection'
+        },
+        link : function($scope, $element, $attrs) {
+          $scope.selection = angular.isArray($scope.selection) ? $scope.selection : [];
+
+          $element.on('click', function(e) {
+            if($rootScope.nope.isIframe) {
+              e.preventDefault();
+              var callerScope = $nopeUtils.getContentModalCallerScope();
+              $scope.selection = callerScope.selectedItem($scope.item);
+              callerScope.$apply();
+              $scope.$parent.$apply();
+            }
+          });
+        }
+      }
+    }])
     ;
 })()

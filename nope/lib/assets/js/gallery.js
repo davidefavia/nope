@@ -38,17 +38,6 @@
       $scope.contentType = 'gallery';
       $scope.contentsList = [];
       $scope.q = $location.search();
-      $scope.selection = [];
-
-      $scope.select = function(c,i) {
-        if($rootScope.nope.isIframe) {
-          var callerScope = $nopeUtils.getContentModalCallerScope();
-          $scope.selection = callerScope.selectedItem(c);
-          callerScope.$apply();
-        } else {
-          $state.go('app.gallery.detail', {id:c.id});
-        }
-      }
 
       $scope.search = function(q, page) {
         page = page || 1;

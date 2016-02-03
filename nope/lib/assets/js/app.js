@@ -146,17 +146,6 @@
    .controller('UsersListController', ['$scope', '$rootScope', '$location', '$state', '$nopeModal', '$nopeUtils', 'User', function($scope, $rootScope, $location, $state, $nopeModal, $nopeUtils, User) {
      $scope.usersList = [];
      $scope.q = $location.search();
-     $scope.selection = [];
-
-     $scope.select = function(c,i) {
-       if($rootScope.nope.isIframe) {
-         var callerScope = $nopeUtils.getContentModalCallerScope();
-         $scope.selection = callerScope.selectedItem(c);
-         callerScope.$apply();
-       } else {
-         $state.go('app.user.detail', {id:c.id});
-       }
-     }
 
      $scope.search = function(q, page) {
        page = page || 1;

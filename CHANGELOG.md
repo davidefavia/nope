@@ -2,6 +2,7 @@
 
 ### Features
 - Added input fields placeholders (#27).
+- Added `nopeContentSelection` directive to enable selection inside iframe (#29).
 
 ### Fixes
 - Fixed wrong `headline` setting creation during installation.

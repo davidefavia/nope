@@ -18,14 +18,14 @@
           <img class="media-object img-circle" ng-src="{{u.cover.preview.icon}}" alt="...">
         </div>
         <div class="media-body">
-          <a href="" ng-click="select(u,$index);"><h4 class="list-group-item-heading"><i class="fa small" ng-class="{'fa-ban text-danger':!u.enabled,'fa-check text-success':u.enabled}"></i> {{u.username}}</h4></a>
+          <a ng-href="#/user/view/{{u.id}}" ng-model="selection" nope-content-selection="u"><h4 class="list-group-item-heading"><i class="fa small" ng-class="{'fa-ban text-danger':!u.enabled,'fa-check text-success':u.enabled}"></i> {{u.username}}</h4></a>
           <p class="list-group-item-text" ng-if="u.prettyName">{{u.prettyName}}</p>
           <div ng-if="nope.isIframe" class="pull-right">
             <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(u);"></i>
             <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(u);"></i>
           </div>
           <div ng-if="!nope.isIframe" class="btn-group btn-group-xs pull-right toolbar">
-            <a href="" ng-click="select(u,$index);" class="btn"><i class="fa fa-pencil"></i></a>
+            <a ng-href="#/user/view/{{u.id}}" ng-model="selection" nope-content-selection="u" class="btn"><i class="fa fa-pencil"></i></a>
             <a href="" nope-user-delete="deleteUserOnClick(u);" ng-model="u" class="btn text-danger" ng-if="!currentUser.itsMe(u)"><i class="fa fa-trash"></i></a>
           </div>
         </div>

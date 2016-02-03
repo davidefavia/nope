@@ -18,7 +18,7 @@
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" />
         </div>
         <div class="media-body">
-          <a href="" ng-click="select(p,$index);"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+          <a ng-href="#/gallery/view/{{p.id}}" ng-model="selection" nope-content-selection="p"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
           <p class="list-group-item-text">Media: {{p.media.length}}</p>
           <p class="list-group-item-text">Modified {{p.lastModificationDate | nopeMoment}}</p>
           <div ng-if="nope.isIframe" class="pull-right">

@@ -34,18 +34,6 @@
         $scope.hideMimetypeOptions = true;
       }
 
-      $scope.selection = [];
-
-      $scope.select = function(c,i) {
-        if($rootScope.nope.isIframe) {
-          var callerScope = $nopeUtils.getContentModalCallerScope();
-          $scope.selection = callerScope.selectedItem(c);
-          callerScope.$apply();
-        } else {
-          $state.go('app.media.detail', {id:c.id});
-        }
-      }
-
       $scope.deleteContentOnClick = function(p) {
         var t = p.title;
         return Media.delete({
