@@ -45,6 +45,15 @@ class TextContent extends Content {
       $sql[] = $p.'author_id = ?';
       $params[] = $filters->author->id;
     }
+    if($filters->excluded) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
+      foreach ($filters->excluded as $value) {
+        $params[] = $value;
+      }
+    }
     if($filters->status) {
       if(count($sql)) {
         $sql[] = 'and';

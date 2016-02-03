@@ -35,16 +35,4 @@ $nopeSettings->addField(new Setting\Field('homepage', [
   ]
 ]));
 
-$nopeSettings->addField(new Setting\Field('gg', [
-  'label' => 'g',
-  'type' => 'model',
-  'model' => '\Nope\Gallery',
-  'attributes' => [
-    'href' => '#/gallery',
-    'preview' => 'icon',
-    'label' => 'Add gallery',
-    'multiple' => true
-  ]
-]));
-
 \Nope::registerSetting($nopeSettings);

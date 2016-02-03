@@ -16,7 +16,8 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
     $params = Utils::getPaginationTerms($request, $rpp);
     $contentsList = Page::findAll([
       'text' => $params->query,
-      'status' => $queryParams->status
+      'status' => $queryParams->status,
+      'excluded' => explode(',', $queryParams->excluded)
     ], $params->limit, $params->offset, $count);
     $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     return $response->withJson([
