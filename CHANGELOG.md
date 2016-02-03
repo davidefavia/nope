@@ -1,4 +1,4 @@
-## v0.9.0 (2016-02-??)
+## v0.9.0 (2016-02-03)
 
 ### Libraries
 - Updated **angular** to version 1.4.9.
@@ -8,8 +8,11 @@
 ### Features
 - Added `Nope\String`, `Nope\Text`, `Nope\DateTime` classes.
 - Added `Nope\Query` class to obtain items different from JSON-encoded data.
-- Default theme based on [milligram](https://github.com/milligram/milligram).
+- Default theme based on [milligram](https://github.com/milligram/milligram) (#21).
 - Added `less` watch and compile for default theme.
+
+### Fixes
+- Fixed iframe for `Content`, `Gallery` and `User` (#22).
 
 ## v0.8.0 (2016-01-27)
 

@@ -50,18 +50,6 @@
         }
       }
 
-      $scope.deleteContentOnClick = function(p) {
-        var title = p.title;
-        return Gallery.delete({
-          id: p.id
-        }, function() {
-          $scope.$emit('nope.toast.success', 'Gallery "' + title + '" deleted.');
-          $state.go('app.gallery', {}, {
-            reload: true
-          });
-        });
-      }
-
       $scope.search = function(q, page) {
         page = page || 1;
         Gallery.query(angular.extend({
@@ -74,6 +62,18 @@
 
       $scope.search($scope.q);
 
+      $scope.deleteContentOnClick = function(p) {
+        var title = p.title;
+        return Gallery.delete({
+          id: p.id
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Gallery "' + title + '" deleted.');
+          $state.go('app.gallery', {}, {
+            reload: true
+          });
+        });
+      }
+
       $scope.save = function(p, i) {
         Gallery.update(p, function(data) {
           $scope.$emit('nope.toast.success', 'Gallery "' + data.title + '" updated.');
@@ -82,7 +82,7 @@
               if(item.id===data.id) {
                 i = index;
               }
-            })
+            });
           }
           if(i!==undefined) {
             $scope.contentsList[i] = data;

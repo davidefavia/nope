@@ -29,7 +29,7 @@
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" />
         </div>
         <div class="media-body">
-          <a href="" ng-click="select(p, $index);"><h4 class="list-group-item-heading">{{::p.title}}</h4></a>
+          <a href="" ng-click="select(p,$index);"><h4 class="list-group-item-heading">{{::p.title}}</h4></a>
           <p class="list-group-item-text">
             <nope-publishing ng-model="p"></nope-publishing>
           </p>

@@ -60,7 +60,7 @@
       views : {
         'content@app' : {
           templateUrl : 'view/user/list.html',
-          controller: 'UserController'
+          controller: 'UsersListController'
         }
       },
       resolve : {
@@ -143,7 +143,7 @@
      }
 
    }])
-   .controller('UserController', ['$scope', '$location', '$state', '$nopeModal', 'User', function($scope, $location, $state, $nopeModal, User) {
+   .controller('UsersListController', ['$scope', '$rootScope', '$location', '$state', '$nopeModal', '$nopeUtils', 'User', function($scope, $rootScope, $location, $state, $nopeModal, $nopeUtils, User) {
      $scope.usersList = [];
      $scope.q = $location.search();
      $scope.selection = [];
@@ -158,18 +158,6 @@
        }
      }
 
-     $scope.deleteUserOnClick = function(p) {
-       var username = p.username;
-       return User.delete({
-         id: p.id
-       }, function() {
-         $scope.$emit('nope.toast.success', 'User "' + username + '" deleted.');
-         $state.go('app.user', {}, {
-           reload: true
-         });
-       });
-     }
-
      $scope.search = function(q, page) {
        page = page || 1;
        User.query(angular.extend({
@@ -181,6 +169,18 @@
      }
 
      $scope.search($scope.q);
+
+     $scope.deleteUserOnClick = function(p) {
+       var username = p.username;
+       return User.delete({
+         id: p.id
+       }, function() {
+         $scope.$emit('nope.toast.success', 'User "' + username + '" deleted.');
+         $state.go('app.user', {}, {
+           reload: true
+         });
+       });
+     }
 
      $scope.save = function(p, i) {
        User.update(p, function(data) {

@@ -55,7 +55,6 @@
       $scope.contentType = $stateParams.contentType;
       $scope.contentsList = [];
       $scope.q = $location.search();
-
       $scope.selection = [];
 
       $scope.select = function(c,i) {
