@@ -51,9 +51,11 @@ class Model extends AbstractField {
       return $p;
     } else {
       if($this->properties->attributes['multiple']) {
+        $p = [];
         foreach ($v as $i => $key) {
           $p[] = $key['id'];
         }
+        return $p;
       } else {
         return $v['id'];
       }
@@ -90,9 +92,22 @@ class Model extends AbstractField {
       }
       return $p;
     } else {
-      if(!is_array($v) && $v) {
-        $model = new $this->properties->model($v);
-        return $model->toJson();
+      if($this->properties->attributes['multiple']) {
+        $p = [];
+        if(is_array($v)) {
+          foreach ($v as $key) {
+            if($key) {
+              $model = new $this->properties->model($key);
+              $p[] = $model->toJson();
+            }
+          }
+        }
+        return $p;
+      } else {
+        if($v) {
+          $model = new $this->properties->model($v);
+          return $model->toJson();
+        }
       }
     }
   }

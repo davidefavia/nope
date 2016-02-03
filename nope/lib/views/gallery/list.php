@@ -12,7 +12,8 @@
       <a ng-if="!nope.isIframe" href="#/gallery/create" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new gallery <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q.query">No {{contentType}} found with filter "{{q.query}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q.query">No gallery found with filter "{{q.query}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!metadata.count">No gallery found.</div>
       <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedGallery.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" />
