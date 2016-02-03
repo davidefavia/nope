@@ -31,7 +31,7 @@
       </div>
       <div class="form-group">
         <label>Tags (comma separated)</label>
-        <input type="text" name="tags" class="form-control" ng-model="gallery.tags" /></textarea>
+        <input type="text" name="tags" class="form-control" ng-model="gallery.tags" />
       </div>
       <div class="form-group">
         <label>Cover</label>

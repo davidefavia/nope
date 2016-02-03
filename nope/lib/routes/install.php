@@ -114,7 +114,7 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
 
         $setting = new Setting();
         $setting->settingkey = 'nope';
-        $setting->value = (object) [
+        $setting->value = [
           'headline' => $body['title']
         ];
         $setting->save();

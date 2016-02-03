@@ -1,3 +1,11 @@
+## v0.10.0 (2016-02-??)
+
+### Fixes
+- Fixed wrong `headline` setting creation during installation.
+- Fixed first gallery creation UI (#25).
+- Fixed user detail UI.
+- Fixed missing default fields (`type` and `provider`) on media upload.
+
 ## v0.9.0 (2016-02-03)
 
 ### Libraries

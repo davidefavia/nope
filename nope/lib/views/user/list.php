@@ -33,7 +33,7 @@
     </div>
     <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
-  <div ng-if="!nope.isIframe" class="col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
+  <div ng-if="!nope.isIframe" class="col col-md-8 col-sm-6" ui-view="content">
     <no-empty icon="user">Select user</no-empty>
   </div>
 </div>
