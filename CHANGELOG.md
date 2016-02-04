@@ -7,6 +7,7 @@
 - Added input fields placeholders (#27).
 - Added `nopeContentSelection` directive to enable selection inside iframe (#29).
 - Added `template` property to `nopeModel` directive (#30).
+- Added check if `localhost` to enable livereload server binding inside views (#26).
 
 ### Fixes
 - Fixed wrong `headline` setting creation during installation.
