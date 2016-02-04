@@ -1,5 +1,8 @@
 ## v0.10.0 (2016-02-??)
 
+### Breaking changes
+- `nopeModel` is now `multiple=false` by default.
+
 ### Features
 - Added input fields placeholders (#27).
 - Added `nopeContentSelection` directive to enable selection inside iframe (#29).

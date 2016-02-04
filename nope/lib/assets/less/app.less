@@ -537,15 +537,19 @@ ul[dnd-list] {
   }
 }
 
-.media {
-  h4 {
-    font-size: 16px;
+.list-group-contents {
+  .media {
+    margin-top:0;
+    h4 {
+      font-size: 16px;
+    }
+    h6 {
+      font-size: 11px;
+      color: @gray-light;
+      margin:3px 0;
+    }
   }
-  h6 {
-    font-size: 11px;
-    color: @gray-light;
-    margin:3px 0;
-  }
+
 }
 
 .content-title {
@@ -564,5 +568,15 @@ ul[dnd-list] {
 .is-iframe {
   #page, #gallery, #user {
     margin:0;
+  }
+}
+.pull-right {
+  .fa {
+    &.fa-check-circle-o {
+      color: rgba(0,0,0,.3);
+    }
+    &.fa-check-circle {
+      color: @brand-success;
+    }
   }
 }

@@ -21,7 +21,7 @@ class Theme {
         'href' => '#/media?mimetype=image/',
         'preview' => 'icon',
         'label' => 'Add cover image',
-        'multiple' => false
+        'template' => 'media'
       ]
     ]));
 

@@ -34,40 +34,4 @@ $nopeSettings->addField(new Setting\Field('homepage', [
   ]
 ]));
 
-$nopeSettings->addField(new Setting\Field('m', [
-  'label' => 'Media',
-  'description' => 'Choose which content will be your homepage.',
-  'type' => 'model',
-  'model' => '\Nope\Media',
-  'attributes' => [
-    'href' => '#/media',
-    'label' => 'Add media',
-    'template' => 'media'
-  ]
-]));
-
-$nopeSettings->addField(new Setting\Field('uu', [
-  'label' => 'User',
-  'type' => 'model',
-  'model' => '\Nope\User',
-  'attributes' => [
-    'href' => '#/user',
-    'label' => 'Add user',
-    'template' => 'user',
-    'multiple' => true
-  ]
-]));
-
-$nopeSettings->addField(new Setting\Field('gg', [
-  'label' => 'User',
-  'type' => 'model',
-  'model' => '\Nope\Gallery',
-  'attributes' => [
-    'href' => '#/gallery',
-    'label' => 'Add user',
-    'template' => 'gallery',
-    'multiple' => true
-  ]
-]));
-
 \Nope::registerSetting($nopeSettings);

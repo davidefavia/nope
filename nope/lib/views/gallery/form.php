@@ -39,7 +39,7 @@
       </div>
       <div class="form-group">
         <label>Media</label>
-        <nope-model href="#/media?excluded={{(gallery.media | nopeGetIds).join(',')}}" ng-model="gallery.media" label="Add media" preview="icon" template="media"></nope-model>
+        <nope-model href="#/media?excluded={{(gallery.media | nopeGetIds).join(',')}}" ng-model="gallery.media" label="Add media" preview="icon" template="media" multiple="true"></nope-model>
       </div>
     </div>
     <div class="panel-footer">

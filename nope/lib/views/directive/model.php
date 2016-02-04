@@ -48,13 +48,13 @@ switch($templateName) {
     break;
 }
 
-$templateSingle = sprintf($template, 'dnd-nodrag', 'ngModel');
-$templateList = sprintf($template, '', 'item');
+$templateSingle = sprintf($template, '', 'ngModel');
+$templateList = sprintf($template, 'dnd-nodrag', 'item');
 
 ?>
 <div>
   <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">
-    <li class="list-group-item media" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">
+    <li class="list-group-item media" ng-repeat="item in ngModel track by $index" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">
       <i class="fa fa-bars handle"></i>
       <?php echo $templateList; ?>
       <div dnd-nodrag class="btn-group btn-group-xs toolbar">

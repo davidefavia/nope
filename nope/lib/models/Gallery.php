@@ -15,6 +15,8 @@ class Gallery extends Content {
     $json = parent::jsonSerialize();
     $json->media = $this->getMedia();
     unset($json->sharedMedia);
+    unset($json->startPublishingDate);
+    unset($json->endPublishingDate);
     return $json;
   }
 
