@@ -12,7 +12,7 @@
       <a ng-if="!nope.isIframe" href="#/user/create" class="btn btn-sm btn-block btn-default" nope-can="user.create">Create new user <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!usersList.length && q.query">No users found with filter "{{q.query}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="(!usersList.length && q.query) || (!metadata.count && !q.query)">No user found<span ng-if="q.query"> with filter "{{q.query}}"</span>.</div>
       <div class="list-group-item clearfix media" ng-class="{active:u.itsMe(selectedUser)}" ng-repeat="u in usersList" ng-show="usersList.length">
         <div class="media-left" ng-if="u.cover">
           <img class="media-object img-circle" ng-src="{{u.cover.preview.icon}}" alt="...">

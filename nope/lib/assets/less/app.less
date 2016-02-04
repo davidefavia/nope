@@ -524,7 +524,27 @@ ul[dnd-list] {
       cursor: move;
       margin-right: 10px;
       color: @gray-light;
+      position: absolute;
+      left: @gutter;
+      top: 50%;
+      margin-top: -10px;
     }
+  }
+  &.is-multiple {
+    .media {
+      padding-left: 3*@gutter;
+    }
+  }
+}
+
+.media {
+  h4 {
+    font-size: 16px;
+  }
+  h6 {
+    font-size: 11px;
+    color: @gray-light;
+    margin:3px 0;
   }
 }
 

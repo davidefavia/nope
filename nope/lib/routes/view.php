@@ -18,6 +18,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/view', function() {
           $args['view'] = 'setting/detail';
         }
       }
+    } elseif (S::startsWith($args['view'], 'directive/model/')) {
+      $p = explode('/', $args['view']);
+      $data['templateName'] = $p[count($p)-1];
+      $args['view'] = 'directive/model';
     }
     return $this->view->adminRender($response, $args['view'] . '.php', $data);
   });

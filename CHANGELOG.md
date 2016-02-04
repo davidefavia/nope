@@ -3,6 +3,7 @@
 ### Features
 - Added input fields placeholders (#27).
 - Added `nopeContentSelection` directive to enable selection inside iframe (#29).
+- Added `template` property to `nopeModel` directive (#30).
 
 ### Fixes
 - Fixed wrong `headline` setting creation during installation.
@@ -11,6 +12,7 @@
 - Fixed missing default fields (`type` and `provider`) on media upload.
 - Fixed reset password error without exception (#28).
 - Fixed multiple models saving (#32).
+- Fixed excluded ids content query (#31).
 
 ## v0.9.0 (2016-02-03)
 
