@@ -33,16 +33,31 @@
 \Nope::registerModel('media', [
   'model' => [
     NOPE_LIB_DIR . 'models/Media.php',
-    NOPE_LIB_DIR . 'queries/Media.php'],
+    NOPE_LIB_DIR . 'queries/Media.php'
+  ],
   'route' => NOPE_LIB_DIR . 'routes/media.php',
   'js' => [
     'lib/assets/js/media.js'
   ]
 ]);
 \Nope::registerModel('gallery', [
-  'model' => NOPE_LIB_DIR . 'models/Gallery.php',
+  'model' => [
+    NOPE_LIB_DIR . 'models/Gallery.php',
+    NOPE_LIB_DIR . 'queries/Gallery.php'
+  ],
   'route' => NOPE_LIB_DIR . 'routes/gallery.php',
   'js' => [
     'lib/assets/js/gallery.js'
+  ]
+]);
+
+\Nope::registerModel('menu', [
+  'model' => [
+    NOPE_LIB_DIR . 'models/Menu.php',
+    NOPE_LIB_DIR . 'queries/Menu.php'
+  ],
+  'route' => NOPE_LIB_DIR . 'routes/menu.php',
+  'js' => [
+    'lib/assets/js/menu.js'
   ]
 ]);

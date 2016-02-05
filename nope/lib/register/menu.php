@@ -55,6 +55,20 @@
 ], 100);
 
 \Nope::registerMenuItem([
+  'id' => 'menu',
+  'label' => 'Menus',
+  'permission' => 'menu.read',
+  'role' => '',
+  'activeWhen' => 'selectedPath.indexOf(\'/menu\')!==-1',
+  'icon' => 'fa fa-bars',
+  'attrs' => [
+    'href' => '',
+    'ui-sref' => 'app.menu',
+    'ui-sref-opts' => '{reload: true}'
+  ]
+], 125);
+
+\Nope::registerMenuItem([
   'id' => 'user',
   'label' => 'Users',
   'permission' => 'user.read',

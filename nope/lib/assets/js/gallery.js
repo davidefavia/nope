@@ -114,6 +114,10 @@
         }
       });
 
+      $scope.save = function(g) {
+        $scope.$parent.save(g);
+      }
+
     }])
     /**
      * Services
