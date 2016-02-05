@@ -1,4 +1,4 @@
-## v0.10.0 (2016-02-??)
+## v0.10.0 (2016-02-05)
 
 ### Breaking changes
 - `nopeModel` is now `multiple=false` by default.
