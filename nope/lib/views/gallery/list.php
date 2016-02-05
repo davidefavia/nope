@@ -12,13 +12,13 @@
       <a ng-if="!nope.isIframe" href="#/gallery/create" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new gallery <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && q.query">No {{contentType}} found with filter "{{q.query}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="(!contentsList.length && q.query) || (!metadata.count && !q.query)">No gallery found<span ng-if="q.query"> with filter "{{q.query}}"</span>.</div>
       <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedGallery.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" />
         </div>
         <div class="media-body">
-          <a href="" ng-click="select(p,$index);"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
+          <a ng-href="#/gallery/view/{{p.id}}" ng-model="selection" nope-content-selection="p"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
           <p class="list-group-item-text">Media: {{p.media.length}}</p>
           <p class="list-group-item-text">Modified {{p.lastModificationDate | nopeMoment}}</p>
           <div ng-if="nope.isIframe" class="pull-right">
@@ -35,7 +35,7 @@
     </div>
     <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
-  <div ng-if="!nope.isIframe" class="col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
+  <div ng-if="!nope.isIframe" class="col col-md-8 col-sm-6" ui-view="content">
     <no-empty icon="object-group">
       <span ng-if="contentsList.length">Select {{contentType}}</span>
       <a href="#/gallery/create" ng-if="!contentsList.length" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>

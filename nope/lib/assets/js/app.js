@@ -72,7 +72,7 @@
     .state('app.user.create', {
       url : '/create',
       views : {
-        'content@app.user' : {
+        'content' : {
           templateUrl : 'view/user/form.html',
           controller : 'UserCreateController'
         }
@@ -81,7 +81,7 @@
     .state('app.user.detail', {
       url : '/view/{id:int}',
       views : {
-        'content@app.user' : {
+        'content' : {
           templateUrl : 'view/user/form.html',
           controller : 'UserDetailController'
         }
@@ -146,17 +146,6 @@
    .controller('UsersListController', ['$scope', '$rootScope', '$location', '$state', '$nopeModal', '$nopeUtils', 'User', function($scope, $rootScope, $location, $state, $nopeModal, $nopeUtils, User) {
      $scope.usersList = [];
      $scope.q = $location.search();
-     $scope.selection = [];
-
-     $scope.select = function(c,i) {
-       if($rootScope.nope.isIframe) {
-         var callerScope = $nopeUtils.getContentModalCallerScope();
-         $scope.selection = callerScope.selectedItem(c);
-         callerScope.$apply();
-       } else {
-         $state.go('app.user.detail', {id:c.id});
-       }
-     }
 
      $scope.search = function(q, page) {
        page = page || 1;
@@ -221,13 +210,13 @@
        id: $stateParams.id
      }, function(data) {
        $scope.user = data;
-       $scope.$parent.selectedUser = $scope.user;
+       $scope.$parent.$parent.selectedUser = $scope.user;
      });
 
      $scope.$on('nope.user.updated', function(e, data) {
        if(data.id === $stateParams.id) {
          $scope.user = data;
-         $scope.$parent.selectedUser = $scope.user;
+         $scope.$parent.$parent.selectedUser = $scope.user;
        }
      });
 

@@ -129,7 +129,18 @@ abstract class Model implements \JsonSerializable {
   }
 
   static public function __getSql($filters, &$params=[], $p = null) {
-    return [];
+    $sql = [];
+    $filters = (object) $filters;
+    if($filters->excluded) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
+      foreach ($filters->excluded as $value) {
+        $params[] = $value;
+      }
+    }
+    return $sql;
   }
 
   static public function findAll($filters=[], $limit=-1, $offset=0, &$count=0, $orderBy='id desc') {

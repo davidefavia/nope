@@ -137,7 +137,8 @@ class Utils {
       'last' => $last,
       'actual' => $page,
       'previous' => ($page>1?$page-1:1),
-      'next' => ($page<$last?$page+1:$last)
+      'next' => ($page<$last?$page+1:$last),
+      'count' => $count
     ];
   }
 

@@ -62,14 +62,14 @@
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.password.$valid && installationForm.password.$touched)}">
                     <label class="control-label">Password:</label>
-                    <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required />
+                    <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required placeholder="Choose your password" />
                     <div ng-messages="installationForm.password.$error" ng-if="installationForm.password.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Password is required.</span>
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.confirm.$valid && installationForm.confirm.$touched)}">
                     <label class="control-label">Confirm password:</label>
-                    <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm password" required nope-match="user.password" />
+                    <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm your password" required nope-match="user.password" />
                     <div ng-messages="installationForm.confirm.$error" ng-if="installationForm.confirm.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Password confirmation is required.</span>
                       <span class="help-block" ng-message="match">Password and its confirmation must match.</span>
@@ -77,7 +77,7 @@
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.email.$valid && installationForm.email.$touched)}">
                     <label class="control-label">Email:</label>
-                    <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email" required ng-pattern='<?php echo \Nope\Utils::EMAIL_REGEX_PATTERN; ?>' />
+                    <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email to reset password" required ng-pattern='<?php echo \Nope\Utils::EMAIL_REGEX_PATTERN; ?>' />
                     <div ng-messages="installationForm.email.$error" ng-if="installationForm.email.$touched" ng-cloak>
                      <span class="help-block" ng-message="required">Email is required.</span>
                      <span class="help-block" ng-message="pattern">Email must be valid.</span>
@@ -105,8 +105,7 @@
       <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
       <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
       <script>
-        angular.module('nope.app', ['ngMessages', 'nope.ui'])
-        ;
+        angular.module('nope.app', ['ngMessages', 'nope.ui']);
       </script>
   </body>
 </html>

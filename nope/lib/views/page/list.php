@@ -23,13 +23,13 @@
       <a ng-if="!nope.isIframe" href="#/content/page/create" class="btn btn-sm btn-block btn-default" nope-can="{{contentType}}.create" ng-click="selectedContent=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.status)">No {{contentType}} found with filter "{{q}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="(!contentsList.length && (q.status || q.query)) || (!metadata.count && (!q.query && !q.status))">No {{contentType}} found<span ng-if="q.query || q.status"> with filter "{{q}}"</span>.</div>
       <div class="list-group-item clearfix media" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="media-left" ng-if="p.cover">
           <img class="media-object img-circle" ng-src="{{p.cover.preview.icon}}" />
         </div>
         <div class="media-body">
-          <a href="" ng-click="select(p,$index);"><h4 class="list-group-item-heading">{{::p.title}}</h4></a>
+          <a ng-href="#/content/{{contentType}}/view/{{p.id}}" nope-content-selection="p" ng-model="selection"><h4 class="list-group-item-heading">{{::p.title}}</h4></a>
           <p class="list-group-item-text">
             <nope-publishing ng-model="p"></nope-publishing>
           </p>

@@ -57,6 +57,8 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $media->filename = $uniqueFilename;
         $media->size = $size;
         $media->starred = false;
+        $media->type = null;
+        $media->provider = null;
         $media->setAuthor($currentUser);
         $media->save();
         $media = Media::findById($media->id);

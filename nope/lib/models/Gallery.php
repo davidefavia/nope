@@ -15,6 +15,8 @@ class Gallery extends Content {
     $json = parent::jsonSerialize();
     $json->media = $this->getMedia();
     unset($json->sharedMedia);
+    unset($json->startPublishingDate);
+    unset($json->endPublishingDate);
     return $json;
   }
 
@@ -46,34 +48,6 @@ class Gallery extends Content {
         $this->model->sharedMedia[] = $me;
       }
     }
-  }
-
-  static function __getSql($filters, &$params=[], $p = null) {
-    $sql = [];
-    $filters = (object) $filters;
-    if($filters->author) {
-      $sql[] = $p.'author_id = ?';
-      $params[] = $filters->author->id;
-    }
-    if($filters->excluded) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
-      foreach ($filters->excluded as $value) {
-        $params[] = $value;
-      }
-    }
-    if($filters->text) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $like = '%' . $filters->text . '%';
-      $sql[] = '(title LIKE ? or body LIKE ?)';
-      $params[] = $like;
-      $params[] = $like;
-    }
-    return $sql;
   }
 
   function beforeSave() {

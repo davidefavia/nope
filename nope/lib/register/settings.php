@@ -30,8 +30,7 @@ $nopeSettings->addField(new Setting\Field('homepage', [
   'attributes' => [
     'href' => '#/content/page',
     'preview' => 'icon',
-    'label' => 'Add homepage',
-    'multiple' => false
+    'label' => 'Add homepage'
   ]
 ]));
 

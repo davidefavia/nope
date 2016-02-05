@@ -27,15 +27,15 @@
       </div>
       <div class="form-group" ng-class="{'has-error':(!mediaForm.title.$valid && mediaForm.title.$touched)}">
         <label class="control-label">Title</label>
-        <input type="text" name="title" class="form-control" ng-model="media.title" required />
+        <input type="text" name="title" class="form-control" ng-model="media.title" required placeholder="Media title" />
       </div>
       <div class="form-group">
         <label>Description</label>
-        <textarea name="body" class="form-control" ng-model="media.body"></textarea>
+        <textarea name="body" class="form-control" ng-model="media.body" rows="5" placeholder="Media description" ></textarea>
       </div>
       <div class="form-group">
         <label>Tags (comma separated)</label>
-        <input type="text" name="tags" class="form-control" ng-model="media.tags" />
+        <input type="text" name="tags" class="form-control" ng-model="media.tags" placeholder="Tags (comma separated)" />
       </div>
     </div>
     <div class="panel-footer">

@@ -15,7 +15,8 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     $queryParams = (object) $request->getQueryParams();
     $params = Utils::getPaginationTerms($request, $rpp);
     $contentsList = Gallery::findAll([
-      'text' => $params->query
+      'text' => $params->query,
+      'excluded' => explode(',', $queryParams->excluded)
     ], $params->limit, $params->offset, $count);
     $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     return $response->withJson([

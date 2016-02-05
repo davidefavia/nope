@@ -5,7 +5,7 @@ namespace Nope;
 use RedBeanPHP\R as R;
 use \Respect\Validation\Validator as v;
 
-class Setting extends \Nope\Model {
+class Setting extends Model {
 
   const MODELTYPE = 'setting';
 

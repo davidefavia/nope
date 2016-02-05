@@ -1,3 +1,25 @@
+## v0.10.0 (2016-02-05)
+
+### Breaking changes
+- `nopeModel` is now `multiple=false` by default.
+
+### Features
+- Added input fields placeholders (#27).
+- Added `nopeContentSelection` directive to enable selection inside iframe (#29).
+- Added `template` property to `nopeModel` directive (#30).
+- Added check if `localhost` to enable livereload server binding inside views (#26).
+
+### Fixes
+- Fixed wrong `headline` setting creation during installation.
+- Fixed first gallery creation UI (#25).
+- Fixed user detail UI.
+- Fixed missing default fields (`type` and `provider`) on media upload.
+- Fixed reset password error without exception (#28).
+- Fixed multiple models saving (#32).
+- Fixed excluded ids content query (#31).
+- Fixed missing content highlight inside lists (#24).
+- CSS refactoring, `Model::__getSql()` method optimization (#33).
+
 ## v0.9.0 (2016-02-03)
 
 ### Libraries

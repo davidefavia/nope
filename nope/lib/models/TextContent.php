@@ -39,12 +39,8 @@ class TextContent extends Content {
   }
 
   static function __getSql($filters, &$params=[], $p = null) {
-    $sql = [];
+    $sql = parent::__getSql($filters, $params, $p);
     $filters = (object) $filters;
-    if($filters->author) {
-      $sql[] = $p.'author_id = ?';
-      $params[] = $filters->author->id;
-    }
     if($filters->status) {
       if(count($sql)) {
         $sql[] = 'and';

@@ -108,21 +108,8 @@ class Media extends Content {
   }
 
   static function __getSql($filters, &$params=[], $p = null) {
-    $sql = [];
+    $sql = parent::__getSql($filters, $params, $p);
     $filters = (object) $filters;
-    if($filters->author) {
-      $sql[] = $p.'author_id = ?';
-      $params[] = $filters->author->id;
-    }
-    if($filters->excluded) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
-      foreach ($filters->excluded as $value) {
-        $params[] = $value;
-      }
-    }
     if($filters->mimetype) {
       if(count($sql)) {
         $sql[] = 'and';
@@ -137,16 +124,6 @@ class Media extends Content {
         $sql[] = '('.$p.'mimetype LIKE ? and '.$p.'provider is NULL)';
         $params[] = '%' . $filters->mimetype . '%';
       }
-
-    }
-    if($filters->text) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $like = '%' . $filters->text . '%';
-      $sql[] = '(title LIKE ? or body LIKE ?)';
-      $params[] = $like;
-      $params[] = $like;
     }
     return $sql;
   }
