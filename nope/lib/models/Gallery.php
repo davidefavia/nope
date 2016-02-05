@@ -50,34 +50,6 @@ class Gallery extends Content {
     }
   }
 
-  static function __getSql($filters, &$params=[], $p = null) {
-    $sql = [];
-    $filters = (object) $filters;
-    if($filters->author) {
-      $sql[] = $p.'author_id = ?';
-      $params[] = $filters->author->id;
-    }
-    if($filters->excluded) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
-      foreach ($filters->excluded as $value) {
-        $params[] = $value;
-      }
-    }
-    if($filters->text) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $like = '%' . $filters->text . '%';
-      $sql[] = '(title LIKE ? or body LIKE ?)';
-      $params[] = $like;
-      $params[] = $like;
-    }
-    return $sql;
-  }
-
   function beforeSave() {
     // Check unique slug!
     $contentCheckBySlug = self::findBySlug($this->slug);

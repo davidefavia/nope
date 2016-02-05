@@ -17,6 +17,8 @@
 - Fixed reset password error without exception (#28).
 - Fixed multiple models saving (#32).
 - Fixed excluded ids content query (#31).
+- Fixed missing content highlight inside lists (#24).
+- CSS refactoring, `Model::__getSql()` method optimization (#33).
 
 ## v0.9.0 (2016-02-03)
 

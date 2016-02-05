@@ -216,7 +216,7 @@ class User extends \Nope\Model {
   }
 
   static function __getSql($filters, &$params=[], $p = null) {
-    $sql = [];
+    $sql = parent::__getSql($filters, $params, $p);
     $filters = (object) $filters;
     if($filters->role) {
       $sql[] = 'role = ?';
@@ -230,15 +230,6 @@ class User extends \Nope\Model {
       $like = '%' . $filters->text . '%';
       $params[] = $like;
       $params[] = $like;
-    }
-    if($filters->excluded) {
-      if(count($sql)) {
-        $sql[] = 'and';
-      }
-      $sql[] = $p.'id NOT in (' . R::genSlots($filters->excluded) . ')';
-      foreach ($filters->excluded as $value) {
-        $params[] = $value;
-      }
     }
     return $sql;
   }

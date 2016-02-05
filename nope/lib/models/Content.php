@@ -136,6 +136,26 @@ class Content extends Model {
     }
   }
 
+  static function __getSql($filters, &$params=[], $p = null) {
+    $sql = parent::__getSql($filters, $params, $p);
+    $filters = (object) $filters;
+    if($filters->author) {
+      $sql[] = $p.'author_id = ?';
+      $params[] = $filters->author->id;
+    }
+    $filters = (object) $filters;
+    if($filters->text) {
+      if(count($sql)) {
+        $sql[] = 'and';
+      }
+      $like = '%' . $filters->text . '%';
+      $sql[] = '(title LIKE ? or body LIKE ?)';
+      $params[] = $like;
+      $params[] = $like;
+    }
+    return $sql;
+  }
+
   static public function findBySlug($slug) {
     return self::__to(R::findOne(self::__getModelType(), 'slug = ?', [$slug]));
   }
