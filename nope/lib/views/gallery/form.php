@@ -1,4 +1,4 @@
-<form name="galleryForm" ng-submit="save();">
+<form name="galleryForm" ng-submit="$parent.save(gallery);">
   <div class="panel panel-default">
     <div class="panel-heading content-author" ng-if="gallery.id">
       <div class="btn-group btn-group-xs toolbar pull-right">

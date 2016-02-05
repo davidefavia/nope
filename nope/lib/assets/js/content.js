@@ -17,7 +17,7 @@
         .state('app.content.detail', {
           url: '/view/{id:int}',
           views: {
-            'content@app.content': {
+            'content': {
               templateUrl: function($stateParams) {
                 return 'view/' + $stateParams.contentType + '/detail.html'
               },
@@ -165,13 +165,14 @@
         id: $stateParams.id
       }, function(data) {
         $scope.content = data;
-        $scope.$parent.selectedContent = $scope.content;
+        $scope.$parent.$parent.selectedContent = $scope.content;
       });
 
       $scope.$on('nope.content.updated', function(e, data) {
+        console.log(data.id, $stateParams.id);
         if(data.id === $stateParams.id) {
           $scope.content = data;
-          $scope.$parent.selectedContent = $scope.content;
+          $scope.$parent.$parent.selectedContent = $scope.content;
         }
       });
     }])

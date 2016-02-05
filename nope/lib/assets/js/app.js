@@ -72,7 +72,7 @@
     .state('app.user.create', {
       url : '/create',
       views : {
-        'content@app.user' : {
+        'content' : {
           templateUrl : 'view/user/form.html',
           controller : 'UserCreateController'
         }
@@ -81,7 +81,7 @@
     .state('app.user.detail', {
       url : '/view/{id:int}',
       views : {
-        'content@app.user' : {
+        'content' : {
           templateUrl : 'view/user/form.html',
           controller : 'UserDetailController'
         }
@@ -210,13 +210,13 @@
        id: $stateParams.id
      }, function(data) {
        $scope.user = data;
-       $scope.$parent.selectedUser = $scope.user;
+       $scope.$parent.$parent.selectedUser = $scope.user;
      });
 
      $scope.$on('nope.user.updated', function(e, data) {
        if(data.id === $stateParams.id) {
          $scope.user = data;
-         $scope.$parent.selectedUser = $scope.user;
+         $scope.$parent.$parent.selectedUser = $scope.user;
        }
      });
 

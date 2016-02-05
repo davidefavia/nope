@@ -104,19 +104,15 @@
         id: $stateParams.id
       }, function(data) {
         $scope.gallery = data;
-        $scope.$parent.selectedGallery = $scope.gallery;
+        $scope.$parent.$parent.selectedGallery = $scope.gallery;
       });
 
       $scope.$on('nope.gallery.updated', function(e, data) {
         if(data.id === $stateParams.id) {
           $scope.gallery = data;
-          $scope.$parent.selectedGallery = $scope.gallery;
+          $scope.$parent.$parent.selectedGallery = $scope.gallery;
         }
       });
-
-      $scope.save = function() {
-        $scope.$parent.save($scope.gallery);
-      }
 
     }])
     /**

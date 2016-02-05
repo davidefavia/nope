@@ -72,7 +72,7 @@
       </div>
       <div class="form-group">
         <label>Cover</label>
-        <nope-model href="#/media?mimetype=image/" ng-model="user.cover" multiple="false" label="Add cover" preview="icon"></nope-model>
+        <nope-model href="#/media?mimetype=image/" ng-model="user.cover" multiple="false" label="Add cover" preview="icon" template="media"></nope-model>
       </div>
     </div>
     <div class="panel-footer">
