@@ -159,16 +159,16 @@
         },
         {
             "name": "embed/embed",
-            "version": "v2.6.2",
+            "version": "v2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oscarotero/Embed.git",
-                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1"
+                "reference": "196bab8760ac19d1d3d975e83c9871a145881c96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
-                "reference": "0115edfc7503e8d128b7f0b39666443e4a6aa5f1",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/196bab8760ac19d1d3d975e83c9871a145881c96",
+                "reference": "196bab8760ac19d1d3d975e83c9871a145881c96",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,7 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "5.x",
-                "sstalle/php7cc": "^1.0"
+                "phpunit/phpunit": "*"
             },
             "suggest": {
                 "guzzlehttp/guzzle@5.x": "To use Guzzle5 request resolver"
@@ -209,7 +209,7 @@
                 "opengraph",
                 "twitter cards"
             ],
-            "time": "2016-01-31 18:44:52"
+            "time": "2016-02-08 12:04:49"
         },
         {
             "name": "erusev/parsedown",
@@ -1150,16 +1150,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "8617895eb798b6bdb338321ce19453dc113e5675"
+                "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/8617895eb798b6bdb338321ce19453dc113e5675",
-                "reference": "8617895eb798b6bdb338321ce19453dc113e5675",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/623bda0abd9aa29e529c8e9c08b3b84171914723",
+                "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723",
                 "shasum": ""
             },
             "require": {
@@ -1195,7 +1195,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-05 11:13:14"
+            "time": "2016-01-27 05:14:46"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1366,16 +1366,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "dff0867826a7068d673801b7522f8e2634016ef9"
+                "reference": "2de0b6f7ebe43cffd8a06996ebec6aab79ea9e91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/dff0867826a7068d673801b7522f8e2634016ef9",
-                "reference": "dff0867826a7068d673801b7522f8e2634016ef9",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/2de0b6f7ebe43cffd8a06996ebec6aab79ea9e91",
+                "reference": "2de0b6f7ebe43cffd8a06996ebec6aab79ea9e91",
                 "shasum": ""
             },
             "require": {
@@ -1426,7 +1426,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-05 17:45:07"
+            "time": "2016-02-02 13:44:19"
         }
     ],
     "packages-dev": [],

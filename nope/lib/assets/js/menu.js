@@ -76,6 +76,7 @@
     }])
     .controller('MenuCreateController', ['$scope', '$state', 'Menu', function($scope, $state, Menu) {
       $scope.menu = new Menu();
+      $scope.menu.items = [];
 
       $scope.save = function() {
         Menu.save($scope.menu, function(data) {

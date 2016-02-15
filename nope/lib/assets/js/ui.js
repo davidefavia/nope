@@ -80,7 +80,7 @@
       }
 
       return {
-        getContentModalCallerScope : getContentModalCallerScope
+        getContentModalCallerScope: getContentModalCallerScope
       }
     }])
     .service('$nopeToast', ['$rootScope', '$compile', function($rootScope, $compile) {
@@ -89,25 +89,25 @@
       bodyElement.append('<div id="notifications-container"></div>');
       var container = angular.element(document.getElementById('notifications-container'));
 
-      var error = function(m,o) {
-        show('danger',m,o || {});
+      var error = function(m, o) {
+        show('danger', m, o || {});
       }
 
-      var success = function(m,o) {
-        show('success',m,o || {});
+      var success = function(m, o) {
+        show('success', m, o || {});
       }
 
-      var warning = function(m,o) {
-        show('warning',m,o || {});
+      var warning = function(m, o) {
+        show('warning', m, o || {});
       }
 
-      var info = function(m,o) {
-        show('info',m,o || {});
+      var info = function(m, o) {
+        show('info', m, o || {});
       }
 
       function buildToast(level, message, options) {
         options.timeout = options.timeout || 2500;
-        return $compile('<div class="alert alert-'+level+'" nope-timeout="'+options.timeout+'">'+message+'</div>')($rootScope);
+        return $compile('<div class="alert alert-' + level + '" nope-timeout="' + options.timeout + '">' + message + '</div>')($rootScope);
       }
 
       function show(level, message, options) {
@@ -115,10 +115,10 @@
       }
 
       return {
-        info : info,
-        error : error,
-        success : success,
-        warning : warning
+        info: info,
+        error: error,
+        success: success,
+        warning: warning
       }
     }])
     .provider('$nopeModal', [function() {
@@ -201,7 +201,7 @@
           }
 
           $scope.close = function($event) {
-            if(angular.element($event.target).hasClass('modal')) {
+            if (angular.element($event.target).hasClass('modal')) {
               $element.remove();
             }
           }
@@ -270,7 +270,7 @@
         restrict: 'A',
         scope: {
           onUploadDone: '&nopeUploadModal',
-          accept : '@'
+          accept: '@'
         },
         link: function($scope, $element, $attrs) {
           var theModal;
@@ -297,7 +297,7 @@
         priority: 1000,
         scope: {
           onDone: '&nopeUpload',
-          accept : '@'
+          accept: '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.uploadFiles = function(files) {
@@ -318,7 +318,7 @@
         }],
         link: function($scope, $element, $attrs) {
           $element.attr('ngf-select', 'uploadFiles($files)');
-          if($scope.accept) {
+          if ($scope.accept) {
             $element.attr('ngf-accept', $scope.accept.toString());
           }
           $element.attr('multiple', 'multiple');
@@ -348,7 +348,7 @@
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.importMedia = function() {
             Media.import({
-              url : $scope.importUrl
+              url: $scope.importUrl
             }, function() {
               $scope.onDone();
             });
@@ -382,7 +382,7 @@
         replace: true,
         require: 'ngModel',
         templateUrl: function($element, $attrs) {
-          return 'view/directive/model/'+($attrs.template || 'content')+'.html'
+          return 'view/directive/model/' + ($attrs.template || 'content') + '.html'
         },
         scope: {
           multiple: '=?',
@@ -401,7 +401,7 @@
 
           $scope.openModal = function($event) {
             $scope.selection = [];
-            $scope.url = BasePath +'?iframe=1' + $scope.url;
+            $scope.url = BasePath + '?iframe=1' + $scope.url;
             $nopeModal.fromTemplateUrl('view/modal/content.html', $scope).then(function(modal) {
               theModal = modal;
               theModal.show();
@@ -425,10 +425,10 @@
           }
 
           $scope.selectedItem = function(c) {
-            if($scope.selection.hasItem(c)) {
+            if ($scope.selection.hasItem(c)) {
               $scope.selection.removeItemAt($scope.selection.itemIndex(c));
             } else {
-              if(!$scope.multiple) {
+              if (!$scope.multiple) {
                 $scope.selection.removeItemAt(0);
               }
               $scope.selection.push(c);
@@ -445,7 +445,7 @@
     }])
     .directive('nopeTimeout', ['$timeout', function($timeout) {
       return {
-        restrict : 'A',
+        restrict: 'A',
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var t = parseInt($attrs.nopeTimeout, 10);
           t = t || 1000;
@@ -457,39 +457,39 @@
     }])
     .directive('nopeMatch', [function() {
       return {
-        restrict : 'A',
-        require : '^ngModel',
-        scope : {
-          nopeMatch : '=',
-          ngModel : '='
+        restrict: 'A',
+        require: '^ngModel',
+        scope: {
+          nopeMatch: '=',
+          ngModel: '='
         },
-        link : function($scope, $element, $attrs, ngModelCtrl) {
-          $scope.$watch('ngModel', function(n,o) {
-            ngModelCtrl.$setValidity('match',(n===$scope.nopeMatch));
+        link: function($scope, $element, $attrs, ngModelCtrl) {
+          $scope.$watch('ngModel', function(n, o) {
+            ngModelCtrl.$setValidity('match', (n === $scope.nopeMatch));
           }, true);
-          $scope.$watch('nopeMatch', function(n,o) {
-            ngModelCtrl.$setValidity('match',($scope.ngModel===n));
+          $scope.$watch('nopeMatch', function(n, o) {
+            ngModelCtrl.$setValidity('match', ($scope.ngModel === n));
           }, true);
         }
       }
     }])
     .directive('nopePublishing', [function() {
       return {
-        restrict : 'E',
-        replace : true,
+        restrict: 'E',
+        replace: true,
         scope: {
           ngModel: '='
         },
-        template : function($element, $attrs) {
-          var m = 'ngModel';//$attrs.ngModel;
+        template: function($element, $attrs) {
+          var m = 'ngModel'; //$attrs.ngModel;
           var html = [];
           html.push('<span class="nope-publishing">');
-          html.push('<span class="label label-info" ng-if="'+m+'.realStatus==\'draft-published\'">Draft ready to be published</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'published\'"><span class="label label-success">Published</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{'+m+'.endPublishingDate | nopeMoment}}</span>');
-          html.push('<span ng-if="'+m+'.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{'+m+'.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span class="label label-info" ng-if="' + m + '.realStatus==\'draft-published\'">Draft ready to be published</span>');
+          html.push('<span ng-if="' + m + '.realStatus==\'draft-expired\'"><span class="label label-danger">Draft already expired</span> {{' + m + '.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="' + m + '.realStatus==\'draft-scheduled\'"><span class="label label-danger">Draft scheduled</span> {{' + m + '.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="' + m + '.realStatus==\'published\'"><span class="label label-success">Published</span> {{' + m + '.startPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="' + m + '.realStatus==\'expired\'"><span class="label label-danger">Expired</span> {{' + m + '.endPublishingDate | nopeMoment}}</span>');
+          html.push('<span ng-if="' + m + '.realStatus==\'scheduled\'"><span class="label label-warning">Scheduled</span> {{' + m + '.startPublishingDate | nopeMoment}}</span>');
           html.push('</span>');
           return html.join('');
         }
@@ -497,8 +497,8 @@
     }])
     .directive('nopeSelectable', [function() {
       return {
-        restrict : 'A',
-        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+        restrict: 'A',
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $element.on('focus', function(e) {
             $element[0].select();
           });
@@ -507,23 +507,23 @@
     }])
     .directive('nopeAuthor', [function() {
       return {
-        restrict : 'E',
+        restrict: 'E',
         replace: true,
-        templateUrl : 'view/directive/author.html',
-        scope : {
-          content : '='
+        templateUrl: 'view/directive/author.html',
+        scope: {
+          content: '='
         }
       }
     }])
     .directive('nopeContentDelete', ['$nopeModal', function($nopeModal) {
       return {
-        restrict : 'A',
-        require : 'ngModel',
-        scope : {
-          ngModel : '=',
-          deleteContentOnClick : '&nopeContentDelete'
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+          ngModel: '=',
+          deleteContentOnClick: '&nopeContentDelete'
         },
-        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $element.on('click', function() {
             $nopeModal.fromTemplateUrl('view/modal/content-delete.html', $scope).then(function(modal) {
               $scope.theModal = modal;
@@ -541,13 +541,13 @@
     }])
     .directive('nopeUserDelete', ['$nopeModal', function($nopeModal) {
       return {
-        restrict : 'A',
-        require : 'ngModel',
-        scope : {
-          ngModel : '=',
-          deleteUserOnClick : '&nopeUserDelete'
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+          ngModel: '=',
+          deleteUserOnClick: '&nopeUserDelete'
         },
-        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $element.on('click', function() {
             $nopeModal.fromTemplateUrl('view/modal/user-delete.html', $scope).then(function(modal) {
               $scope.theModal = modal;
@@ -565,17 +565,17 @@
     }])
     .directive('nopeContentSelection', ['$rootScope', '$nopeUtils', function($rootScope, $nopeUtils) {
       return {
-        restrict : 'A',
-        require : 'ngModel',
-        scope : {
-          selection : '=ngModel',
-          item : '=nopeContentSelection'
+        restrict: 'A',
+        require: 'ngModel',
+        scope: {
+          selection: '=ngModel',
+          item: '=nopeContentSelection'
         },
-        link : function($scope, $element, $attrs) {
+        link: function($scope, $element, $attrs) {
           $scope.selection = angular.isArray($scope.selection) ? $scope.selection : [];
 
           $element.on('click', function(e) {
-            if($rootScope.nope.isIframe) {
+            if ($rootScope.nope.isIframe) {
               e.preventDefault();
               var callerScope = $nopeUtils.getContentModalCallerScope();
               $scope.selection = callerScope.selectedItem($scope.item);
@@ -586,5 +586,98 @@
         }
       }
     }])
-    ;
+    .directive('nopeMenu', ['RecursionHelper', function(RecursionHelper) {
+      return {
+        restrict: 'E',
+        require: '^ngModel',
+        replace : true,
+        scope: {
+          ngModel: '=',
+          show: '='
+        },
+        template: '<div><ul dnd-list="ngModel" dnd-external-sources="true" dnd-external-sources="true" class="list-group list-group-menu is-multiple">\
+          <li class="dndPlaceholder fake" ng-if="!ngModel.length && show">Drop items here</li>\
+          <li class="list-group-item" ng-repeat="item in ngModel track by $index" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
+            <i class="fa fa-bars handle"></i>\
+            <div>\
+              <div>\
+                <div class="form-group">\
+                  <div class="row">\
+                    <div class="col col-md-6">\
+                      <label>Label</label>\
+                      <input type="text" class="form-control input-sm" ng-model="item.label" placeholder="Menu item label" />\
+                    </div>\
+                    <div class="col col-md-6">\
+                      <label>Id</label>\
+                      <input type="text" class="form-control input-sm" ng-model="item.id" placeholder="Item CSS id" />\
+                    </div>\
+                  </div>\
+                </div>\
+                <div class="form-group">\
+                  <label>URL</label>\
+                  <input type="text" class="form-control input-sm" ng-model="item.value" placeholder="Relative or absolute URL" />\
+                </div>\
+                <div class="form-group">\
+                  <nope-menu ng-model="item.items" show="true"></nope-menu>\
+                </div>\
+              </div>\
+              <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
+                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
+                <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
+              </div>\
+            </div>\
+          </li>\
+        </ul>\
+        <a href="" ng-click="ngModel.push({label:\'\',value:\'\',id:\'\',items:[]});" class="btn btn-default btn-block btn-sm">Add menu item <i class="fa fa-plus"></i></a></div>',
+        compile: function($element) {
+          // Use the compile function from the RecursionHelper,
+          // And return the linking function(s) which it returns
+          return RecursionHelper.compile($element);
+        }
+      }
+    }])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+      return {
+        /**
+         * Manually compiles the element, fixing the recursion loop.
+         * @param element
+         * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+         * @returns An object containing the linking functions.
+         */
+        compile: function(element, link) {
+          // Normalize the link parameter
+          if (angular.isFunction(link)) {
+            link = {
+              post: link
+            };
+          }
+
+          // Break the recursion loop by removing the contents
+          var contents = element.contents().remove();
+          var compiledContents;
+          return {
+            pre: (link && link.pre) ? link.pre : null,
+            /**
+             * Compiles and re-adds the contents
+             */
+            post: function(scope, element) {
+              // Compile the contents
+              if (!compiledContents) {
+                compiledContents = $compile(contents);
+              }
+              // Re-add the compiled contents to the element
+              compiledContents(scope, function(clone) {
+                element.append(clone);
+              });
+
+              // Call the post-linking function, if any
+              if (link && link.post) {
+                link.post.apply(null, arguments);
+              }
+            }
+          };
+        }
+      };
+    }]);
 })()

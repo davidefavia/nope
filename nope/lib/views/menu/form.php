@@ -18,6 +18,10 @@
         <label>Description</label>
         <textarea name="body" class="form-control" ng-model="menu.body" placeholder="Menu description" rows="2"></textarea>
       </div>
+      <div class="form-group">
+        <label>Menu items</label>
+        <nope-menu ng-model="menu.items"></nope-menu>
+      </div>
     </div>
     <div class="panel-footer">
       <div class="form-group">

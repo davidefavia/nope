@@ -511,6 +511,18 @@ ul[dnd-list] {
       display: block;
       background-color: #ddd;
       min-height: 78px;
+      &.fake {
+        min-height: 0;
+        padding: 5px;
+        border: 2px dashed #ddd;
+        background: none;
+        text-align: center;
+        font-size: 12px;
+        color: #ddd;
+        &:hover {
+          background-color: lighten(#ddd,10%);
+        }
+      }
     }
     .handle {
       cursor: move;
@@ -525,6 +537,22 @@ ul[dnd-list] {
   &.is-multiple {
     .media {
       padding-left: 3*@gutter;
+    }
+  }
+  &.list-group-menu {
+    .list-group-item {
+      &>div {
+        padding-left: 2*@gutter;
+        &>div:first-child {
+          padding-right: 5*@gutter;
+        }
+        .toolbar {
+          position: absolute;
+          top: 50%;
+          margin-top: -@gutter;
+          right: @gutter;
+        }
+      }
     }
   }
 }

@@ -1,6 +1,8 @@
 ## v0.11.0 (2016-02-??)
 
-
+### Features
+- `Menu` model and UI (#23).
+- Added `nopeMenu` directive to enable menu recursive UI.
 
 ## v0.10.0 (2016-02-05)
 

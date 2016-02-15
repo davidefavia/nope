@@ -19,10 +19,11 @@ $app->group(NOPE_ADMIN_ROUTE . '/menu', function() {
   $this->post('', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('menu.create')) {
-      $fields = ['title', 'body', 'slug',];
+      $fields = ['title', 'body', 'slug'];
       $contentToCreate = new Menu();
       $body = $request->getParsedBody();
       $contentToCreate->import($body, $fields);
+      $contentToCreate->setItems($body['items']);
       $contentToCreate->setAuthor($currentUser);
       try {
         $contentToCreate->save();
@@ -53,6 +54,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/menu', function() {
         if($contentToUpdate) {
           $body = $request->getParsedBody();
           $contentToUpdate->import($body, $fields);
+          $contentToUpdate->setItems($body['items']);
           $contentToUpdate->save();
           return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
         } else {
