@@ -22,29 +22,30 @@
                   <li>3. Install</li>
                 </ol>
                 <div class="list-group">
-                  <?php if($step === 1 || !$ok ) { ?>
-                    <?php foreach($requirements as $key => $requirement) { ?>
-                      <div class="list-group-item list-group-item-<?php echo ($requirement->passed?'success':'danger'); ?>">
-                        <h4 class="list-group-item-heading">
-                          <?php if($requirement->icon) { ?>
-                            <i class="fa fa-<?php echo $requirement->icon; ?>"></i>
-                          <?php } ?>
-                          <?php echo $requirement->title; ?>
-                          <i class="pull-right fa fa-<?php if($requirement->passed) { ?>check<?php } else { ?>exclamation<?php } ?>"></i></h4>
-                        <?php foreach($requirement->lines as $line) { ?>
-                          <p class="list-group-item-text"><?php echo $line; ?></p>
-                        <?php } ?>
-                        <?php if($requirement->help) { ?>
-                          <p class="help-block"><i class="fa fa-info-circle"></i> <?php echo $requirement->help; ?></p>
-                        <?php } ?>
-                      </div>
+                <?php if($step === 1 || !$ok ) { ?>
+                  <?php foreach($requirements as $key => $requirement) { ?>
+                  <div class="list-group-item list-group-item-<?php echo ($requirement->passed?'success':'danger'); ?>">
+                    <h4 class="list-group-item-heading">
+                      <?php if($requirement->icon) { ?>
+                      <i class="fa fa-<?php echo $requirement->icon; ?>"></i>
+                      <?php } ?>
+                      <?php echo $requirement->title; ?>
+                      <i class="pull-right fa fa-<?php if($requirement->passed) { ?>check<?php } else { ?>exclamation<?php } ?>"></i>
+                    </h4>
+                    <?php foreach($requirement->lines as $line) { ?>
+                    <p class="list-group-item-text"><?php echo $line; ?></p>
                     <?php } ?>
+                    <?php if($requirement->help) { ?>
+                    <p class="help-block"><i class="fa fa-info-circle"></i> <?php echo $requirement->help; ?></p>
+                    <?php } ?>
+                  </div>
                   <?php } ?>
+                <?php } ?>
                 </div>
                 <?php if($step === 2 && $ok ) { ?>
-                  <?php if($user===false) { ?>
-                  <div class="alert alert-danger">Something wrong.</div>
-                  <?php } ?>
+                <?php if($user===false) { ?>
+                <div class="alert alert-danger">Something wrong.</div>
+                <?php } ?>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.title.$valid && installationForm.title.$touched)}">
                     <label class="control-label">Website title:</label>
                     <input type="text" name="title" ng-model="user.title" class="form-control" placeholder="Website title" required />
@@ -81,31 +82,36 @@
                     <div ng-messages="installationForm.email.$error" ng-if="installationForm.email.$touched" ng-cloak>
                      <span class="help-block" ng-message="required">Email is required.</span>
                      <span class="help-block" ng-message="pattern">Email must be valid.</span>
-                   </div>
+                    </div>
                   </div>
-                <?php } ?>
-                <div class="form-group">
+                  <?php } ?>
+                  <div class="form-group">
                   <?php if($step === 2 ) { ?>
-                  <button type="submit" class="btn btn-success btn-block btn-lg" ng-disabled="installationForm.$invalid">Install</button>
+                    <button type="submit" class="btn btn-success btn-block btn-lg" ng-disabled="installationForm.$invalid">Install</button>
                   <?php } else { ?>
                     <?php if($ok) { ?>
-                      <button class="btn btn-primary btn-block btn-lg">Go forward</button>
+                    <button class="btn btn-primary btn-block btn-lg">Go forward</button>
                     <?php } else { ?>
-                      <a href="<?php echo adminRoute('install'); ?>" class="btn btn-warning btn-block btn-lg">Check again</a>
+                    <a href="<?php echo adminRoute('install'); ?>" class="btn btn-warning btn-block btn-lg">Check again</a>
                     <?php } ?>
                   <?php } ?>
                 </div>
               </div>
             </form>
-            </div>
           </div>
         </div>
       </div>
-      <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
-      <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
-      <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
-      <script>
-        angular.module('nope.app', ['ngMessages', 'nope.ui']);
-      </script>
+    </div>
+    <script src="<?php echo path('lib/assets/js/lib/angular.min.js'); ?>"></script>
+    <script src="<?php echo path('lib/assets/js/lib/angular-messages.min.js'); ?>"></script>
+    <script src="<?php echo path('lib/assets/js/ui.js'); ?>"></script>
+    <script>
+      angular.module('nope.app', ['ngMessages', 'nope.ui']);
+    </script>
+    <?php if(NOPE_DEVELOPMENT===true) { ?>
+    <script> document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+        ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+    <?php } ?>
   </body>
 </html>

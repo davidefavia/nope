@@ -288,6 +288,8 @@
    .service('NopeHttpInterceptor', ['$rootScope', '$cacheFactory', '$injector', '$q', 'BasePath', 'AssetsPath', function($rootScope, $cacheFactory, $injector, $q, BasePath, AssetsPath) {
      return {
        request : function(request) {
+         var $nopeLoading = $injector.get('$nopeLoading');
+         $nopeLoading.show();
          if(!request.cache) {
            if(!request.params) {
              request.params = {};
@@ -308,6 +310,7 @@
        },
        responseError : function(reason) {
          var $state = $injector.get('$state');
+         var $nopeLoading = $injector.get('$nopeLoading');
          if(reason.status === 401) {
            if(reason.config.url.indexOf('loginstatus')!==-1) {
              return $q.reject(reason);
@@ -319,6 +322,7 @@
            $rootScope.$emit('nope.error', reason);
            return $q.reject(reason);
          }
+         $nopeLoading.hide();
          return reason;
        },
        response : function(response) {
@@ -331,6 +335,8 @@
            }
            response.data = response.data.data;
          }
+         var $nopeLoading = $injector.get('$nopeLoading');
+         $nopeLoading.hide();
          return response;
        }
      }

@@ -1,3 +1,11 @@
+## v0.12.0 (2016-02-??)
+
+### Features
+- Added loading spinner (#36).
+
+### Fixes
+- Fixed block button on empty states.
+
 ## v0.11.0 (2016-02-16)
 
 ### Features

@@ -206,15 +206,53 @@
         }
       };
     }])
+    .service('$nopeLoading', ['$rootScope', '$injector', '$window', function($rootScope, $injector, $window) {
+
+      var $compile = $injector.get('$compile');
+      var count = 0;
+      $rootScope.nopeScreen = {
+        width : document.body.clientWidth + 'px',
+        height : document.body.clientHeight + 'px'
+      }
+
+      window.onresize = function() {
+        if(document.getElementById('loader')) {
+          document.getElementById('loader').style.width = document.body.clientWidth + 'px';
+          document.getElementById('loader').style.height = document.body.clientHeight + 'px';
+        }
+      };
+
+      function show() {
+        count++;
+        if(!document.getElementById('loader')) {
+          var loader = $compile('<div id="loader" style="width: {{nopeScreen.width}}; height:{{nopeScreen.height}};"><div><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')($rootScope);
+          angular.element(document.body).append(loader);
+        }
+      }
+
+      function hide() {
+        if(count>0) {
+          count--;
+          if(count===0) {
+            loader.remove();
+          }
+        }
+      }
+
+      return {
+        show: show,
+        hide: hide
+      }
+    }])
     /**
      * Directives
      */
-    .directive('noEmpty', [function() {
+    .directive('nopeEmpty', [function() {
       return {
         restrict: 'E',
         transclude: true,
         replace: true,
-        template: '<div class="empty"><i class="fa fa-{{icon}}"><h3 ng-transclude></h3></div>',
+        template: '<div class="empty"><i class="fa fa-{{icon}} fa-5x"></i><h3 ng-transclude></h3></div>',
         scope: {
           icon: '@'
         }
@@ -509,10 +547,10 @@
         },
         link: function($scope, $element, $attrs, ngModelCtrl) {
           $scope.$watch('ngModel', function(n, o) {
-            ngModelCtrl.$setValidity('match', (n === $scope.nopeMatch));
+            ngModelCtrl.$setValidity('match', (n.toString() === $scope.nopeMatch.toString()));
           }, true);
           $scope.$watch('nopeMatch', function(n, o) {
-            ngModelCtrl.$setValidity('match', ($scope.ngModel === n));
+            ngModelCtrl.$setValidity('match', ($scope.ngModel.toString() === n.toString()));
           }, true);
         }
       }

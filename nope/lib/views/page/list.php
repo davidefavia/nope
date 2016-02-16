@@ -49,9 +49,9 @@
     <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div ng-if="!nope.isIframe" class="col" ng-class="{'col-md-8 col-sm-6':contentsList.length}" ui-view="content">
-    <no-empty icon="file-text-o">
+    <nope-empty icon="file-text-o">
       <span ng-if="contentsList.length">Select {{contentType}}</span>
       <a href="#/content/page/create" class="btn btn-default" nope-can="user.create" ng-if="!contentsList.length">Create new {{contentType}} <i class="fa fa-plus"></i></a>
-    </no-empty>
+    </nope-empty>
   </div>
 </div>

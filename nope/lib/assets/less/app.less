@@ -10,6 +10,11 @@
 @menu-color: @brand-primary;
 @light-menu-color: lighten(@menu-color, 10%);
 
+html, body {
+  position: relative;
+  height: 100%;
+}
+
 .container-fluid {
   padding:0;
   &>.row {
@@ -72,6 +77,9 @@ label {
   .logo {
     margin-bottom: 20px;
     text-align: center;
+    img {
+      width: 72px;
+    }
   }
   .breadcrumb {
     font-size: @font-size-base - 2px;
@@ -395,9 +403,6 @@ label {
   color: darken(@gray-lighter, 20%);
   text-align: center;
   width: 100%;
-  i {
-    font-size: 96px;
-  }
   h3 {
     margin: 10px 0;
     line-height: 30px;
@@ -409,12 +414,19 @@ label {
       i {
         font-size: inherit;
       }
+      &:hover {
+        color: darken(@gray-lighter, 40%);
+      }
     }
   }
 }
 
 .reset {
   margin-right: 10px;
+}
+
+.col-content {
+  .flex-direction();
 }
 
 
@@ -581,8 +593,13 @@ ul[dnd-list] {
   margin-top:0;
 }
 
-#media:not(.has-detail) {
-  margin:0;
+#media {
+  &:not(.has-detail) {
+    margin:0;
+  }
+  .empty {
+    margin-top: 20px;
+  }
 }
 
 .is-iframe {
@@ -597,6 +614,27 @@ ul[dnd-list] {
     }
     &.fa-check-circle {
       color: @brand-success;
+    }
+  }
+}
+
+#loader {
+  position: fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:10000;
+  background: rgba(255,255,255,.35);
+  text-align: center;
+  div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -1em;
+    margin-left: -1em;
+    i {
+      color: @brand-primary;
     }
   }
 }
