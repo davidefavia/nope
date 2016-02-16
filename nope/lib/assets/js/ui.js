@@ -162,6 +162,50 @@
       }];
 
     }])
+    // http://stackoverflow.com/a/18609594
+    .factory('nopeRecursionHelper', ['$compile', function($compile) {
+      return {
+        /**
+         * Manually compiles the element, fixing the recursion loop.
+         * @param element
+         * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+         * @returns An object containing the linking functions.
+         */
+        compile: function(element, link) {
+          // Normalize the link parameter
+          if (angular.isFunction(link)) {
+            link = {
+              post: link
+            };
+          }
+
+          // Break the recursion loop by removing the contents
+          var contents = element.contents().remove();
+          var compiledContents;
+          return {
+            pre: (link && link.pre) ? link.pre : null,
+            /**
+             * Compiles and re-adds the contents
+             */
+            post: function(scope, element) {
+              // Compile the contents
+              if (!compiledContents) {
+                compiledContents = $compile(contents);
+              }
+              // Re-add the compiled contents to the element
+              compiledContents(scope, function(clone) {
+                element.append(clone);
+              });
+
+              // Call the post-linking function, if any
+              if (link && link.post) {
+                link.post.apply(null, arguments);
+              }
+            }
+          };
+        }
+      };
+    }])
     /**
      * Directives
      */
@@ -586,7 +630,7 @@
         }
       }
     }])
-    .directive('nopeMenu', ['RecursionHelper', function(RecursionHelper) {
+    .directive('nopeMenu', ['nopeRecursionHelper', function(nopeRecursionHelper) {
       return {
         restrict: 'E',
         require: '^ngModel',
@@ -595,89 +639,13 @@
           ngModel: '=',
           show: '='
         },
-        template: '<div><ul dnd-list="ngModel" dnd-external-sources="true" dnd-external-sources="true" class="list-group list-group-menu is-multiple">\
-          <li class="dndPlaceholder fake" ng-if="!ngModel.length && show">Drop items here</li>\
-          <li class="list-group-item" ng-repeat="item in ngModel track by $index" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">\
-            <i class="fa fa-bars handle"></i>\
-            <div>\
-              <div>\
-                <div class="form-group">\
-                  <div class="row">\
-                    <div class="col col-md-6">\
-                      <label>Label</label>\
-                      <input type="text" class="form-control input-sm" ng-model="item.label" placeholder="Menu item label" />\
-                    </div>\
-                    <div class="col col-md-6">\
-                      <label>Id</label>\
-                      <input type="text" class="form-control input-sm" ng-model="item.id" placeholder="Item CSS id" />\
-                    </div>\
-                  </div>\
-                </div>\
-                <div class="form-group">\
-                  <label>URL</label>\
-                  <input type="text" class="form-control input-sm" ng-model="item.value" placeholder="Relative or absolute URL" />\
-                </div>\
-                <div class="form-group">\
-                  <nope-menu ng-model="item.items" show="true"></nope-menu>\
-                </div>\
-              </div>\
-              <div dnd-nodrag class="btn-group btn-group-xs toolbar">\
-                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>\
-                <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>\
-                <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>\
-              </div>\
-            </div>\
-          </li>\
-        </ul>\
-        <a href="" ng-click="ngModel.push({label:\'\',value:\'\',id:\'\',items:[]});" class="btn btn-default btn-block btn-sm">Add menu item <i class="fa fa-plus"></i></a></div>',
+        templateUrl: 'view/directive/menu.html',
         compile: function($element) {
           // Use the compile function from the RecursionHelper,
           // And return the linking function(s) which it returns
-          return RecursionHelper.compile($element);
+          return nopeRecursionHelper.compile($element);
         }
       }
     }])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-      return {
-        /**
-         * Manually compiles the element, fixing the recursion loop.
-         * @param element
-         * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-         * @returns An object containing the linking functions.
-         */
-        compile: function(element, link) {
-          // Normalize the link parameter
-          if (angular.isFunction(link)) {
-            link = {
-              post: link
-            };
-          }
-
-          // Break the recursion loop by removing the contents
-          var contents = element.contents().remove();
-          var compiledContents;
-          return {
-            pre: (link && link.pre) ? link.pre : null,
-            /**
-             * Compiles and re-adds the contents
-             */
-            post: function(scope, element) {
-              // Compile the contents
-              if (!compiledContents) {
-                compiledContents = $compile(contents);
-              }
-              // Re-add the compiled contents to the element
-              compiledContents(scope, function(clone) {
-                element.append(clone);
-              });
-
-              // Call the post-linking function, if any
-              if (link && link.post) {
-                link.post.apply(null, arguments);
-              }
-            }
-          };
-        }
-      };
-    }]);
+    ;
 })()
