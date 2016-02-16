@@ -1,3 +1,10 @@
+## v0.11.0 (2016-02-16)
+
+### Features
+- `Menu` model and UI (#23).
+- Added `nopeMenu` directive to enable menu recursive UI.
+- Added homepage link to administration panel (#35).
+
 ## v0.10.0 (2016-02-05)
 
 ### Breaking changes

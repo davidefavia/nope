@@ -5,7 +5,10 @@
         <a href="#/user/view/{{currentUser.id}}">
           <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
         </a>
-        <p><a ng-href="#/user/{{currentUser.id}}">{{currentUser.getFullName()}}</a></p>
+        <p>
+          <a ng-href="#/user/{{currentUser.id}}">{{currentUser.getFullName()}}</a> |
+          <a href="<?php echo \Nope\Utils::getFullBaseUrl(); ?>" target="_blank"><i class="fa fa-home"></i></a>
+        </p>
       </div>
       <div class="nav-container">
         <ul class="nav">
