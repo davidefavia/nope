@@ -23,7 +23,7 @@
           </div>
           <div class="form-group">
             <label>Body</label>
-            <textarea name="body" class="form-control" ng-model="content.body" rows="20" placeholder="Content body"></textarea>
+            <textarea name="body" nope-editor="content.format" class="form-control" ng-model="content.body" rows="20" placeholder="Content body"></textarea>
           </div>
           <div class="form-group">
             <label>Tags (comma separated)</label>

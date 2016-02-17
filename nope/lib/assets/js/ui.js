@@ -875,5 +875,58 @@
         }
       }
     }])
+    .directive('nopeEditor', [function() {
+      return {
+        restrict : 'A',
+        scope : {
+          format : '=nopeEditor',
+          ngModel : '='
+        },
+        link : function($scope, $element, $attrs) {
+          var simplemde;
+
+          $scope.$watch('format', function(n, o) {
+            if(n && n==='markdown') {
+              simplemde = new SimpleMDE({
+                autoDownloadFontAwesome : false,
+                blockStyles : {
+                  bold : '**',
+                  italic : '_'
+                },
+                hideIcons : ['guide'],
+                element: $element[0],
+                spellChecker : false
+              });
+              simplemde.value($scope.ngModel);
+            } else {
+              if(simplemde) {
+                simplemde.codemirror.toTextArea();
+                $element.attr('style','');
+                var children = $element.parent().children();
+                var found = false;
+                angular.forEach(children, function(child) {
+                  console.log(child);
+                  if(!found) {
+                    found = (child===$element[0]);
+                  } else {
+                    child.remove();
+                  }
+                });
+              }
+            }
+            console.log();
+          });
+
+          $scope.$watch(function() {
+            if(simplemde) {
+              return simplemde.value();
+            }
+            return;
+          }, function(n, o) {
+            $scope.ngModel = n;
+          });
+        }
+      }
+    }])
     ;
 })()

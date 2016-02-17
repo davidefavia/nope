@@ -1,8 +1,12 @@
 ## v0.12.0 (2016-02-??)
 
+### Libraries
+- Added **SimpleMDE** version 1.10.0.
+
 ### Features
 - Added loading spinner (#36).
 - Added datetime picker (#36).
+- Added markdown editor (#36).
 
 ### Fixes
 - Fixed block button on empty states.
