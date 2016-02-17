@@ -48,7 +48,8 @@
      */
     .filter('nopeDate', ['$filter', function($filter) {
       return function(input, format, timezone) {
-        input = input ? input.split(' ').join('T') + 'Z' : input;
+        input = input ? input.toString().split(' ').join('T') + 'Z' : input;
+        format = format || 'yyyy-MM-dd HH:mm:ss';
         return $filter('date')(input, format, timezone);
       }
     }])
@@ -700,7 +701,9 @@
         restrict : 'AE',
         require : '^ngModel',
         scope : {
-          theDate : '=ngModel'
+          theDate : '=ngModel',
+          minDate : '@min',
+          maxDate : '@max'
         },
         link: function($scope, $element, $attrs) {
           var theModal;
@@ -713,57 +716,116 @@
           $scope.todayMonth = $scope.today.getMonth();
           $scope.todayYear = $scope.today.getFullYear();
           $scope.selectedDate = new Date();
+          $scope.now = new Date();
+          $scope.selectedHours = '00';
+          $scope.selectedMinutes = '00';
+          $scope.selectedSeconds = '00';
 
-          var w = $scope.$watch('theDate', function(n,o) {
-            if(n) {
-              $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
-              $scope.selectedHours = $scope.selectedDate.getUTCHours();
-              $scope.selectedMinutes = $scope.selectedDate.getMinutes();
-              $scope.selectedSeconds = $scope.selectedDate.getSeconds();
-              calculate($scope.todayYear, $scope.todayMonth);
-              w();
-            }
-          }, true);
+
 
 
           $element.attr('readonly', 'readonly');
-          $element.on('focus', function(e) {
+          $element.on('click', function(e) {
             e.preventDefault();
-            $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
-              theModal = modal;
-              theModal.show();
-            });
+            if(!document.getElementById('modal-datetime')) {
+              var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
+              $scope.lowerDateLimit = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], 0, 0, 0).getTime()): false);
+              var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
+              $scope.upperDateLimit = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], 23, 59, 59).getTime()): false);
+              $scope.todayVisible = (($scope.lowerDateLimit?$scope.today.getTime()>=$scope.lowerDateLimit:true) && ($scope.upperDateLimit?$scope.today.getTime()<=$scope.upperDateLimit:true));
+              var w = $scope.$watch('theDate', function(n,o) {
+                if(n) {
+                  $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
+                  var p = $scope.theDate.split(' ')[1].split(':');
+                  $scope.selectedHours = p[0];
+                  $scope.selectedMinutes = p[1];
+                  $scope.selectedSeconds = p[2];
+                  w();
+                }
+                calculate($scope.todayYear, $scope.todayMonth);
+              }, true);
+              $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
+                theModal = modal;
+                theModal.show();
+              });
+            }
           });
 
           $scope.selectDay = function(year, month, day) {
-            $scope.selectedDate = new Date(year, month, day, $scope.selectedHours, $scope.selectedMinutes, $scope.selectedSeconds);
+            $scope.selectedDate = new Date(year, month, day, $scope.selectedHours || 0, $scope.selectedMinutes || 0, $scope.selectedSeconds || 0);
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
           $scope.selectNow = function(year, month, day) {
             $scope.selectedDate = new Date();
-            $scope.selectedHours = $scope.selectedDate.getUTCHours();
-            $scope.selectedMinutes = $scope.selectedDate.getMinutes();
-            $scope.selectedSeconds = $scope.selectedDate.getSeconds();
+            $scope.selectedHours = ($scope.selectedDate.getHours()<10?'0'+$scope.selectedDate.getHours():$scope.selectedDate.getHours());
+            $scope.selectedMinutes = ($scope.selectedDate.getMinutes()<10?'0'+$scope.selectedDate.getMinutes():$scope.selectedDate.getMinutes());
+            $scope.selectedSeconds = ($scope.selectedDate.getSeconds()<10?'0'+$scope.selectedDate.getSeconds():$scope.selectedDate.getSeconds());
+            $scope.todayMonth = $scope.today.getMonth();
+            $scope.todayYear = $scope.today.getFullYear();
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
           $scope.selectToday = function(year, month, day) {
             $scope.selectedDate = new Date();
+            $scope.todayMonth = $scope.today.getMonth();
+            $scope.todayYear = $scope.today.getFullYear();
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
-
+          $scope.$watchGroup(['selectedDate','selectedHours', 'selectedMinutes', 'selectedSeconds'], function(n,o) {
+            $scope.canSelect = true;
+            $scope.lowerStringLimit = 'any date';
+            $scope.upperStringLimit = 'any date';
+            if(n) {
+              if($scope.lowerDateLimit === false && $scope.upperDateLimit === false) {
+              } else {
+                var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
+                var lowerTime = $scope.minDate ? $scope.minDate.split(' ')[1].split(':') : false;
+                var pMin = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], lowerTime[0], lowerTime[1], lowerTime[2])): false);
+                var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
+                var upperTime = $scope.maxDate ? $scope.maxDate.split(' ')[1].split(':') : false;
+                var pMax = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], upperTime[0], upperTime[1], upperTime[2])): false);
+                var d = n[0];
+                d.setHours(parseInt(n[1],10));
+                d.setMinutes(parseInt(n[2],10));
+                d.setMinutes(parseInt(n[3],10));
+                if(!pMin || (pMin && pMin.getTime()<=d.getTime())) {
+                } else {
+                  $scope.lowerStringLimit = pMin;
+                  $scope.canSelect = false;
+                }
+                if(!pMax || (pMax && pMax.getTime()>=d.getTime())) {
+                } else {
+                  $scope.upperStringLimit = pMax;
+                  $scope.canSelect = false;
+                }
+              }
+            } else {
+              $scope.canSelect = false;
+            }
+          }, true);
 
           $scope.select = function(d) {
-            $scope.theDate = $filter('date')($scope.selectedDate, 'yyyy-MM-dd HH:mm:ss');
+            $scope.theDate = [
+              [
+                $scope.selectedDate.getFullYear(),
+                ($scope.selectedDate.getMonth()<9?'0'+($scope.selectedDate.getMonth()+1):$scope.selectedDate.getMonth()+1),
+                $scope.selectedDate.getDate()
+              ].join('-'),
+              [
+                $scope.selectedHours,
+                $scope.selectedMinutes,
+                $scope.selectedSeconds
+              ].join(':')
+            ].join(' ');
             theModal.hide();
           }
 
           var calculate = function(year, month) {
             var daysThisMonth = daysInMonth[month];
-            if(month===1 && year%4===0) {
-              daysThisMonth++
+            if(month===1 && ((year%4===0 && year%400!==0) || year%400===0) ) {
+              daysThisMonth++;
             }
             var row = 0;
             var matrix = [];
@@ -776,10 +838,14 @@
               if(!matrix[row]) {
                 matrix[row] = [];
               }
+              var enabled = (
+                ($scope.lowerDateLimit!==false?$scope.lowerDateLimit<=d.getTime():true) && ($scope.upperDateLimit!==false?$scope.upperDateLimit>=d.getTime():true)
+              );
               matrix[row][getDay-1] = {
                 label : i,
                 isToday : (year===$scope.today.getFullYear() && month===$scope.today.getMonth() && i===$scope.today.getDate()),
-                isSelected : (year===$scope.selectedDate.getFullYear() && month===$scope.selectedDate.getMonth() && i===$scope.selectedDate.getDate())
+                isSelected : (year===$scope.selectedDate.getFullYear() && month===$scope.selectedDate.getMonth() && i===$scope.selectedDate.getDate()),
+                isEnabled : enabled
               };
             }
             $scope.matrix = matrix;
