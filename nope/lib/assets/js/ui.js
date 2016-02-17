@@ -234,14 +234,20 @@
         if(count>0) {
           count--;
           if(count===0) {
-            loader.remove();
+            remove();
           }
         }
       }
 
+      function remove() {
+        count = 0;
+        loader.remove();
+      }
+
       return {
         show: show,
-        hide: hide
+        hide: hide,
+        remove : remove
       }
     }])
     /**
@@ -547,10 +553,14 @@
         },
         link: function($scope, $element, $attrs, ngModelCtrl) {
           $scope.$watch('ngModel', function(n, o) {
-            ngModelCtrl.$setValidity('match', (n.toString() === $scope.nopeMatch.toString()));
+            if(n && $scope.nopeMatch) {
+              ngModelCtrl.$setValidity('match', (n.toString() === $scope.nopeMatch.toString()));
+            }
           }, true);
           $scope.$watch('nopeMatch', function(n, o) {
-            ngModelCtrl.$setValidity('match', ($scope.ngModel.toString() === n.toString()));
+            if(n && $scope.ngModel) {
+              ngModelCtrl.$setValidity('match', ($scope.ngModel.toString() === n.toString()));
+            }
           }, true);
         }
       }
@@ -682,6 +692,120 @@
           // Use the compile function from the RecursionHelper,
           // And return the linking function(s) which it returns
           return nopeRecursionHelper.compile($element);
+        }
+      }
+    }])
+    .directive('nopeDatetime', ['$filter', '$nopeModal', function($filter, $nopeModal) {
+      return {
+        restrict : 'AE',
+        require : '^ngModel',
+        scope : {
+          theDate : '=ngModel'
+        },
+        link: function($scope, $element, $attrs) {
+          var theModal;
+          var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+          $scope.days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+          $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+          'August', 'September', 'October', 'November', 'December'];
+          $scope.today = new Date();
+          $scope.todayMonth = $scope.today.getMonth();
+          $scope.todayYear = $scope.today.getFullYear();
+          $scope.selectedDate = new Date();
+
+          var w = $scope.$watch('theDate', function(n,o) {
+            if(n) {
+              $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
+              $scope.selectedHours = $scope.selectedDate.getUTCHours();
+              $scope.selectedMinutes = $scope.selectedDate.getMinutes();
+              $scope.selectedSeconds = $scope.selectedDate.getSeconds();
+              calculate($scope.todayYear, $scope.todayMonth);
+              w();
+            }
+          }, true);
+
+
+          $element.attr('readonly', 'readonly');
+          $element.on('focus', function(e) {
+            e.preventDefault();
+            $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
+              theModal = modal;
+              theModal.show();
+            });
+          });
+
+          $scope.selectDay = function(year, month, day) {
+            $scope.selectedDate = new Date(year, month, day, $scope.selectedHours, $scope.selectedMinutes, $scope.selectedSeconds);
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.selectNow = function(year, month, day) {
+            $scope.selectedDate = new Date();
+            $scope.selectedHours = $scope.selectedDate.getUTCHours();
+            $scope.selectedMinutes = $scope.selectedDate.getMinutes();
+            $scope.selectedSeconds = $scope.selectedDate.getSeconds();
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.selectToday = function(year, month, day) {
+            $scope.selectedDate = new Date();
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+
+
+          $scope.select = function(d) {
+            $scope.theDate = $filter('date')($scope.selectedDate, 'yyyy-MM-dd HH:mm:ss');
+            theModal.hide();
+          }
+
+          var calculate = function(year, month) {
+            var daysThisMonth = daysInMonth[month];
+            if(month===1 && year%4===0) {
+              daysThisMonth++
+            }
+            var row = 0;
+            var matrix = [];
+            for(var i=1;i<=daysThisMonth; i++) {
+              var d = new Date(year, month, i);
+              var getDay = d.getDay() || 7;
+              if(getDay%7===1) {
+                row++;
+              }
+              if(!matrix[row]) {
+                matrix[row] = [];
+              }
+              matrix[row][getDay-1] = {
+                label : i,
+                isToday : (year===$scope.today.getFullYear() && month===$scope.today.getMonth() && i===$scope.today.getDate()),
+                isSelected : (year===$scope.selectedDate.getFullYear() && month===$scope.selectedDate.getMonth() && i===$scope.selectedDate.getDate())
+              };
+            }
+            $scope.matrix = matrix;
+            $scope.actualMonth = [$scope.months[month], year].join(' ');
+          }
+
+          $scope.previousMonth = function() {
+            if($scope.todayMonth===0) {
+              $scope.todayMonth = 11;
+              $scope.todayYear--;
+            } else {
+              $scope.todayMonth--;
+            }
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.nextMonth = function() {
+            if($scope.todayMonth===11) {
+              $scope.todayMonth = 0;
+              $scope.todayYear++;
+            } else {
+              $scope.todayMonth++;
+            }
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
         }
       }
     }])

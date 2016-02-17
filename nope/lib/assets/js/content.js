@@ -142,6 +142,12 @@
         });
       }
 
+      $scope.$watch('content', function(n,o) {
+        if(n.startPublishingDate != o.startPublishingDate || n.endPublishingDate != o.endPublishingDate) {
+          $scope.getRealStatus();
+        }
+      }, true);
+
       $scope.getRealStatus = function() {
         if (!$scope.content.id) {
           return;

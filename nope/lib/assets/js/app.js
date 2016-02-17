@@ -311,6 +311,7 @@
        responseError : function(reason) {
          var $state = $injector.get('$state');
          var $nopeLoading = $injector.get('$nopeLoading');
+         $nopeLoading.remove();
          if(reason.status === 401) {
            if(reason.config.url.indexOf('loginstatus')!==-1) {
              return $q.reject(reason);
@@ -322,7 +323,6 @@
            $rootScope.$emit('nope.error', reason);
            return $q.reject(reason);
          }
-         $nopeLoading.hide();
          return reason;
        },
        response : function(response) {

@@ -71,7 +71,7 @@
           </div>
           <div class="form-group">
             <label>Start publishing date</label>
-            <input type="text" name="startPublishingDate" class="form-control input-sm" ng-model="content.startPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" ng-blur="getRealStatus()" />
+            <input type="text" nope-datetime name="startPublishingDate" class="form-control input-sm" ng-model="content.startPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" />
           </div>
           <div class="form-group">
             <label>End publishing date</label>

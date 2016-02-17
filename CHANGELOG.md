@@ -2,6 +2,7 @@
 
 ### Features
 - Added loading spinner (#36).
+- Added datetime picker (#36).
 
 ### Fixes
 - Fixed block button on empty states.
