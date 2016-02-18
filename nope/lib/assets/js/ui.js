@@ -216,10 +216,10 @@
         height : document.body.clientHeight + 'px'
       }
 
-      window.onresize = function() {
-        if(document.getElementById('loader')) {
-          document.getElementById('loader').style.width = document.body.clientWidth + 'px';
-          document.getElementById('loader').style.height = document.body.clientHeight + 'px';
+      $window.onresize = function() {
+        $rootScope.nopeScreen = {
+          width : document.body.clientWidth + 'px',
+          height : document.body.clientHeight + 'px'
         }
       };
 
@@ -242,7 +242,7 @@
 
       function remove() {
         count = 0;
-        loader.remove();
+        angular.element(document.getElementById('loader')).remove();
       }
 
       return {

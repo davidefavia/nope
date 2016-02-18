@@ -10,7 +10,7 @@
 
 ### Fixes
 - Fixed block button on empty states.
-- Fixed `Query::__to` method called statically without `static` key.
+- Fixed `Query::__to` method called statically without `static` key (#39).
 
 ## v0.11.0 (2016-02-16)
 
