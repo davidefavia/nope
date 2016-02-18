@@ -9,7 +9,7 @@ abstract class Query {
     return self::__to(call_user_func_array([__NAMESPACE__.'\\'.$className[count($className)-1], $name], $arguments));
   }
 
-  function __to($itemsList) {
+  public static function __to($itemsList) {
     if(is_null($itemsList)) {
       return null;
     }

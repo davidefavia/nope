@@ -905,7 +905,6 @@
                 var children = $element.parent().children();
                 var found = false;
                 angular.forEach(children, function(child) {
-                  console.log(child);
                   if(!found) {
                     found = (child===$element[0]);
                   } else {
