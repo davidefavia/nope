@@ -480,7 +480,9 @@
           preview: '@?',
           label: '@?',
           url: '@?href',
-          model: '@?'
+          model: '@?',
+          button : '=?',
+          icon : '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var theModal;
@@ -875,7 +877,28 @@
         }
       }
     }])
-    .directive('nopeEditor', [function() {
+    .directive('nopeToolbar', ['$rootScope', function($rootScope) {
+      return {
+        restrict : 'E',
+        templateUrl : 'view/directive/toolbar.html',
+        replace: true,
+        scope : {
+          selection : '=ngModel'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+
+          $scope.$watch('selection', function(n,o) {
+            if(n!=={}) {
+              var k = Object.keys(n);
+              $rootScope.$broadcast('nope.editor.selection', k[0], n[k[0]]);
+              $scope.selection = {};
+            }
+          }, true);
+
+        }]
+      }
+    }])
+    .directive('nopeEditor', ['$rootScope', '$compile', function($rootScope, $compile) {
       return {
         restrict : 'A',
         scope : {
@@ -884,6 +907,47 @@
         },
         link : function($scope, $element, $attrs) {
           var simplemde;
+          $scope.valueToinsert = {};
+
+          $rootScope.$on('nope.editor.selection', function(e, data, c) {
+            var cm = simplemde.codemirror;
+            var s = simplemde.getState();
+            if(data === 'image') {
+              _replaceSelection(cm, s.image, ["!["+c.title+"]("+c.filename,")"]);
+            } else if(data === 'page') {
+              _replaceSelection(cm, s.link, ["["+c.title+"]("+c.slug,")"]);
+            }
+          });
+
+          var _replaceSelection = function(cm, active, startEnd) {
+            if(/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
+              return;
+            }
+            var text;
+            var start = startEnd[0];
+            var end = startEnd[1];
+            var startPoint = cm.getCursor("start");
+            var endPoint = cm.getCursor("end");
+            if(active) {
+              text = cm.getLine(startPoint.line);
+              start = text.slice(0, startPoint.ch);
+              end = text.slice(startPoint.ch);
+              cm.replaceRange(start + end, {
+                line: startPoint.line,
+                ch: 0
+              });
+            } else {
+              text = cm.getSelection();
+              cm.replaceSelection(start + text + end);
+
+              startPoint.ch += start.length;
+              if(startPoint !== endPoint) {
+                endPoint.ch += start.length;
+              }
+            }
+            cm.setSelection(startPoint, endPoint);
+            cm.focus();
+          }
 
           $scope.$watch('format', function(n, o) {
             if(n && n==='markdown') {
@@ -893,15 +957,43 @@
                   bold : '**',
                   italic : '_'
                 },
-                hideIcons : ['guide'],
+                toolbar : [
+                  'bold',
+                  'italic',
+                  'strikethrough',
+                  'heading-1',
+                  'heading-2',
+                  'heading-3',
+                  'code',
+                  'quote',
+                  'unordered-list',
+                  'ordered-list',
+                  'clean-block',
+                  'link',
+                  'image',
+                  'table',
+                  'horizontal-rule',
+                  '|',
+                  'fullscreen',
+                  {
+                    name: 'guide',
+                    action: 'https://guides.github.com/features/mastering-markdown/#syntax',
+                    className: 'fa fa-question-circle',
+                    title: 'Markdown guide'
+                  }
+                ],
                 element: $element[0],
-                spellChecker : false
+                spellChecker : false,
+                status: ['lines', 'words']
               });
               simplemde.value($scope.ngModel);
+              var nopeToolbar = $compile('<nope-toolbar ng-model="valueToinsert"></nope-toolbar>')($scope);
+              var toolbar = angular.element(document.getElementsByClassName('editor-toolbar')[0]);
+              toolbar.append(nopeToolbar);
             } else {
               if(simplemde) {
                 simplemde.codemirror.toTextArea();
-                $element.attr('style','');
+                $element[0].style.display = 'block';
                 var children = $element.parent().children();
                 var found = false;
                 angular.forEach(children, function(child) {
@@ -913,7 +1005,6 @@
                 });
               }
             }
-            console.log();
           });
 
           $scope.$watch(function() {

@@ -11,6 +11,7 @@
 ### Fixes
 - Fixed block button on empty states.
 - Fixed `Query::__to` method called statically without `static` key (#39).
+- Fixed loader not resizing accordingly on window resize (#38).
 
 ## v0.11.0 (2016-02-16)
 
