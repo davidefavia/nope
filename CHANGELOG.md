@@ -7,6 +7,7 @@
 - Added loading spinner (#36).
 - Added datetime picker (#36).
 - Added markdown editor (#36).
+- Added menu help block and relative URLs prefix function (#42).
 
 ### Fixes
 - Fixed block button on empty states.

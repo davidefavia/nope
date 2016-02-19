@@ -1,5 +1,7 @@
 <?php
 
+use \Stringy\StaticStringy as S;
+
 function auth() {
   return new \Nope\Middleware\Auth();
 }
@@ -60,4 +62,27 @@ function doPaths($string) {
     }
   }
   return $string;
+}
+
+function getMenuBySlug($slug, $depth = 1) {
+  if($depth===1) {
+    $menu = \Nope\Query\Menu::findBySlug($slug);
+  } else {
+    $menu = $slug;
+  }
+  if($menu) {
+    $p = [];
+    if(count($menu->items)) {
+      foreach ($menu->items as $key => $value) {
+        $p[] = getMenuBySlug($value, $depth+1);
+      }
+    }
+    if(S::startsWith($menu->value, '/') || S::startsWith($menu->value, 'http://') || S::startsWith($menu->value, 'https://')) {
+      // nothing
+    } else {
+      $menu->value = NOPE_BASE_PATH . $menu->value;
+    }
+    $menu->items = $p;
+  }
+  return $menu;
 }
