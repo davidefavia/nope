@@ -4,6 +4,9 @@
 - Added shortcut function `getSetting`.
 - Added methods to set default text format, unregister text formats, models and menu items.
 
+### Fixes
+- Fixed users list not refreshing on new user creation (#44).
+
 ## v0.12.0 (2016-02-19)
 
 ### Libraries

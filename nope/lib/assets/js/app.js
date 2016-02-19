@@ -200,7 +200,11 @@
      $scope.save = function() {
        User.save($scope.user, function(data) {
          $scope.$emit('nope.toast.success', 'User "'+data.username+'" created.');
-         $state.go('app.user.detail', {id:data.id});
+         $state.go('app.user.detail', {
+           id:data.id
+         }, {
+           reload: true
+         });
        });
      }
    }])

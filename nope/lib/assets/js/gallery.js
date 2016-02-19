@@ -114,8 +114,8 @@
         }
       });
 
-      $scope.save = function(g) {
-        $scope.$parent.save(g);
+      $scope.save = function() {
+        $scope.$parent.save($scope.gallery);
       }
 
     }])
