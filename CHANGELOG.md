@@ -1,4 +1,4 @@
-## v0.12.0 (2016-02-??)
+## v0.12.0 (2016-02-19)
 
 ### Libraries
 - Added **SimpleMDE** version 1.10.0.
