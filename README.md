@@ -5,6 +5,8 @@
 ### :shit: Crapware warning! :shit:
 Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!
 
+**Things will change, things will break!**
+
 # nope!
 **nope!** (_a.k.a._ **n!**) is a content management system written in PHP, suitable for small projects.
 
@@ -55,6 +57,8 @@ Administration interface is built on top of:
 - [AngularJS][angular]
 - [Bootstrap 3][bootstrap]
 - [Font Awesome][fontawesome]
+
+and [others](bower.json).
 
 Default theme uses [milligram][milligram].
 
