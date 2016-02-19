@@ -20,3 +20,8 @@ define('NOPE_THEME', 'default');
   'SMTPSecure' => 'tls',
   'port' => 587
 ]);
+
+define('NOPE_PAGE_RPP', 10);
+define('NOPE_USER_RPP', 10);
+define('NOPE_MEDIA_RPP', 12);
+define('NOPE_GALLERY_RPP', 10);

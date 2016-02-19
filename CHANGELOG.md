@@ -6,6 +6,7 @@
 
 ### Fixes
 - Fixed users list not refreshing on new user creation (#44).
+- Fixed wrong `description` field creation on `Media` upload.
 
 ## v0.12.0 (2016-02-19)
 

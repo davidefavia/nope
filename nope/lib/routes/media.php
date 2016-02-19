@@ -9,7 +9,7 @@ use Stringy\StaticStringy as S;
 $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 8;
+    $rpp = NOPE_MEDIA_RPP;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('media.read')) {
       return $response->withStatus(403);
@@ -19,7 +19,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     $contentsList = Media::findAll([
       'text' => $params->query,
       'mimetype' => $queryParams->mimetype,
-      'excluded' => explode(',', $queryParams->excluded)
+      'excluded' => ($queryParams->excluded?explode(',', $queryParams->excluded):null)
     ], $params->limit, $params->offset, $count);
     $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     return $response->withJson([
@@ -52,7 +52,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $size = $_FILES['file']['size'];
         $media = new Media();
         $media->title = $filenameWithoutExtension;
-        $media->description = '';
+        $media->body = '';
         $media->mimetype = $type;
         $media->filename = $uniqueFilename;
         $media->size = $size;
@@ -130,7 +130,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       if($contentToUpdate) {
         $contentToUpdate->import($body, $fields);
         $contentToUpdate->save();
-        return $response->withJson(['currentUser' => $currentUser, "data" => $contentToUpdate]);
+        return $response->withJson([
+          'currentUser' => $currentUser,
+          'data' => $contentToUpdate
+        ]);
       } else {
         return $response->withStatus(404);
       }

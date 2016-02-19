@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 5;
+    $rpp = NOPE_GALLERY_RPP;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('gallery.read')) {
       return $response->withStatus(403);

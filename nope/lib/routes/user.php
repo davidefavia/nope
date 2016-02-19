@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 10;
+    $rpp = NOPE_USER_RPP;
     $currentUser = User::getAuthenticated();
     $params = Utils::getPaginationTerms($request, $rpp);
     $queryParams = (object) $request->getQueryParams();
