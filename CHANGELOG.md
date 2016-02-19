@@ -1,3 +1,21 @@
+## v0.12.0 (2016-02-19)
+
+### Libraries
+- Added **SimpleMDE** version 1.10.0.
+
+### Features
+- Added loading spinner (#36).
+- Added datetime picker (#36).
+- Added markdown editor (#36).
+- Added menu help block and relative URLs prefix function (#42).
+
+### Fixes
+- Fixed block button on empty states.
+- Fixed `Query::__to` method called statically without `static` key (#39).
+- Fixed loader not resizing accordingly on window resize (#38).
+- Fixed broken `Gallery` widget on related `Media` query.
+- Fixed broken _drag'n'drop_ removing `track by $index` on `ng-repeat` (#41).
+
 ## v0.11.0 (2016-02-16)
 
 ### Features

@@ -2,12 +2,12 @@
   <div class="col list-column" ng-class="{'col-md-9 col-sm-8':selectedMedia}">
     <div class="searchbar">
       <form name="searchForm" ng-submit="search(q);">
-        <div class="input-group" nope-can="{{contentType}}.read">
+        <div class="input-group" nope-can="media.read">
           <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
           </div>
-          <div class="input-group-btn" nope-can="{{contentType}}.create">
+          <div class="input-group-btn" nope-can="media.create">
             <a href="" nope-upload-modal="onUploadDone()" accept="{{acceptedFiles}}" class="btn btn-block btn-default">Create new media <i class="fa fa-upload"></i></a>
           </div>
         </div>
@@ -30,11 +30,11 @@
       </form>
     </div>
     <div class="media-list list-group">
-      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No {{contentType}} found with filter "{{q}}".</div>
+      <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</div>
       <div ng-if="!contentsList.length">
-        <no-empty icon="upload">
-          <a href="" nope-upload="onUploadDone()" class="btn btn-block btn-default" nope-can="{{contentType}}.create">Upload <i class="fa fa-plus"></i></a>
-        </no-empty>
+        <nope-empty icon="upload">
+          <a href="" nope-upload="onUploadDone()" class="btn btn-default" nope-can="media.create">Upload <i class="fa fa-plus"></i></a>
+        </nope-empty>
       </div>
       <div class="row row-span clearfix">
         <div class="col col-md-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
@@ -58,6 +58,6 @@
     <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div class="detail-column col col-md-3 col-sm-4" ng-show="selectedMedia" ui-view="content">
-    <no-empty icon="file-text-o">Select {{contentType}}</no-empty>
+    <nope-empty icon="file-text-o">Select media</nope-empty>
   </div>
 </div>

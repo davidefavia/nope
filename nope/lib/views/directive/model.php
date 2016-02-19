@@ -52,25 +52,27 @@ $templateSingle = sprintf($template, '', 'ngModel');
 $templateList = sprintf($template, 'dnd-nodrag', 'item');
 
 ?>
-<div>
-  <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">
-    <li class="list-group-item media" ng-repeat="item in ngModel track by $index" dnd-draggable="item" dnd-moved="ngModel.splice($index,1)">
-      <i class="fa fa-bars handle"></i>
-      <?php echo $templateList; ?>
-      <div dnd-nodrag class="btn-group btn-group-xs toolbar">
-        <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>
-        <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>
-        <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>
-      </div>
-    </li>
-  </ul>
-  <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">
-    <li class="list-group-item media">
-      <?php echo $templateSingle; ?>
-      <div class="btn-group btn-group-xs toolbar pull-right">
-        <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>
-      </div>
-    </li>
-  </ul>
-  <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="!multiple && ngModel">{{label || 'Add'}} <i class="fa fa-plus"></i></a>
+<div class="nope-model">
+  <div ng-if="!button">
+    <ul dnd-list="ngModel" class="list-group list-group-contents is-multiple" ng-show="ngModel && preview" ng-if="multiple">
+      <li class="list-group-item media" ng-repeat="item in ngModel" dnd-draggable="item" dnd-moved="ngModel.splice($index,1);">
+        <i class="fa fa-bars handle"></i>
+        <?php echo $templateList; ?>
+        <div dnd-nodrag class="btn-group btn-group-xs toolbar">
+          <a href="" class="btn" ng-click="ngModel.swapItems($index, $index-1);" ng-if="!$first"><i class="fa fa-arrow-up"></i></a>
+          <a href="" class="btn" ng-click="ngModel.swapItems($index, $index+1);" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>
+          <a href="" class="btn text-danger" ng-click="ngModel.removeItemAt($index);"><i class="fa fa-times-circle"></i></a>
+        </div>
+      </li>
+    </ul>
+    <ul class="list-group list-group-contents" ng-show="ngModel && preview" ng-if="!multiple">
+      <li class="list-group-item media">
+        <?php echo $templateSingle; ?>
+        <div class="btn-group btn-group-xs toolbar pull-right">
+          <a href="" class="btn text-danger" ng-click="remove();"><i class="fa fa-times-circle"></i></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="(!multiple && ngModel) && !button">{{label?label+ ' ':''}}<i class="fa fa-{{icon || 'plus'}}"></i></a>
 </div>

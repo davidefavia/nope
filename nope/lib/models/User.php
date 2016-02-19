@@ -33,6 +33,7 @@ class User extends \Nope\Model {
       if($cover) {
         unset($cover->model->author_id);
       }
+      $cover = $cover->toJson();
     }
     $obj->cover = $cover;
     unset($obj->password);

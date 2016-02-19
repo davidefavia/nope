@@ -12,8 +12,8 @@
     </div>
   </div>
   <div class="col" ng-class="{'col-md-8 col-sm-6':settingsList.length}" ui-view="content">
-    <no-empty icon="gears">
+    <nope-empty icon="gears">
       <span>Select setting</span>
-    </no-empty>
+    </nope-empty>
   </div>
 </div>

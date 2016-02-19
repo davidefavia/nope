@@ -7,7 +7,7 @@
       <a href="#/menu/create" class="btn btn-sm btn-block btn-default" nope-can="menu.create" ng-click="selectedGallery=null;">Create new menu <i class="fa fa-plus"></i></a>
     </div>
     <div class="list-group">
-      <div class="list-group-item ng-cloak" ng-show="!filteredMenusList.length && q">No menu found with filter "{{q}}"</span>.</div>
+      <div class="list-group-item ng-cloak" ng-show="!filteredMenusList.length">No menu found<span ng-show="q"> with filter "{{q}}"</span></span>.</div>
       <div class="list-group-item clearfix" ng-class="{active:p.id===selectedMenu.id}" ng-repeat="p in filteredMenusList = (menusList | filter : q)" ng-show="menusList.length">
         <a ng-href="#/menu/view/{{p.id}}"><h4 class="list-group-item-heading">{{p.title}}</h4></a>
         <p ng-if="p.body" class="list-group-item-text">{{p.body}}</p>
@@ -18,10 +18,10 @@
       </div>
     </div>
   </div>
-  <div class="col col-md-8 col-sm-6" ui-view="content">
-    <no-empty icon="bars">
+  <div class="col col-md-8 col-sm-6 col-content" ui-view="content">
+    <nope-empty icon="bars">
       <span ng-if="menusList.length">Select menu</span>
-      <a href="#/menu/create" ng-if="!filteredMenusList.length" class="btn btn-sm btn-block btn-default" nope-can="menu.create" ng-click="selectedMenu=null;">Create new menu <i class="fa fa-plus"></i></a>
-    </no-empty>
+      <a href="#/menu/create" ng-if="!filteredMenusList.length" class="btn btn-default" nope-can="menu.create" ng-click="selectedMenu=null;">Create new menu <i class="fa fa-plus"></i></a>
+    </nope-empty>
   </div>
 </div>

@@ -20,6 +20,7 @@
       </div>
       <div class="form-group">
         <label>Menu items</label>
+        <p class="help-block">URLs starting with "<code>/</code>", "<code>http://</code>" or "<code>https://</code>" are NOT prefixed with "<code><?php echo NOPE_BASE_PATH; ?></code>".</p>
         <nope-menu ng-model="menu.items"></nope-menu>
       </div>
     </div>

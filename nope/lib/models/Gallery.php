@@ -34,7 +34,7 @@ class Gallery extends Content {
     if(count($rows)) {
       foreach ($rows as $media) {
         $me = Media::findById($media['id']);
-        $m[] = $me;
+        $m[] = $me->toJson();
       }
     }
     return $m;

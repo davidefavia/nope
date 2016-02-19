@@ -36,9 +36,9 @@
     <a href="" class="btn btn-sm btn-block btn-default" ng-click="search(q,metadata.next)" ng-if="metadata.next>metadata.actual">More</a>
   </div>
   <div ng-if="!nope.isIframe" class="col col-md-8 col-sm-6" ui-view="content">
-    <no-empty icon="object-group">
-      <span ng-if="contentsList.length">Select {{contentType}}</span>
-      <a href="#/gallery/create" ng-if="!contentsList.length" class="btn btn-sm btn-block btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new {{contentType}} <i class="fa fa-plus"></i></a>
-    </no-empty>
+    <nope-empty icon="object-group">
+      <span ng-if="contentsList.length">Select gallery</span>
+      <a href="#/gallery/create" ng-if="!contentsList.length" class="btn btn-sm btn-default" nope-can="gallery.create" ng-click="selectedGallery=null;">Create new gallery <i class="fa fa-plus"></i></a>
+    </nope-empty>
   </div>
 </div>

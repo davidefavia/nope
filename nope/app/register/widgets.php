@@ -1,11 +1,13 @@
 <?php
 
+namespace Nope;
+
 \Nope::registerWidget('media',[
   'label' => 'Media',
   'model' => 'media',
   'data' => function($attributes) {
       if($attributes->id) {
-          $media = \Nope\Query\Media::findById($attributes->id);
+          $media = Query\Media::findById($attributes->id);
       } elseif($attributes->url) {
           $media = $attributes;
       }
@@ -24,9 +26,9 @@
   ],
   'data' => function($attributes) {
     if($attributes->id) {
-      $gallery = \QueryGallery::findById($attributes->id);
+      $gallery = Query\Gallery::findById($attributes->id);
     } else if($attributes->slug) {
-      $gallery = \QueryGallery::findBySlug($attributes->slug);
+      $gallery = Query\Gallery::findBySlug($attributes->slug);
     }
     return ['gallery' => $gallery];
   }

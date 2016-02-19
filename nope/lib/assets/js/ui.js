@@ -48,7 +48,8 @@
      */
     .filter('nopeDate', ['$filter', function($filter) {
       return function(input, format, timezone) {
-        input = input ? input.split(' ').join('T') + 'Z' : input;
+        input = input ? input.toString().split(' ').join('T') + 'Z' : input;
+        format = format || 'yyyy-MM-dd HH:mm:ss';
         return $filter('date')(input, format, timezone);
       }
     }])
@@ -206,15 +207,59 @@
         }
       };
     }])
+    .service('$nopeLoading', ['$rootScope', '$injector', '$window', function($rootScope, $injector, $window) {
+
+      var $compile = $injector.get('$compile');
+      var count = 0;
+      $rootScope.nopeScreen = {
+        width : document.body.clientWidth + 'px',
+        height : document.body.clientHeight + 'px'
+      }
+
+      $window.onresize = function() {
+        $rootScope.nopeScreen = {
+          width : document.body.clientWidth + 'px',
+          height : document.body.clientHeight + 'px'
+        }
+      };
+
+      function show() {
+        count++;
+        if(!document.getElementById('loader')) {
+          var loader = $compile('<div id="loader" style="width: {{nopeScreen.width}}; height:{{nopeScreen.height}};"><div><i class="fa fa-circle-o-notch fa-spin fa-2x"></i></div></div>')($rootScope);
+          angular.element(document.body).append(loader);
+        }
+      }
+
+      function hide() {
+        if(count>0) {
+          count--;
+          if(count===0) {
+            remove();
+          }
+        }
+      }
+
+      function remove() {
+        count = 0;
+        angular.element(document.getElementById('loader')).remove();
+      }
+
+      return {
+        show: show,
+        hide: hide,
+        remove : remove
+      }
+    }])
     /**
      * Directives
      */
-    .directive('noEmpty', [function() {
+    .directive('nopeEmpty', [function() {
       return {
         restrict: 'E',
         transclude: true,
         replace: true,
-        template: '<div class="empty"><i class="fa fa-{{icon}}"><h3 ng-transclude></h3></div>',
+        template: '<div class="empty"><i class="fa fa-{{icon}} fa-5x"></i><h3 ng-transclude></h3></div>',
         scope: {
           icon: '@'
         }
@@ -435,7 +480,9 @@
           preview: '@?',
           label: '@?',
           url: '@?href',
-          model: '@?'
+          model: '@?',
+          button : '=?',
+          icon : '@'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           var theModal;
@@ -509,10 +556,14 @@
         },
         link: function($scope, $element, $attrs, ngModelCtrl) {
           $scope.$watch('ngModel', function(n, o) {
-            ngModelCtrl.$setValidity('match', (n === $scope.nopeMatch));
+            if(n && $scope.nopeMatch) {
+              ngModelCtrl.$setValidity('match', (n.toString() === $scope.nopeMatch.toString()));
+            }
           }, true);
           $scope.$watch('nopeMatch', function(n, o) {
-            ngModelCtrl.$setValidity('match', ($scope.ngModel === n));
+            if(n && $scope.ngModel) {
+              ngModelCtrl.$setValidity('match', ($scope.ngModel.toString() === n.toString()));
+            }
           }, true);
         }
       }
@@ -644,6 +695,328 @@
           // Use the compile function from the RecursionHelper,
           // And return the linking function(s) which it returns
           return nopeRecursionHelper.compile($element);
+        }
+      }
+    }])
+    .directive('nopeDatetime', ['$filter', '$nopeModal', function($filter, $nopeModal) {
+      return {
+        restrict : 'AE',
+        require : '^ngModel',
+        scope : {
+          theDate : '=ngModel',
+          minDate : '@min',
+          maxDate : '@max'
+        },
+        link: function($scope, $element, $attrs) {
+          var theModal;
+          var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+          $scope.days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+          $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+          'August', 'September', 'October', 'November', 'December'];
+          $scope.today = new Date();
+          $scope.todayMonth = $scope.today.getMonth();
+          $scope.todayYear = $scope.today.getFullYear();
+          $scope.selectedDate = new Date();
+          $scope.now = new Date();
+          $scope.selectedHours = '00';
+          $scope.selectedMinutes = '00';
+          $scope.selectedSeconds = '00';
+
+          $scope.selectDay = function(year, month, day) {
+            $scope.selectedDate = new Date(year, month, day, $scope.selectedHours || 0, $scope.selectedMinutes || 0, $scope.selectedSeconds || 0);
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.selectNow = function() {
+            $scope.selectedDate = new Date();
+            $scope.selectedHours = ($scope.selectedDate.getHours()<10?'0'+$scope.selectedDate.getHours():$scope.selectedDate.getHours());
+            $scope.selectedMinutes = ($scope.selectedDate.getMinutes()<10?'0'+$scope.selectedDate.getMinutes():$scope.selectedDate.getMinutes());
+            $scope.selectedSeconds = ($scope.selectedDate.getSeconds()<10?'0'+$scope.selectedDate.getSeconds():$scope.selectedDate.getSeconds());
+            $scope.todayMonth = $scope.today.getMonth();
+            $scope.todayYear = $scope.today.getFullYear();
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.selectToday = function() {
+            $scope.selectedDate = new Date();
+            $scope.todayMonth = $scope.today.getMonth();
+            $scope.todayYear = $scope.today.getFullYear();
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.$watchGroup(['selectedDate','selectedHours', 'selectedMinutes', 'selectedSeconds'], function(n,o) {
+            $scope.canSelect = true;
+            $scope.lowerStringLimit = 'any date';
+            $scope.upperStringLimit = 'any date';
+            if(n) {
+              console.log(n);
+              if($scope.lowerDateLimit === false && $scope.upperDateLimit === false) {
+              } else {
+                var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
+                var lowerTime = $scope.minDate ? $scope.minDate.split(' ')[1].split(':') : false;
+                var pMin = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], lowerTime[0], lowerTime[1], lowerTime[2])): false);
+                var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
+                var upperTime = $scope.maxDate ? $scope.maxDate.split(' ')[1].split(':') : false;
+                var pMax = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], upperTime[0], upperTime[1], upperTime[2])): false);
+                var d = n[0];
+                d.setHours(parseInt(n[1],10));
+                d.setMinutes(parseInt(n[2],10));
+                d.setMinutes(parseInt(n[3],10));
+                if(!pMin || (pMin && pMin.getTime()<=d.getTime())) {
+                } else {
+                  $scope.lowerStringLimit = pMin;
+                  $scope.canSelect = false;
+                }
+                if(!pMax || (pMax && pMax.getTime()>=d.getTime())) {
+                } else {
+                  $scope.upperStringLimit = pMax;
+                  $scope.canSelect = false;
+                }
+              }
+            } else {
+              $scope.canSelect = false;
+            }
+          }, true);
+
+          $scope.select = function(d) {
+            $scope.theDate = [
+              [
+                $scope.selectedDate.getFullYear(),
+                ($scope.selectedDate.getMonth()<9?'0'+($scope.selectedDate.getMonth()+1):$scope.selectedDate.getMonth()+1),
+                ($scope.selectedDate.getDate()<=9?'0'+($scope.selectedDate.getDate()):$scope.selectedDate.getDate())
+              ].join('-'),
+              [
+                $scope.selectedHours,
+                $scope.selectedMinutes,
+                $scope.selectedSeconds
+              ].join(':')
+            ].join(' ');
+            theModal.hide();
+          }
+
+          var calculate = function(year, month) {
+            var daysThisMonth = daysInMonth[month];
+            if(month===1 && ((year%4===0 && year%400!==0) || year%400===0) ) {
+              daysThisMonth++;
+            }
+            var row = 0;
+            var matrix = [];
+            for(var i=1;i<=daysThisMonth; i++) {
+              var d = new Date(year, month, i);
+              var getDay = d.getDay() || 7;
+              if(getDay%7===1) {
+                row++;
+              }
+              if(!matrix[row]) {
+                matrix[row] = [];
+              }
+              var enabled = (
+                ($scope.lowerDateLimit!==false?$scope.lowerDateLimit<=d.getTime():true) && ($scope.upperDateLimit!==false?$scope.upperDateLimit>=d.getTime():true)
+              );
+              matrix[row][getDay-1] = {
+                label : i,
+                isToday : (year===$scope.today.getFullYear() && month===$scope.today.getMonth() && i===$scope.today.getDate()),
+                isSelected : (year===$scope.selectedDate.getFullYear() && month===$scope.selectedDate.getMonth() && i===$scope.selectedDate.getDate()),
+                isEnabled : enabled
+              };
+            }
+            $scope.matrix = matrix;
+            $scope.actualMonth = [$scope.months[month], year].join(' ');
+          }
+
+          $scope.previousMonth = function() {
+            if($scope.todayMonth===0) {
+              $scope.todayMonth = 11;
+              $scope.todayYear--;
+            } else {
+              $scope.todayMonth--;
+            }
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $scope.nextMonth = function() {
+            if($scope.todayMonth===11) {
+              $scope.todayMonth = 0;
+              $scope.todayYear++;
+            } else {
+              $scope.todayMonth++;
+            }
+            calculate($scope.todayYear, $scope.todayMonth);
+          }
+
+          $element.attr('readonly', 'readonly');
+          $element.on('click', function(e) {
+            e.preventDefault();
+            if(!document.getElementById('modal-datetime')) {
+              var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
+              $scope.lowerDateLimit = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], 0, 0, 0).getTime()): false);
+              var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
+              $scope.upperDateLimit = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], 23, 59, 59).getTime()): false);
+              $scope.todayVisible = (($scope.lowerDateLimit?$scope.today.getTime()>=$scope.lowerDateLimit:true) && ($scope.upperDateLimit?$scope.today.getTime()<=$scope.upperDateLimit:true));
+              var w = $scope.$watch('theDate', function(n,o) {
+                if(n) {
+                  $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
+                  var p = $scope.theDate.split(' ')[1].split(':');
+                  $scope.selectedHours = p[0];
+                  $scope.selectedMinutes = p[1];
+                  $scope.selectedSeconds = p[2];
+                  w();
+                }
+                calculate($scope.todayYear, $scope.todayMonth);
+              }, true);
+              $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
+                theModal = modal;
+                theModal.show();
+              });
+            }
+          });
+
+        }
+      }
+    }])
+    .directive('nopeToolbar', ['$rootScope', function($rootScope) {
+      return {
+        restrict : 'E',
+        templateUrl : 'view/directive/toolbar.html',
+        replace: true,
+        scope : {
+          selection : '=ngModel'
+        },
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+
+          $scope.$watch('selection', function(n,o) {
+            if(n!=={}) {
+              var k = Object.keys(n);
+              $rootScope.$broadcast('nope.editor.selection', k[0], n[k[0]]);
+              $scope.selection = {};
+            }
+          }, true);
+
+        }]
+      }
+    }])
+    .directive('nopeEditor', ['$rootScope', '$compile', function($rootScope, $compile) {
+      return {
+        restrict : 'A',
+        scope : {
+          format : '=nopeEditor',
+          ngModel : '='
+        },
+        link : function($scope, $element, $attrs) {
+          var simplemde;
+          $scope.valueToinsert = {};
+
+          $rootScope.$on('nope.editor.selection', function(e, data, c) {
+            var cm = simplemde.codemirror;
+            var s = simplemde.getState();
+            if(data === 'image') {
+              _replaceSelection(cm, s.image, ["!["+c.title+"]({{uploadspath}}"+c.filename,")"]);
+            } else if(data === 'page') {
+              _replaceSelection(cm, s.link, ["[","]({{basepath}}"+c.slug+")"]);
+            } else if(data === 'media') {
+              _replaceSelection(cm, true, ["[n:media id=\""+c.id+"\"]","\n"]);
+            } else if(data === 'gallery') {
+              _replaceSelection(cm, true, ["[n:gallery slug=\""+c.slug+"\"]","\n"]);
+            }
+          });
+
+          var _replaceSelection = function(cm, active, startEnd) {
+            if(/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
+              return;
+            }
+            var text;
+            var start = startEnd[0];
+            var end = startEnd[1];
+            var startPoint = cm.getCursor("start");
+            var endPoint = cm.getCursor("end");
+            if(active) {
+              text = cm.getLine(startPoint.line);
+              start = text.slice(0, startPoint.ch);
+              end = text.slice(startPoint.ch);
+              cm.replaceRange(start + end, {
+                line: startPoint.line,
+                ch: 0
+              });
+            } else {
+              text = cm.getSelection();
+              cm.replaceSelection(start + text + end);
+
+              startPoint.ch += start.length;
+              if(startPoint !== endPoint) {
+                endPoint.ch += start.length;
+              }
+            }
+            cm.setSelection(startPoint, endPoint);
+            cm.focus();
+          }
+
+          $scope.$watch('format', function(n, o) {
+            if(n && n==='markdown') {
+              simplemde = new SimpleMDE({
+                autoDownloadFontAwesome : false,
+                blockStyles : {
+                  bold : '**',
+                  italic : '_'
+                },
+                toolbar : [
+                  'bold',
+                  'italic',
+                  'strikethrough',
+                  'heading-1',
+                  'heading-2',
+                  'heading-3',
+                  'code',
+                  'quote',
+                  'unordered-list',
+                  'ordered-list',
+                  'clean-block',
+                  'link',
+                  'image',
+                  'table',
+                  'horizontal-rule',
+                  '|',
+                  'fullscreen',
+                  {
+                    name: 'guide',
+                    action: 'https://guides.github.com/features/mastering-markdown/#syntax',
+                    className: 'fa fa-question-circle',
+                    title: 'Markdown guide'
+                  }
+                ],
+                element: $element[0],
+                spellChecker : false,
+                status: ['lines', 'words']
+              });
+              simplemde.value($scope.ngModel);
+              var nopeToolbar = $compile('<nope-toolbar ng-model="valueToinsert"></nope-toolbar>')($scope);
+              var toolbar = angular.element(document.getElementsByClassName('editor-toolbar')[0]);
+              toolbar.append(nopeToolbar);
+            } else {
+              if(simplemde) {
+                simplemde.codemirror.toTextArea();
+                $element[0].style.display = 'block';
+                var children = $element.parent().children();
+                var found = false;
+                angular.forEach(children, function(child) {
+                  if(!found) {
+                    found = (child===$element[0]);
+                  } else {
+                    child.remove();
+                  }
+                });
+              }
+            }
+          });
+
+          $scope.$watch(function() {
+            if(simplemde) {
+              return simplemde.value();
+            }
+            return;
+          }, function(n, o) {
+            $scope.ngModel = n;
+          });
         }
       }
     }])

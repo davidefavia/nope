@@ -23,7 +23,7 @@
           </div>
           <div class="form-group">
             <label>Body</label>
-            <textarea name="body" class="form-control" ng-model="content.body" rows="20" placeholder="Content body"></textarea>
+            <textarea name="body" nope-editor="content.format" class="form-control" ng-model="content.body" rows="20" placeholder="Content body"></textarea>
           </div>
           <div class="form-group">
             <label>Tags (comma separated)</label>
@@ -71,11 +71,11 @@
           </div>
           <div class="form-group">
             <label>Start publishing date</label>
-            <input type="text" name="startPublishingDate" class="form-control input-sm" ng-model="content.startPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" ng-blur="getRealStatus()" />
+            <input type="text" nope-datetime name="startPublishingDate" class="form-control input-sm" ng-model="content.startPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" max="{{content.endPublishingDate}}" />
           </div>
           <div class="form-group">
             <label>End publishing date</label>
-            <input type="text" name="endPublishingDate" class="form-control input-sm" ng-model="content.endPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" ng-blur="getRealStatus()" />
+            <input type="text" nope-datetime name="endPublishingDate" class="form-control input-sm" ng-model="content.endPublishingDate" placeholder="yyyy-mm-dd hh:mm:ss" min="{{content.startPublishingDate}}" />
           </div>
           <div class="form-group" ng-class="{'has-error':(!contentForm.priority.$valid && contentForm.priority.$touched)}">
             <label class="control-label">Priority</label>

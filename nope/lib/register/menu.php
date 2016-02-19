@@ -6,7 +6,7 @@
   'permission' => '',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/dashboard\')!==-1',
-  'icon' => 'fa fa-dashboard',
+  'icon' => 'fa fa-dashboard fa-fw',
   'attrs' => [
     'href' => '#/dashboard'
   ]
@@ -18,7 +18,7 @@
   'permission' => 'page.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/page\')!==-1',
-  'icon' => 'fa fa-file-text-o',
+  'icon' => 'fa fa-file-text-o fa-fw',
   'attrs' => [
     'href' => '',
     'ui-sref' => 'app.content({contentType:\'page\'})',
@@ -32,7 +32,7 @@
   'permission' => 'media.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/media\')!==-1',
-  'icon' => 'fa fa-picture-o',
+  'icon' => 'fa fa-picture-o fa-fw',
   'attrs' => [
     'href' => '',
     'ui-sref' => 'app.media',
@@ -46,7 +46,7 @@
   'permission' => 'gallery.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/gallery\')!==-1',
-  'icon' => 'fa fa-object-group',
+  'icon' => 'fa fa-object-group fa-fw',
   'attrs' => [
     'href' => '',
     'ui-sref' => 'app.gallery',
@@ -60,7 +60,7 @@
   'permission' => 'menu.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/menu\')!==-1',
-  'icon' => 'fa fa-bars',
+  'icon' => 'fa fa-bars fa-fw',
   'attrs' => [
     'href' => '',
     'ui-sref' => 'app.menu',
@@ -74,7 +74,7 @@
   'permission' => 'user.read',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/user\')!==-1',
-  'icon' => 'fa fa-user',
+  'icon' => 'fa fa-user fa-fw',
   'attrs' => [
     'href' => '',
     'ui-sref' => 'app.user',
@@ -99,7 +99,7 @@
   'label' => 'Logout',
   'permissions' => '',
   'role' => '',
-  'icon' => 'fa fa-unlock',
+  'icon' => 'fa fa-unlock fa-fw',
   'attrs' => [
     'href' => '',
     'ng-click' => 'logout();'
