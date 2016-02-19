@@ -1,3 +1,3 @@
 <?php
 
-// Register admin menu items here.
+// Register/unregister admin menu items here.

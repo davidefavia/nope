@@ -1,3 +1,9 @@
+## v0.13.0 (2016-03-??)
+
+### Features
+- Added shortcut function `getSetting`.
+- Added methods to set default text format, unregister text formats, models and menu items.
+
 ## v0.12.0 (2016-02-19)
 
 ### Libraries

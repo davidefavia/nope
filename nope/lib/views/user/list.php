@@ -1,6 +1,6 @@
 <div id="user" class="row">
   <div class="list-column col" ng-class="{'col-md-4 col-sm-6':!nope.isIframe}">
-    <div class="searchbar">
+    <div class="searchbar" nope-can="user.read">
       <form name="searchForm" ng-submit="search(q);">
         <div class="input-group" nope-can="user.read">
           <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />

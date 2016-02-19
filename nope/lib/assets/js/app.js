@@ -12,6 +12,7 @@
   .constant('AssetsPath', window.NOPE_TEMPLATES_PATH)
   .constant('RolesList', window.NOPE_USER_ROLES)
   .constant('TextFormatsList', window.NOPE_TEXT_FORMATS)
+  .constant('DefaultTextFormat', window.NOPE_DEFAULT_TEXT_FORMAT)
   .constant('Iframe', window.NOPE_IFRAME)
   .constant('IframeCaller', window.NOPE_IFRAME_CALLER)
   .config(['$compileProvider', function ($compileProvider) {

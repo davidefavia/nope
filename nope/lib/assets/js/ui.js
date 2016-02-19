@@ -750,7 +750,6 @@
             $scope.lowerStringLimit = 'any date';
             $scope.upperStringLimit = 'any date';
             if(n) {
-              console.log(n);
               if($scope.lowerDateLimit === false && $scope.upperDateLimit === false) {
               } else {
                 var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;

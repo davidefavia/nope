@@ -12,6 +12,7 @@
       window.NOPE_TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
       window.NOPE_USER_ROLES = <?php echo json_encode($userRoles); ?>;
       window.NOPE_TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
+      window.NOPE_DEFAULT_TEXT_FORMAT = '<?php echo $defaultTextFormat; ?>';
     </script>
   </head>
   <body <?php if($isIframe==='true') { ?>class="is-iframe"<?php } ?>>

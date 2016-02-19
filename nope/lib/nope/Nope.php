@@ -35,8 +35,8 @@ class Nope {
    */
   static function isAlredyInstalled() {
     if(R::testConnection()) {
-      $setting = \Nope\Setting::findByKey('installation');
-      return !is_null($setting->value);
+      $setting = getSetting('installation');
+      return !is_null($setting);
     } else {
       return false;
     }
@@ -142,6 +142,14 @@ class Nope {
     self::getInstance()->addConfigWithException('nope.content.format', $key, $item, 'Text format "'.$key.'" already exists');
   }
 
+  static function unregisterTextFormat($key) {
+    unset(self::getInstance()->config['nope.content.format'][$key]);
+  }
+
+  static function setDefaultTextFormat($key) {
+    self::getInstance()->setConfig('nope.content.format.default', $key);
+  }
+
   static function registerModel($key, $item) {
     self::getInstance()->addConfigWithException('nope.models', $key, $item, 'Model "'.$key.'" already exists');
     if(is_array($item['route'])) {
@@ -153,17 +161,51 @@ class Nope {
     }
   }
 
+  static function unregisterModel($key) {
+    $item = self::getInstance()->config['nope.models'][$key];
+    if(is_array($item['route'])) {
+      foreach($item['route'] as $file) {
+        self::unregisterRoute($file);
+      }
+    } else {
+      self::unregisterRoute($item['route']);
+    }
+    unset(self::getInstance()->config['nope.models'][$key]);
+  }
+
   static function registerRoute($route) {
     self::getInstance()->addConfig('nope.routes', $route);
+  }
+
+  static function unregisterRoute($key) {
+    $routes = self::getInstance()->getConfig('nope.routes');
+    foreach($routes as $i => $file) {
+      if($file===$key) {
+        unset(self::getInstance()->config['nope.routes'][$i]);
+      }
+    }
   }
 
   static function registerRole($key, $item) {
     self::getInstance()->addConfigWithException('nope.user.roles', $key, $item, 'Role "'.$key.'" already exists');
   }
 
-  static function registerMenuItem($item, $priority) {
-    self::getInstance()->addConfigWithException('nope.admin.menu', $priority, $item, 'Menu item size already exists at priority '.$priority);
-    ksort(self::getInstance()->config['nope.admin.menu']);
+  static function registerMenuItem($key, $item) {
+    self::getInstance()->config['nope.admin.menu'][$key] = $item;
+  }
+
+  static function unregisterMenuItem($key) {
+    unset(self::getInstance()->config['nope.admin.menu'][$key]);
+  }
+
+  static function getMenuItems() {
+    usort(self::getInstance()->config['nope.admin.menu'], function($a, $b) {
+      if ($a['priority'] === $b['priority']) {
+        return 0;
+      }
+      return ($a['priority'] < $b['priority']) ? 1 : -1;
+    });
+    return self::getInstance()->config['nope.admin.menu'];
   }
 
   static function registerSetting($setting, $priority = null) {
@@ -182,6 +224,10 @@ class Nope {
 
   static function registerCustom($key, $setting) {
     self::getInstance()->config['nope.custom'][$key] = $setting;
+  }
+
+  static function unregisterCustom($key) {
+    unset(self::getInstance()->config['nope.custom'][$key]);
   }
 
   static function getCustom($key) {

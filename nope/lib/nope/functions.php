@@ -86,3 +86,11 @@ function getMenuBySlug($slug, $depth = 1) {
   }
   return $menu;
 }
+
+function getSetting($key) {
+  $setting = \Nope\Query\Setting::findByKey($key);
+  if($setting) {
+    return $setting->value;
+  }
+  return;
+}
