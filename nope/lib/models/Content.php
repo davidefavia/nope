@@ -38,13 +38,17 @@ class Content extends Model {
     $json->slug = new \Nope\String($json->slug);
     $author = $this->getAuthor();
     unset($json->authorId);
-    $json->author = $author;
+    $json->author = null;
+    if($author) {
+      $json->author = $author->toJson();
+    }
     $json->tags = $this->getTags();
     if($json->coverId) {
       $cover = Media::findById($json->coverId);
       if($cover) {
         unset($cover->model->author_id);
       }
+      $cover = $cover->toJson();
     }
     unset($json->coverId);
     $json->cover = $cover;

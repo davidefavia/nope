@@ -5,7 +5,7 @@
 $size = ($attributes->size?:'icon');
 
 if(count($gallery->media)) {
-    foreach($gallery->media as $media) {
+  foreach($gallery->media as $media) {
 ?>
 <img src="<?php echo $media->preview->{$size}; ?>" />
 <?php } } else { ?>

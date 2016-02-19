@@ -723,42 +723,12 @@
           $scope.selectedMinutes = '00';
           $scope.selectedSeconds = '00';
 
-
-
-
-          $element.attr('readonly', 'readonly');
-          $element.on('click', function(e) {
-            e.preventDefault();
-            if(!document.getElementById('modal-datetime')) {
-              var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
-              $scope.lowerDateLimit = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], 0, 0, 0).getTime()): false);
-              var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
-              $scope.upperDateLimit = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], 23, 59, 59).getTime()): false);
-              $scope.todayVisible = (($scope.lowerDateLimit?$scope.today.getTime()>=$scope.lowerDateLimit:true) && ($scope.upperDateLimit?$scope.today.getTime()<=$scope.upperDateLimit:true));
-              var w = $scope.$watch('theDate', function(n,o) {
-                if(n) {
-                  $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
-                  var p = $scope.theDate.split(' ')[1].split(':');
-                  $scope.selectedHours = p[0];
-                  $scope.selectedMinutes = p[1];
-                  $scope.selectedSeconds = p[2];
-                  w();
-                }
-                calculate($scope.todayYear, $scope.todayMonth);
-              }, true);
-              $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
-                theModal = modal;
-                theModal.show();
-              });
-            }
-          });
-
           $scope.selectDay = function(year, month, day) {
             $scope.selectedDate = new Date(year, month, day, $scope.selectedHours || 0, $scope.selectedMinutes || 0, $scope.selectedSeconds || 0);
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
-          $scope.selectNow = function(year, month, day) {
+          $scope.selectNow = function() {
             $scope.selectedDate = new Date();
             $scope.selectedHours = ($scope.selectedDate.getHours()<10?'0'+$scope.selectedDate.getHours():$scope.selectedDate.getHours());
             $scope.selectedMinutes = ($scope.selectedDate.getMinutes()<10?'0'+$scope.selectedDate.getMinutes():$scope.selectedDate.getMinutes());
@@ -768,7 +738,7 @@
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
-          $scope.selectToday = function(year, month, day) {
+          $scope.selectToday = function() {
             $scope.selectedDate = new Date();
             $scope.todayMonth = $scope.today.getMonth();
             $scope.todayYear = $scope.today.getFullYear();
@@ -780,6 +750,7 @@
             $scope.lowerStringLimit = 'any date';
             $scope.upperStringLimit = 'any date';
             if(n) {
+              console.log(n);
               if($scope.lowerDateLimit === false && $scope.upperDateLimit === false) {
               } else {
                 var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
@@ -813,7 +784,7 @@
               [
                 $scope.selectedDate.getFullYear(),
                 ($scope.selectedDate.getMonth()<9?'0'+($scope.selectedDate.getMonth()+1):$scope.selectedDate.getMonth()+1),
-                $scope.selectedDate.getDate()
+                ($scope.selectedDate.getDate()<=9?'0'+($scope.selectedDate.getDate()):$scope.selectedDate.getDate())
               ].join('-'),
               [
                 $scope.selectedHours,
@@ -874,6 +845,33 @@
             calculate($scope.todayYear, $scope.todayMonth);
           }
 
+          $element.attr('readonly', 'readonly');
+          $element.on('click', function(e) {
+            e.preventDefault();
+            if(!document.getElementById('modal-datetime')) {
+              var lower = $scope.minDate ? $scope.minDate.split(' ')[0].split('-') : false;
+              $scope.lowerDateLimit = (lower!==false? (new Date(lower[0], parseInt(lower[1],10)-1, lower[2], 0, 0, 0).getTime()): false);
+              var upper = $scope.maxDate ? $scope.maxDate.split(' ')[0].split('-') : false;
+              $scope.upperDateLimit = (upper!==false? (new Date(upper[0], parseInt(upper[1],10)-1, upper[2], 23, 59, 59).getTime()): false);
+              $scope.todayVisible = (($scope.lowerDateLimit?$scope.today.getTime()>=$scope.lowerDateLimit:true) && ($scope.upperDateLimit?$scope.today.getTime()<=$scope.upperDateLimit:true));
+              var w = $scope.$watch('theDate', function(n,o) {
+                if(n) {
+                  $scope.selectedDate = new Date($scope.theDate.split(' ').join('T'));
+                  var p = $scope.theDate.split(' ')[1].split(':');
+                  $scope.selectedHours = p[0];
+                  $scope.selectedMinutes = p[1];
+                  $scope.selectedSeconds = p[2];
+                  w();
+                }
+                calculate($scope.todayYear, $scope.todayMonth);
+              }, true);
+              $nopeModal.fromTemplateUrl('view/modal/datetime.html', $scope).then(function(modal) {
+                theModal = modal;
+                theModal.show();
+              });
+            }
+          });
+
         }
       }
     }])
@@ -913,9 +911,13 @@
             var cm = simplemde.codemirror;
             var s = simplemde.getState();
             if(data === 'image') {
-              _replaceSelection(cm, s.image, ["!["+c.title+"]("+c.filename,")"]);
+              _replaceSelection(cm, s.image, ["!["+c.title+"]({{uploadspath}}"+c.filename,")"]);
             } else if(data === 'page') {
-              _replaceSelection(cm, s.link, ["["+c.title+"]("+c.slug,")"]);
+              _replaceSelection(cm, s.link, ["[","]({{basepath}}"+c.slug+")"]);
+            } else if(data === 'media') {
+              _replaceSelection(cm, true, ["[n:media id=\""+c.id+"\"]","\n"]);
+            } else if(data === 'gallery') {
+              _replaceSelection(cm, true, ["[n:gallery slug=\""+c.slug+"\"]","\n"]);
             }
           });
 

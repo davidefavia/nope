@@ -14,7 +14,7 @@
           <tbody>
             <tr ng-repeat="row in matrix track by $index">
               <td ng-repeat="col in row track by $index" ng-class="{'empty-dell':!col,today:col.isToday}">
-                <a href="" class="btn btn-block" ng-class="{'btn-info':(col.isToday && !col.isSelected), 'btn-success':col.isSelected}" ng-disabled="!col.isEnabled" ng-click="col.isEnabled?$parent.$parent.$parent.selectDay(todayYear, todayMonth, col.label):return;">{{col.label}}</a>
+                <a href="" class="btn btn-block" ng-class="{'btn-info':(col.isToday && !col.isSelected), 'btn-success':col.isSelected}" ng-disabled="!col.isEnabled" ng-click="col.isEnabled?selectDay(todayYear, todayMonth, col.label):return;">{{col.label}}</a>
               </td>
             </tr>
           </tbody>
@@ -22,12 +22,12 @@
         <div class="form-inline">
           <div class="form-group">
             {{$parent.$parent.$parent.selectedDate | date: 'longDate'}}
-            <input type="text" ng-model="$parent.$parent.$parent.selectedHours" class="form-control input-sm" size="2" placeholder="hh" /> :
-            <input type="text" ng-model="$parent.$parent.$parent.selectedMinutes" class="form-control input-sm" size="2" placeholder="mm" /> :
-            <input type="text" ng-model="$parent.$parent.$parent.selectedSeconds" class="form-control input-sm" size="2" placeholder="ss" />
+            <input type="text" ng-model="selectedHours" class="form-control input-sm" size="2" placeholder="hh" /> :
+            <input type="text" ng-model="selectedMinutes" class="form-control input-sm" size="2" placeholder="mm" /> :
+            <input type="text" ng-model="selectedSeconds" class="form-control input-sm" size="2" placeholder="ss" />
           </div>
         </div>
-        <div class="alert alert-date-limit alert-danger" ng-show="!$parent.$parent.$parent.canSelect">
+        <div class="alert alert-date-limit alert-danger" ng-show="!canSelect">
           <p>The chosen date is out the available limits:</p>
           <ul>
             <li>minimum date: {{$parent.$parent.$parent.lowerStringLimit | date : 'yyyy-MM-dd HH:mm:ss'}},</li>
@@ -58,15 +58,15 @@
           ?>
           <strong>Dates are ALWAYS relative to server timezone</strong>.<br/>
           Server time: <strong><?php echo new \Nope\DateTime(); ?> (UTC<?php echo $offset; ?>)</strong>.<br/>
-          Your time: <strong>{{$parent.$parent.$parent.now | date : 'yyyy-MM-dd HH:mm:ss'}} (UTC{{$parent.$parent.$parent.now | date : 'Z'}})</strong>.
+          Your time: <strong>{{now | date : 'yyyy-MM-dd HH:mm:ss'}} (UTC{{$parent.$parent.$parent.now | date : 'Z'}})</strong>.
         </div>
       </div>
     </div>
   </nope-modal-body>
   <nope-modal-footer>
     <a href="" class="btn btn-default" nope-modal-close>Close</a>
-    <a href="" class="btn btn-info" ng-if="$parent.$parent.$parent.todayVisible" ng-click="$parent.$parent.$parent.selectNow()">Now</a>
-    <a href="" class="btn btn-info" ng-if="$parent.$parent.$parent.todayVisible" ng-click="$parent.$parent.$parent.selectToday()">Today</a>
-    <a href="" class="btn btn-success" ng-disabled="!$parent.$parent.$parent.selectedDate || !$parent.$parent.$parent.canSelect" ng-click="$parent.$parent.$parent.select()">Select</a>
+    <a href="" class="btn btn-info" ng-if="todayVisible" ng-click="selectNow();">Now</a>
+    <a href="" class="btn btn-info" ng-if="todayVisible" ng-click="selectToday();">Today</a>
+    <a href="" class="btn btn-success" ng-disabled="!selectedDate || !canSelect" ng-click="select()">Select</a>
   </nope-modal-footer>
 </nope-modal>
