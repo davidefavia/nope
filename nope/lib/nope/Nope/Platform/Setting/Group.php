@@ -32,7 +32,7 @@ class Group {
   function draw($ngModel = null) {
     $this->instance->setFields($this->fields);
     $this->instance->setNgModel($ngModel);
-    return $this->instance->draw();
+    return '<div id="settings-group-'.$this->id.'">' . $this->instance->draw() . '</div>';
   }
 
   function toValue($v) {
