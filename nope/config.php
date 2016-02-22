@@ -2,9 +2,11 @@
 
 define('NOPE_DATETIME_TIMEZONE', '');
 define('NOPE_SECURITY_SALT', '');
-define('NOPE_ADMIN_ROUTE', '/admin');
-define('NOPE_DATABASE_PATH', NOPE_INDEX . 'nope.db');
 define('NOPE_THEME', 'default');
+
+if(in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])){
+  define('NOPE_DEVELOPMENT', true);
+}
 
 // Configure PHPMailer
 \Nope::setConfig('nope.mailer', (object) [
@@ -20,8 +22,3 @@ define('NOPE_THEME', 'default');
   'SMTPSecure' => 'tls',
   'port' => 587
 ]);
-
-define('NOPE_PAGE_RPP', 10);
-define('NOPE_USER_RPP', 10);
-define('NOPE_MEDIA_RPP', 12);
-define('NOPE_GALLERY_RPP', 10);

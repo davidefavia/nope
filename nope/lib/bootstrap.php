@@ -27,6 +27,25 @@ if(file_exists(NOPE_DIR . 'config-dev.php')) {
   require NOPE_DIR . 'config.php';
 }
 
+if(!defined('NOPE_ADMIN_ROUTE')) {
+  define('NOPE_ADMIN_ROUTE', '/admin');
+}
+if(!defined('NOPE_DATABASE_PATH')) {
+  define('NOPE_DATABASE_PATH', NOPE_INDEX . 'nope.db');
+}
+if(!defined('NOPE_PAGE_RPP')) {
+  define('NOPE_PAGE_RPP', 10);
+}
+if(!defined('NOPE_USER_RPP')) {
+  define('NOPE_USER_RPP', 10);
+}
+if(!defined('NOPE_MEDIA_RPP')) {
+  define('NOPE_MEDIA_RPP', 12);
+}
+if(!defined('NOPE_GALLERY_RPP')) {
+  define('NOPE_GALLERY_RPP', 10);
+}
+
 session_start();
 
 use RedBeanPHP\R as R;

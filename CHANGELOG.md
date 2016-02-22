@@ -3,6 +3,7 @@
 ### Features
 - Added shortcut function `getSetting`.
 - Added methods to set default text format, unregister text formats, models and menu items.
+- Added cache lifetime and path to custom image filters.
 
 ### Fixes
 - Fixed users list not refreshing on new user creation (#44).

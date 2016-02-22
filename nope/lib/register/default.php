@@ -1,8 +1,17 @@
 <?php
 
-\Nope::registerImageSize('icon', new \Nope\Filter\Thumb(48, 48));
-\Nope::registerImageSize('profile', new \Nope\Filter\Thumb(96,96));
-\Nope::registerImageSize('thumb', new \Nope\Filter\Thumb(200));
+\Nope::registerImageSize('icon', [
+  'filter' => new \Nope\Filter\Thumb(48, 48),
+  'cache' => 60
+]);
+\Nope::registerImageSize('profile', [
+  'filter' => new \Nope\Filter\Thumb(96,96),
+  'cache' => 60
+]);
+\Nope::registerImageSize('thumb', [
+  'filter' => new \Nope\Filter\Thumb(200),
+  'cache' => 60
+]);
 
 \Nope::registerTextFormat('html', [
   'key' => 'html',
