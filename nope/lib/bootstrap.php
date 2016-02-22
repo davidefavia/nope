@@ -1,8 +1,8 @@
 <?php
 
 define('NOPE_DIR', realpath(__DIR__ . '/../') . '/');
-define('NOPE_BASE_PATH', '/' . basename(dirname($_SERVER['SCRIPT_NAME'])) . '/');
-define('NOPE_PATH', '/' . basename(dirname($_SERVER['SCRIPT_NAME'])) . '/nope/');
+define('NOPE_BASE_PATH', '/' . basename(dirname(NOPE_DIR)) . '/');
+define('NOPE_PATH', NOPE_BASE_PATH . basename(NOPE_DIR) . '/');
 
 define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
 define('NOPE_LIB_PATH', NOPE_PATH . 'lib/');
@@ -31,7 +31,7 @@ if(!defined('NOPE_ADMIN_ROUTE')) {
   define('NOPE_ADMIN_ROUTE', '/admin');
 }
 if(!defined('NOPE_DATABASE_PATH')) {
-  define('NOPE_DATABASE_PATH', NOPE_INDEX . 'nope.db');
+  define('NOPE_DATABASE_PATH', NOPE_STORAGE_DIR . 'data/nope.db');
 }
 if(!defined('NOPE_PAGE_RPP')) {
   define('NOPE_PAGE_RPP', 10);

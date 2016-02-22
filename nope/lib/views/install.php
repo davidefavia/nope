@@ -47,14 +47,14 @@
                 <div class="alert alert-danger">Something wrong.</div>
                 <?php } ?>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.title.$valid && installationForm.title.$touched)}">
-                    <label class="control-label">Website title:</label>
+                    <label class="control-label">Website title</label>
                     <input type="text" name="title" ng-model="user.title" class="form-control" placeholder="Website title" required />
                     <div ng-messages="installationForm.title.$error" ng-if="installationForm.title.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Title is required.</span>
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.username.$valid && installationForm.username.$touched)}">
-                    <label class="control-label">Username:</label>
+                    <label class="control-label">Username</label>
                     <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="Username" required ng-pattern='<?php echo \Nope\Utils::USERNAME_REGEX_PATTERN; ?>' ng-trim="false" />
                     <div ng-messages="installationForm.username.$error" ng-if="installationForm.username.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Username is required.</span>
@@ -62,14 +62,14 @@
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.password.$valid && installationForm.password.$touched)}">
-                    <label class="control-label">Password:</label>
+                    <label class="control-label">Password</label>
                     <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required placeholder="Choose your password" />
                     <div ng-messages="installationForm.password.$error" ng-if="installationForm.password.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Password is required.</span>
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.confirm.$valid && installationForm.confirm.$touched)}">
-                    <label class="control-label">Confirm password:</label>
+                    <label class="control-label">Confirm password</label>
                     <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm your password" required nope-match="user.password" />
                     <div ng-messages="installationForm.confirm.$error" ng-if="installationForm.confirm.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Password confirmation is required.</span>
@@ -77,7 +77,7 @@
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.email.$valid && installationForm.email.$touched)}">
-                    <label class="control-label">Email:</label>
+                    <label class="control-label">Email</label>
                     <input type="email" name="email" ng-model="user.email" class="form-control" placeholder="Email to reset password" required ng-pattern='<?php echo \Nope\Utils::EMAIL_REGEX_PATTERN; ?>' />
                     <div ng-messages="installationForm.email.$error" ng-if="installationForm.email.$touched" ng-cloak>
                      <span class="help-block" ng-message="required">Email is required.</span>

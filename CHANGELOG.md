@@ -1,9 +1,10 @@
-## v0.13.0 (2016-03-??)
+## v0.13.0 (2016-02-??)
 
 ### Features
 - Added shortcut function `getSetting`.
 - Added methods to set default text format, unregister text formats, models and menu items.
 - Added cache lifetime and path to custom image filters.
+- Added platform ebedding to show contents without need of routing and theme (#46).
 
 ### Fixes
 - Fixed users list not refreshing on new user creation (#44).

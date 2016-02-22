@@ -31,7 +31,14 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
     ];
     // SQLite
     $isConnected = R::testConnection();
-    $isDatabaseFolderWriteable = Utils::isPathWriteable(basename(NOPE_DATABASE_PATH));
+    $databasePath = dirname(NOPE_DATABASE_PATH);
+    $isDatabaseFolderWriteable = Utils::isPathWriteable($databasePath);
+    if(!$isDatabaseFolderWriteable) {
+      mkdir($databasePath);
+      Utils::makePathWriteable($databasePath);
+      $isConnected = R::testConnection();
+      $isDatabaseFolderWriteable = Utils::isPathWriteable($databasePath);
+    }
     $isDatabaseOk = $isConnected && $isDatabaseFolderWriteable;
     $requirements['sqlite'] = (object) [
       'passed' => $isDatabaseOk,
