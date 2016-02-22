@@ -95,6 +95,10 @@ abstract class Model implements \JsonSerializable {
     }
   }
 
+  public function export() {
+    return $this->model->export();
+  }
+
   function beforeSave() {
     if(!$this->id) {
       $this->creationDate = new \DateTime();

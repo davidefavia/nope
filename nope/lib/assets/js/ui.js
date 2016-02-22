@@ -914,9 +914,9 @@
             } else if(data === 'page') {
               _replaceSelection(cm, s.link, ["[","]({{basepath}}"+c.slug+")"]);
             } else if(data === 'media') {
-              _replaceSelection(cm, true, ["[n:media id=\""+c.id+"\"]","\n"]);
+              _replaceSelection(cm, false, ["[n:media id=\""+c.id+"\"]","\n"]);
             } else if(data === 'gallery') {
-              _replaceSelection(cm, true, ["[n:gallery slug=\""+c.slug+"\"]","\n"]);
+              _replaceSelection(cm, false, ["[n:gallery slug=\""+c.slug+"\"]","\n"]);
             }
           });
 

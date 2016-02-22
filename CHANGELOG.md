@@ -1,10 +1,13 @@
 ## v0.13.0 (2016-02-??)
 
 ### Features
-- Added shortcut function `getSetting`.
-- Added methods to set default text format, unregister text formats, models and menu items.
-- Added cache lifetime and path to custom image filters.
-- Added platform ebedding to show contents without need of routing and theme (#46).
+- Added shortcut function `getSetting` (#45).
+- Added methods to set default text format, unregister text formats, models and menu items (#45).
+- Added cache lifetime and path to custom image filters (#45).
+- Added platform embedding to show contents without need of routing and theme (#46).
+- Added scripts and styles inclusion inside administration panel via file inclusion (#45).
+- Added utilities functions `themePath` and `linkTo` (#45).
+- Added welcome page creation during installation (#45).
 
 ### Fixes
 - Fixed users list not refreshing on new user creation (#44).

@@ -7,7 +7,7 @@ define('NOPE_PATH', NOPE_BASE_PATH . basename(NOPE_DIR) . '/');
 define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
 define('NOPE_LIB_PATH', NOPE_PATH . 'lib/');
 define('NOPE_APP_DIR', NOPE_DIR . 'app/');
-define('NOPE_LIB_PATH', NOPE_PATH . 'app/');
+define('NOPE_APP_PATH', NOPE_PATH . 'app/');
 define('NOPE_STORAGE_DIR', NOPE_DIR . 'storage/');
 define('NOPE_STORAGE_PATH', NOPE_PATH . 'storage/');
 define('NOPE_UPLOADS_DIR', NOPE_STORAGE_DIR . 'uploads/');

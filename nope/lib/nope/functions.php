@@ -22,7 +22,7 @@ function redirect($request, $response, $path) {
   return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . $path);
 }
 
-function asset($fileName) {
+function themePath($fileName) {
   return NOPE_THEME_PATH . $fileName;
 }
 
@@ -93,4 +93,8 @@ function getSetting($key) {
     return $setting->value;
   }
   return;
+}
+
+function linkTo($slug) {
+  return NOPE_BASE_PATH . ltrim($slug, '/');
 }

@@ -104,29 +104,45 @@ $app->group(NOPE_ADMIN_ROUTE, function() {
       $data['step'] = 2;
       $body = $request->getParsedBody();
       if($body['username'] && $body['password'] && v::identical($body['password'])->validate($body['confirm']) && v::regex(Utils::EMAIL_REGEX_PATTERN)->validate($body['email']) && $body['title']) {
-        $user = new User();
-        $user->username = $body['username'];
-        $user->setPassword($body['password']);
-        $user->email = $body['email'];
-        $user->enabled = 1;
-        $user->prettyName = null;
-        $user->description = null;
-        $user->role = 'admin';
-        User::authenticate($user);
+        try {
+          $user = new User();
+          $user->username = $body['username'];
+          $user->setPassword($body['password']);
+          $user->email = $body['email'];
+          $user->enabled = 1;
+          $user->prettyName = null;
+          $user->description = null;
+          $user->role = 'admin';
+          User::authenticate($user);
 
-        $setting = new Setting();
-        $setting->settingkey = 'installation';
-        $setting->value = new \DateTime();
-        $setting->save();
+          $content = new Page();
+          $content->title = 'Home';
+          $content->body = file_get_contents(NOPE_LIB_DIR . 'utils/_home.md');
+          $content->slug = 'home';
+          $content->format = 'markdown';
+          $content->status = 'published';
+          $content->setAuthor($user);
+          $content->save();
 
-        $setting = new Setting();
-        $setting->settingkey = 'nope';
-        $setting->value = [
-          'headline' => $body['title']
-        ];
-        $setting->save();
+          $setting = new Setting();
+          $setting->settingkey = 'installation';
+          $setting->value = new \DateTime();
+          $setting->save();
 
-        return redirect($request, $response, NOPE_ADMIN_ROUTE);
+          $setting = new Setting();
+          $setting->settingkey = 'nope';
+          $setting->value = [
+            'headline' => $body['title'],
+            'homepage' => $content->export()
+          ];
+          $setting->save();
+
+          return redirect($request, $response, NOPE_ADMIN_ROUTE);
+        } catch(\Exception $e) {
+          $data['user'] = false;
+          var_dump($e->getMessage());
+        }
+
       } else if($body) {
         $data['user'] = false;
       }

@@ -48,7 +48,7 @@
                 <?php } ?>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.title.$valid && installationForm.title.$touched)}">
                     <label class="control-label">Website title</label>
-                    <input type="text" name="title" ng-model="user.title" class="form-control" placeholder="Website title" required />
+                    <input type="text" name="title" ng-model="user.title" class="form-control input-lg" placeholder="Website title" required />
                     <div ng-messages="installationForm.title.$error" ng-if="installationForm.title.$touched" ng-cloak>
                       <span class="help-block" ng-message="required">Title is required.</span>
                     </div>
@@ -61,19 +61,23 @@
                       <span class="help-block" ng-message="pattern">Username must contain only lower case letters, numbers and it need to be between 3 and 20 chars long.</span>
                     </div>
                   </div>
-                  <div class="form-group" ng-class="{'has-error':(!installationForm.password.$valid && installationForm.password.$touched)}">
-                    <label class="control-label">Password</label>
-                    <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required placeholder="Choose your password" />
-                    <div ng-messages="installationForm.password.$error" ng-if="installationForm.password.$touched" ng-cloak>
-                      <span class="help-block" ng-message="required">Password is required.</span>
-                    </div>
-                  </div>
-                  <div class="form-group" ng-class="{'has-error':(!installationForm.confirm.$valid && installationForm.confirm.$touched)}">
-                    <label class="control-label">Confirm password</label>
-                    <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm your password" required nope-match="user.password" />
-                    <div ng-messages="installationForm.confirm.$error" ng-if="installationForm.confirm.$touched" ng-cloak>
-                      <span class="help-block" ng-message="required">Password confirmation is required.</span>
-                      <span class="help-block" ng-message="match">Password and its confirmation must match.</span>
+                  <div class="form-group" ng-class="{'has-error':((!installationForm.password.$valid && installationForm.password.$touched) || (!installationForm.confirm.$valid && installationForm.confirm.$touched))}">
+                    <div class="row">
+                      <div class="col col-md-6">
+                        <label class="control-label">Password</label>
+                        <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="Password" required placeholder="Choose your password" />
+                        <div ng-messages="installationForm.password.$error" ng-if="installationForm.password.$touched" ng-cloak>
+                          <span class="help-block" ng-message="required">Password is required.</span>
+                        </div>
+                      </div>
+                      <div class="col col-md-6">
+                        <label class="control-label">Confirm password</label>
+                        <input type="password" name="confirm" ng-model="user.confirm" class="form-control" placeholder="Confirm your password" required nope-match="user.password" />
+                        <div ng-messages="installationForm.confirm.$error" ng-if="installationForm.confirm.$touched" ng-cloak>
+                          <span class="help-block" ng-message="required">Password confirmation is required.</span>
+                          <span class="help-block" ng-message="match">Password and its confirmation must match.</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group" ng-class="{'has-error':(!installationForm.email.$valid && installationForm.email.$touched)}">
