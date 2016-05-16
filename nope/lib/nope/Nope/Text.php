@@ -2,7 +2,7 @@
 
 namespace Nope;
 
-class Text extends String {
+class Text extends Str {
   public $format;
 
   function __construct($string, $format = null, $encoding = 'UTF-8') {

@@ -34,8 +34,8 @@ class Content extends Model {
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
-    $json->title = new \Nope\String($json->title);
-    $json->slug = new \Nope\String($json->slug);
+    $json->title = new \Nope\Str($json->title);
+    $json->slug = new \Nope\Str($json->slug);
     $author = $this->getAuthor();
     unset($json->authorId);
     $json->author = null;

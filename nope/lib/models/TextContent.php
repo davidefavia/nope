@@ -13,11 +13,11 @@ class TextContent extends Content {
   function jsonSerialize() {
     $json = parent::jsonSerialize();
     #$json->body = new Text($json->body, (string) $json->format);
-    $json->realStatus = new String($this->calculateStatus());
+    $json->realStatus = new Str($this->calculateStatus());
     $json->parsedBody = (new Text($json->body, (string) $json->format))->toHTML();
-    $json->fullUrl = new String($this->getFullUrl());
-    $json->status = new String($this->status);
-    $json->format = new String($this->format);
+    $json->fullUrl = new Str($this->getFullUrl());
+    $json->status = new Str($this->status);
+    $json->format = new Str($this->format);
     return $json;
   }
 
