@@ -1,4 +1,4 @@
-<form name="galleryForm" ng-submit="save(gallery);">
+<form name="galleryForm" ng-submit="save();">
   <div class="panel panel-default">
     <div class="panel-heading content-author" ng-if="gallery.id">
       <div class="btn-group btn-group-xs toolbar pull-right">
@@ -41,6 +41,12 @@
         <label>Media</label>
         <nope-model href="#/media?excluded={{(gallery.media | nopeGetIds).join(',')}}" ng-model="gallery.media" label="Add media" preview="icon" template="media" multiple="true"></nope-model>
       </div>
+      <?php
+        $html = \Nope\View::renderCustomBox('gallery', 'gallery.custom.', NOPE_LIB_VIEWS_PATH . 'gallery/custom.php');
+        if($html) {
+          echo $html;
+        }
+      ?>
     </div>
     <div class="panel-footer">
       <div class="form-group">

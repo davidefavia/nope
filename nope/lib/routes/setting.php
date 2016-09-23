@@ -7,14 +7,11 @@ use \Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/setting', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 5;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('setting.read')) {
       return $response->withStatus(403);
     }
     $settingsList = \Nope::getSettings();
-    #var_dump($settingsList);
-    #die();
     return $response->withJson([
       'currentUser' => $currentUser,
       'data' => $settingsList

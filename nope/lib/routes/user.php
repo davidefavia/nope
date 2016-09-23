@@ -7,19 +7,20 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/user', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 10;
+    $rpp = NOPE_USER_RPP;
     $currentUser = User::getAuthenticated();
+    $params = Utils::getPaginationTerms($request, $rpp);
+    $queryParams = (object) $request->getQueryParams();
     if($currentUser->can('user.read')) {
-      $queryParams = (object) $request->getQueryParams();
-      $params = Utils::getPaginationTerms($request, $rpp);
       $usersList = User::findAll([
         'excluded' => explode(',', $queryParams->excluded),
         'text' => $params->query
       ], $params->limit, $params->offset, $count);
-      $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     } else {
       $usersList = [$currentUser];
+      $count = 1;
     }
+    $metadata = Utils::getPaginationMetadata($params->page, $count, $rpp);
     return $response->withJson([
       'currentUser' => $currentUser,
       'metadata' => $metadata,

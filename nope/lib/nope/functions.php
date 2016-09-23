@@ -22,7 +22,7 @@ function redirect($request, $response, $path) {
   return $response->withStatus(302)->withHeader('Location', $request->getUri()->getBasePath() . $path);
 }
 
-function asset($fileName) {
+function themePath($fileName) {
   return NOPE_THEME_PATH . $fileName;
 }
 
@@ -85,4 +85,23 @@ function getMenuBySlug($slug, $depth = 1) {
     $menu->items = $p;
   }
   return $menu;
+}
+
+function getSetting($key) {
+  $setting = \Nope\Query\Setting::findByKey($key);
+  if($setting) {
+    return $setting->value;
+  }
+  return;
+}
+
+function linkTo($slug) {
+  if(S::startsWith($slug, 'http://') || S::startsWith($slug, 'https://') || S::startsWith($slug, NOPE_BASE_PATH)) {
+    return $slug;
+  }
+  return NOPE_BASE_PATH . ltrim($slug, '/');
+}
+
+function getMenu($slug) {
+  return \Nope\Query\Menu::findBySlug($slug);
 }

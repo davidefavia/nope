@@ -12,6 +12,7 @@
   .constant('AssetsPath', window.NOPE_TEMPLATES_PATH)
   .constant('RolesList', window.NOPE_USER_ROLES)
   .constant('TextFormatsList', window.NOPE_TEXT_FORMATS)
+  .constant('DefaultTextFormat', window.NOPE_DEFAULT_TEXT_FORMAT)
   .constant('Iframe', window.NOPE_IFRAME)
   .constant('IframeCaller', window.NOPE_IFRAME_CALLER)
   .config(['$compileProvider', function ($compileProvider) {
@@ -199,7 +200,11 @@
      $scope.save = function() {
        User.save($scope.user, function(data) {
          $scope.$emit('nope.toast.success', 'User "'+data.username+'" created.');
-         $state.go('app.user.detail', {id:data.id});
+         $state.go('app.user.detail', {
+           id:data.id
+         }, {
+           reload: true
+         });
        });
      }
    }])

@@ -107,10 +107,10 @@
       }
 
     }])
-    .controller('ContentCreateController', ['$scope', '$rootScope', '$state', '$stateParams', 'Content', function($scope, $rootScope, $state, $stateParams, Content) {
+    .controller('ContentCreateController', ['$scope', '$rootScope', '$state', '$stateParams', 'Content', 'DefaultTextFormat', function($scope, $rootScope, $state, $stateParams, Content, DefaultTextFormat) {
       $scope.content = new Content();
       $scope.content.author = $rootScope.currentUser;
-      $scope.content.format = 'html';
+      $scope.content.format = DefaultTextFormat;
       $scope.content.status = 'draft';
 
       $scope.save = function() {

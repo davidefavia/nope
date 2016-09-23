@@ -58,9 +58,13 @@
           page : page
         }, q), function(data, headers) {
           $scope.metadata = angular.fromJson(headers().link);
+          var l = angular.copy($scope.contentsList).length;
           $scope.contentsList = (page===1?[]:$scope.contentsList).concat(data);
           angular.forEach($scope.contentsList, function(value, index) {
-            $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb + '?_t_=' + (new Date()).getTime();
+            // Refresh only new previews
+            if(index>=l) {
+              $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb + '?_t_=' + (new Date()).getTime();
+            }
           });
         });
       }

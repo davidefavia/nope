@@ -21,16 +21,25 @@ class View {
    *
    * @param  string $template Template pathname relative to templates directory
    * @param  array  $data     Associative array of template variables
+   * @param  boolean $useGlobals Whether to use global transport system by \Nope::get()
    *
    * @return string
    */
-  public function fetch($template, $data = [])
+  public function fetch($template, $data = [], $useGlobals = true)
   {
     if(file_exists($template)) {
       ob_start();
       if(is_array($data)) {
         foreach($data as $key => $value) {
           $$key = $value;
+        }
+      }
+      if($useGlobals) {
+        $globalData = \Nope::get();
+        if(is_array($globalData)) {
+          foreach($globalData as $key => $value) {
+            $$key = $value;
+          }
         }
       }
       require_once $template;
@@ -72,13 +81,15 @@ class View {
 
   static function renderCustomBox($key, $modelName, $template = null)
   {
+    $custom = \Nope::getCustom($key);
+    $template = is_null($template)?$custom->properties->template:$template;
     if(is_null($template)) {
-      $template = NOPE_LIB_VIEWS_PATH . 'setting/box.php';
+      $template = NOPE_LIB_VIEWS_PATH . 'setting/custom.php';
     }
     if(file_exists($template)) {
-      $custom = \Nope::getCustom($key);
       if($custom) {
         ob_start();
+        $setting = $custom;
         $fields = $custom->getFields();
         $ngModel = $modelName;
         include_once $template;

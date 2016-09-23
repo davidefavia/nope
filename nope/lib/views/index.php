@@ -7,12 +7,16 @@
     <link href="<?php echo path('lib/assets/css/simplemde.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <script>
-      window.NOPE_BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
+      window.NOPE_BASE_PATH = "<?php echo rtrim(NOPE_BASE_PATH, '/') . NOPE_ADMIN_ROUTE . '/' ?>";
       window.NOPE_IFRAME = <?php echo $isIframe; ?>;
       window.NOPE_TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
       window.NOPE_USER_ROLES = <?php echo json_encode($userRoles); ?>;
       window.NOPE_TEXT_FORMATS = <?php echo json_encode($textFormats); ?>;
+      window.NOPE_DEFAULT_TEXT_FORMAT = '<?php echo $defaultTextFormat; ?>';
     </script>
+    <?php if(file_exists(NOPE_APP_VIEWS_PATH . '_common/header.php')) {
+      include_once NOPE_APP_VIEWS_PATH . '_common/header.php';
+    } ?>
   </head>
   <body <?php if($isIframe==='true') { ?>class="is-iframe"<?php } ?>>
     <ui-view></ui-view>
@@ -28,6 +32,9 @@
     <?php foreach($js as $file) { ?>
     <script src="<?php echo path($file); ?>"></script>
     <?php } ?>
+    <?php if(file_exists(NOPE_APP_VIEWS_PATH . '_common/footer.php')) {
+      include_once NOPE_APP_VIEWS_PATH . '_common/footer.php';
+    } ?>
     <?php if(NOPE_DEVELOPMENT===true) { ?>
     <script>
       document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +

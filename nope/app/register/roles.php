@@ -5,6 +5,16 @@
 \Nope::registerRole('editor', [
   'label' => 'Editor',
   'permissions' => [
-    'page.*'
+    'page.*',
+    'media.*',
+    'gallery.*',
+    // Extend permissions here below
+  ]
+]);
+
+\Nope::registerRole('subscriber', [
+  'label' => 'Subscriber',
+  'permissions' => [
+    // Extend permissions here below
   ]
 ]);

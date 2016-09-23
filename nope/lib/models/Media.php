@@ -6,6 +6,7 @@ use RedBeanPHP\R as R;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Intervention\Image\ImageManagerStatic as Image;
+use ColorThief\ColorThief;
 
 class Media extends Content {
 
@@ -78,20 +79,32 @@ class Media extends Content {
 
   function beforeSave() {
     $this->metadata = json_encode($this->getMetadata());
+    if($this->isImage()) {
+      $info = getimagesize($this->getPath());
+      $this->width = (int) $info[0];
+      $this->height = (int) $info[1];
+      $palette = ColorThief::getPalette($this->getPath(), 8, 5);
+      $this->palette = json_encode($palette);
+    }
     parent::beforeSave();
   }
 
   function jsonSerialize() {
     $json = parent::jsonSerialize();
-    $json->url = new String($this->getUrl());
-    $json->absoluteUrl = new String($this->getAbsoluteUrl());
+    $json->url = new Str($this->getUrl());
+    $json->absoluteUrl = new Str($this->getAbsoluteUrl());
     $json->preview = (object) [];
     foreach (\Nope::getConfig('nope.media.size') as $key => $value) {
-      $json->preview->$key = new String($this->getPreview($key));
+      $json->preview->$key = new Str($this->getPreview($key));
     }
     $json->isImage = $this->isImage();
     $json->isExternal = $this->isExternal();
     $json->metadata = json_decode($this->metadata);
+    $json->width = (int) $json->width;
+    $json->height = (int) $json->height;
+    if($json->palette) {
+      $json->palette = json_decode($json->palette);
+    }
     unset($json->cover);
     return $json;
   }
@@ -121,7 +134,7 @@ class Media extends Content {
       } elseif($filters->mimetype==='provider') {
         $sql[] = '('.$p.'provider IS NOT NULL)';
       } else {
-        $sql[] = '('.$p.'mimetype LIKE ? and '.$p.'provider is NULL)';
+        $sql[] = '('.$p.'mimetype LIKE ?)';
         $params[] = '%' . $filters->mimetype . '%';
       }
     }

@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 $app->group(NOPE_ADMIN_ROUTE . '/content/page', function() {
 
   $this->get('', function($request, $response) {
-    $rpp = 5;
+    $rpp = NOPE_PAGE_RPP;
     $currentUser = User::getAuthenticated();
     if(!$currentUser->can('page.read')) {
       return $response->withStatus(403);

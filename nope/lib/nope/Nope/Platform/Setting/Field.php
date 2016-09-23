@@ -28,7 +28,7 @@ class Field {
 
   function draw($ngModel = null) {
     $this->instance->setNgModel($ngModel);
-    return $this->instance->draw();
+    return '<div id="setting-'.$this->id.'">' . $this->instance->draw() . '</div>';
   }
 
   function toValue($v) {

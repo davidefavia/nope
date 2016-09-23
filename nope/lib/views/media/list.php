@@ -38,7 +38,7 @@
       </div>
       <div class="row row-span clearfix">
         <div class="col col-md-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
-          <div class="list-group-item clearfix" ng-class="{active:p.id===selectedMedia.id}" style="{{'background-image:url('+p.preview.thumb+')'}}">
+          <div class="list-group-item clearfix" ng-class="{active:p.id===selectedMedia.id}" style="{{'background-image:url('+p.preview.thumb+');'+(p.palette?'background-color:rgb('+[p.palette[0][0],p.palette[0][1],p.palette[0][2]].join(',')+');':'')}}">
             <div ng-if="nope.isIframe" class="pull-right">
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
               <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>

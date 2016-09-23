@@ -7,14 +7,14 @@ $app->group('/', function() {
   $this->get('', function ($request, $response) {
     $currentUser = User::getAuthenticated();
     $params = (object) $request->getQueryParams();
-    $setting = Query\Setting::findByKey('nope');
-    $themeSetting = Query\Setting::findByKey('theme');
-    $page = Query\Page::findBySlug($setting->value->homepage->slug);
+    $setting = getSetting('nope');
+    $themeSetting = getSetting('theme');
+    $page = Query\Page::findBySlug($setting->homepage->slug);
     if($page && ((string) $page->realStatus === 'published' || ($currentUser && (int) $params->preview === 1 && $currentUser->isAdmin()))) {
       return $this->view->render($response, 'index.php', [
         'content' => $page,
         'setting' => $setting->value,
-        'themeSetting' => $themeSetting->value
+        'themeSetting' => $themeSetting
       ]);
     } else {
       return $this->view->render($response->withStatus(404), '404.php');

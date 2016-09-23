@@ -24,9 +24,15 @@ class Thumb implements \Intervention\Image\Filters\FilterInterface {
    * @return Intervention\Image\Image
    */
   public function applyFilter(\Intervention\Image\Image $image) {
-    $image->fit($this->width, $this->height, function ($constraint) {
-      $constraint->upsize();
-    });
+    if(is_null($this->width) || is_null($this->height)) {
+      $image->resize($this->width, $this->height, function ($constraint) {
+        $constraint->aspectRatio();
+      });
+    } else {
+      $image->fit($this->width, $this->height, function ($constraint) {
+        $constraint->upsize();
+      });
+    }
     return $image;
   }
 }

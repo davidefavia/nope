@@ -1,3 +1,31 @@
+## v0.13.0 (2016-09-23)
+
+### Libraries
+- Added **ColorThief** version 1.3.0.
+
+### Features
+- Added shortcut function `getSetting` (#45).
+- Added shortcut functions `linkTo` and `getMenu`.
+- Added methods to set default text format, unregister text formats, models and menu items (#45).
+- Added cache lifetime and path to custom image filters (#45).
+- Added platform embedding to show contents without need of routing and theme (#46).
+- Added scripts and styles inclusion inside administration panel via file inclusion (#45).
+- Added utilities functions `themePath` and `linkTo` (#45).
+- Added welcome page creation during installation (#45).
+- Added color palette extraction from images on save.
+- Added `getAttributesList` method to `Setting`.
+- Added `getFields` method to `Setting\Group`.
+- Added description on custom panels.
+- Added custom box based on model type (#45).
+
+### Fixes
+- Fixed users list not refreshing on new user creation (#44).
+- Fixed wrong `description` field creation on `Media` upload.
+- Fixed wrong refresh on paginated `Media` preview.
+- Fixed `Field\Model` JSON serialization.
+- Fixed saving external media without file extension.
+- Fixed `NOPE_BASE_PATH` variable calculation for `DocumentRoot` subdirectories.
+
 ## v0.12.0 (2016-02-19)
 
 ### Libraries

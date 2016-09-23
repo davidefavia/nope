@@ -4,7 +4,6 @@ namespace Nope;
 
 \Nope::registerWidget('media',[
   'label' => 'Media',
-  'model' => 'media',
   'data' => function($attributes) {
       if($attributes->id) {
           $media = Query\Media::findById($attributes->id);
@@ -17,16 +16,9 @@ namespace Nope;
 
 \Nope::registerWidget('gallery',[
   'label' => 'Gallery',
-  'model' => 'gallery',
-  'options' => [
-    'size' => [
-      'label' => 'Size',
-      'value' => array_keys(\Nope::getConfig('nope.media.size'))
-    ]
-  ],
   'data' => function($attributes) {
-    if($attributes->id) {
-      $gallery = Query\Gallery::findById($attributes->id);
+    if((int) $attributes->id) {
+      $gallery = Query\Gallery::findById((int) $attributes->id);
     } else if($attributes->slug) {
       $gallery = Query\Gallery::findBySlug($attributes->slug);
     }

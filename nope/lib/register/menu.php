@@ -1,7 +1,6 @@
 <?php
 
-\Nope::registerMenuItem([
-  'id' => 'dashboard',
+\Nope::registerMenuItem('dashboard', [
   'label' => 'Dashboard',
   'permission' => '',
   'role' => '',
@@ -9,11 +8,11 @@
   'icon' => 'fa fa-dashboard fa-fw',
   'attrs' => [
     'href' => '#/dashboard'
-  ]
-], 0);
+  ],
+  'priority' => 1000
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'page',
+\Nope::registerMenuItem('page', [
   'label' => 'Pages',
   'permission' => 'page.read',
   'role' => '',
@@ -23,11 +22,11 @@
     'href' => '',
     'ui-sref' => 'app.content({contentType:\'page\'})',
     'ui-sref-opts' => '{reload: true}'
-  ]
-], 50);
+  ],
+  'priority' => 900
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'media',
+\Nope::registerMenuItem('media', [
   'label' => 'Media',
   'permission' => 'media.read',
   'role' => '',
@@ -37,11 +36,11 @@
     'href' => '',
     'ui-sref' => 'app.media',
     'ui-sref-opts' => '{reload: true}'
-  ]
-], 75);
+  ],
+  'priority' => 800
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'gallery',
+\Nope::registerMenuItem('gallery', [
   'label' => 'Galleries',
   'permission' => 'gallery.read',
   'role' => '',
@@ -51,11 +50,11 @@
     'href' => '',
     'ui-sref' => 'app.gallery',
     'ui-sref-opts' => '{reload: true}'
-  ]
-], 100);
+  ],
+  'priority' => 700
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'menu',
+\Nope::registerMenuItem('menu', [
   'label' => 'Menus',
   'permission' => 'menu.read',
   'role' => '',
@@ -65,13 +64,13 @@
     'href' => '',
     'ui-sref' => 'app.menu',
     'ui-sref-opts' => '{reload: true}'
-  ]
-], 125);
+  ],
+  'priority' => 600
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'user',
+\Nope::registerMenuItem('user', [
   'label' => 'Users',
-  'permission' => 'user.read',
+  'permission' => '',
   'role' => '',
   'activeWhen' => 'selectedPath.indexOf(\'/user\')!==-1',
   'icon' => 'fa fa-user fa-fw',
@@ -79,11 +78,11 @@
     'href' => '',
     'ui-sref' => 'app.user',
     'ui-sref-opts' => '{reload: true}'
-  ]
-], 150);
+  ],
+  'priority' => 500
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'setting',
+\Nope::registerMenuItem('setting', [
   'label' => 'Settings',
   'permission' => '',
   'role' => 'admin',
@@ -91,11 +90,11 @@
   'icon' => 'fa fa-gears',
   'attrs' => [
     'href' => '#/setting'
-  ]
-], 200);
+  ],
+  'priority' => 400
+]);
 
-\Nope::registerMenuItem([
-  'id' => 'logout',
+\Nope::registerMenuItem('logout', [
   'label' => 'Logout',
   'permissions' => '',
   'role' => '',
@@ -103,5 +102,6 @@
   'attrs' => [
     'href' => '',
     'ng-click' => 'logout();'
-  ]
-], 300);
+  ],
+  'priority' => -1000
+]);

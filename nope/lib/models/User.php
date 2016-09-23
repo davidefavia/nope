@@ -188,7 +188,7 @@ class User extends \Nope\Model {
   }
 
   function getPermissions() {
-    $permissions = \Nope::getConfig('nope.roles');
+    $permissions = \Nope::getConfig('nope.user.roles');
     return $permissions[$this->role]['permissions'];
   }
 
