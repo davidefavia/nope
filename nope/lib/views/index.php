@@ -7,7 +7,7 @@
     <link href="<?php echo path('lib/assets/css/simplemde.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <script>
-      window.NOPE_BASE_PATH = "<?php echo $request->getUri()->getBasePath() . '/' . $request->getUri()->getPath(); ?>";
+      window.NOPE_BASE_PATH = "<?php echo rtrim(NOPE_BASE_PATH, '/') . NOPE_ADMIN_ROUTE . '/' ?>";
       window.NOPE_IFRAME = <?php echo $isIframe; ?>;
       window.NOPE_TEMPLATES_PATH = "<?php echo path('lib/'); ?>";
       window.NOPE_USER_ROLES = <?php echo json_encode($userRoles); ?>;

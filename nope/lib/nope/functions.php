@@ -96,5 +96,12 @@ function getSetting($key) {
 }
 
 function linkTo($slug) {
+  if(S::startsWith($slug, 'http://') || S::startsWith($slug, 'https://') || S::startsWith($slug, NOPE_BASE_PATH)) {
+    return $slug;
+  }
   return NOPE_BASE_PATH . ltrim($slug, '/');
+}
+
+function getMenu($slug) {
+  return \Nope\Query\Menu::findBySlug($slug);
 }

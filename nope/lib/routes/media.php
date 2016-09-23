@@ -93,6 +93,12 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
       $media->size = $info->images[0]['size'];
       $uniqueFilename = Utils::getUniqueFilename((string) S::truncate($filename, 100), NOPE_UPLOADS_DIR);
       file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($imageUrl));
+      $ext = pathinfo(NOPE_UPLOADS_DIR . $uniqueFilename, PATHINFO_EXTENSION);
+      if(!$ext && $media->isImage()) {
+        @unlink(NOPE_UPLOADS_DIR . $uniqueFilename);
+        $uniqueFilename .= '.' . explode('/', $media->mimetype)[1];
+        file_put_contents(NOPE_UPLOADS_DIR . $uniqueFilename, file_get_contents($imageUrl));
+      }
       $media->filename = $uniqueFilename;
       $media->url = $info->url;
       $media->starred = false;

@@ -1,10 +1,23 @@
 <?php
 
 define('NOPE_DIR', realpath(__DIR__ . '/../') . '/');
-define('NOPE_BASE_PATH', '/' . basename(dirname(NOPE_DIR)) . '/');
+define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
+
+require NOPE_LIB_DIR . 'vendor/autoload.php';
+require NOPE_LIB_DIR . 'nope/Nope.php';
+require NOPE_LIB_DIR . 'nope/functions.php';
+if(file_exists(NOPE_DIR . 'config-dev.php')) {
+  require NOPE_DIR . 'config-dev.php';
+} else {
+  require NOPE_DIR . 'config.php';
+}
+
+if(!defined('NOPE_BASE_PATH')) {
+  define('NOPE_BASE_PATH', '/' . basename(dirname(NOPE_DIR)) . '/');
+}
+
 define('NOPE_PATH', NOPE_BASE_PATH . basename(NOPE_DIR) . '/');
 
-define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
 define('NOPE_LIB_PATH', NOPE_PATH . 'lib/');
 define('NOPE_APP_DIR', NOPE_DIR . 'app/');
 define('NOPE_APP_PATH', NOPE_PATH . 'app/');
@@ -16,16 +29,6 @@ define('NOPE_CACHE_DIR', NOPE_STORAGE_DIR . 'cache/');
 define('NOPE_CACHE_PATH', NOPE_STORAGE_PATH . 'cache/');
 define('NOPE_BACKUPS_DIR', NOPE_STORAGE_DIR . 'backups/');
 define('NOPE_BACKUPS_PATH', NOPE_STORAGE_PATH . 'backups/');
-
-
-require NOPE_LIB_DIR . 'vendor/autoload.php';
-require NOPE_LIB_DIR . 'nope/Nope.php';
-require NOPE_LIB_DIR . 'nope/functions.php';
-if(file_exists(NOPE_DIR . 'config-dev.php')) {
-  require NOPE_DIR . 'config-dev.php';
-} else {
-  require NOPE_DIR . 'config.php';
-}
 
 if(!defined('NOPE_ADMIN_ROUTE')) {
   define('NOPE_ADMIN_ROUTE', '/admin');
@@ -46,6 +49,8 @@ if(!defined('NOPE_GALLERY_RPP')) {
   define('NOPE_GALLERY_RPP', 10);
 }
 
+// http://help.slimframework.com/discussions/problems/935-duplicate-http-header#comment_19062021
+session_cache_limiter(false);
 session_start();
 
 use RedBeanPHP\R as R;
@@ -111,6 +116,10 @@ if(!$isNopeEmbedded) {
 
     return $mail;
   };
+  $container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+  };
+
   $app = new \Slim\App($container);
 }
 
