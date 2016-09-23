@@ -41,11 +41,24 @@ class Setting {
       $v = json_decode($v);
       $p = [];
       foreach($this->fields as $field) {
-        $p[$field->id] = $field->toValue($v->{$field->id});
+        $p[$field->id] = $field->fromValue($v->{$field->id});
       }
       return $p;
     }
     return null;
+  }
+
+  function getAttributesList() {
+    $attrs = [];
+    if(is_array($this->properties->attributes)) {
+      foreach($this->properties->attributes as $key => $value) {
+        if($value===true || $value===false) {
+          $value = ($value?'true':'false');
+        }
+        $attrs[] = $key . '="'.$value.'"';
+      }
+      return implode(' ', $attrs);
+    }
   }
 
 

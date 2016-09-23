@@ -18,13 +18,16 @@ class Group extends AbstractField {
   function drawSingle() {
     $ngModel = $this->properties->attributes['ng-model'];
     $html[] = '<div class="panel panel-default">
-      <!--<div class="panel-heading">
+      <div class="panel-heading">
         ' . $this->properties->label . '
-      </div>-->
+      </div>
       <div class="panel-body">';
+    if($this->properties->description) {
+      $html[] = '<p class="control-description">' . $this->properties->description . '</p>';
+    }
     foreach($this->fields as $field) {
       $html[] = '<div class="form-group">';
-      if($field->properties->label) {
+      if($field->properties->label && $field->properties->type!=='checkbox') {
         $html[] = '<label class="control-label">' . $field->properties->label . '</label>';
       }
       if($field->properties->description) {

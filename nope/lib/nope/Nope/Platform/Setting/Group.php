@@ -19,6 +19,10 @@ class Group {
     return true;
   }
 
+  function getFields() {
+    return $this->fields;
+  }
+
   function addField(Field $field) {
     $field->properties->group = $this->id;
     $field->properties->multipleGroup = $this->properties->multiple;
