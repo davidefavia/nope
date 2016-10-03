@@ -1,11 +1,4 @@
-<h1 align="center">
-  <img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
-</h1>
-
-### :shit: Crapware warning! :shit:
-Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!
-
-**Things will change, things will break!**
+![nope!](nope/lib/assets/img/splash.jpg)
 
 # nope!
 **nope!** (_a.k.a._ **n!**) is a content management system written in PHP, suitable for small projects.
@@ -105,8 +98,12 @@ If I need something new (1% of cases), I develop locally and I update everything
 ## License
 See [LICENSE](LICENSE) file.
 
+## Credits
+
+Splash photo by [Nick Scheebart @ Unsplash](https://unsplash.com/photos/gkJiLjGayYI), logo font [Megrim](https://fonts.google.com/specimen/Megrim).
+
 [angular]: https://angularjs.org/
-[bootstrap]: https://getcomposer.org/
+[bootstrap]: http://getbootstrap.com/
 [carbon]: https://github.com/briannesbitt/Carbon
 [composer]: http://getcomposer.org
 [embed]: https://github.com/oscarotero/Embed
