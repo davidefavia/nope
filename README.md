@@ -1,6 +1,4 @@
-<h1 align="center">
-  <img src="nope/lib/assets/img/nope.png" alt="nope!" title="nope!" />
-</h1>
+# ![nope!](nope/lib/assets/img/splash.jpg)
 
 ### :shit: Crapware warning! :shit:
 Almost badly written, badly commented and documented, not tested. I'm working on it in the few spare time!
@@ -106,7 +104,7 @@ If I need something new (1% of cases), I develop locally and I update everything
 See [LICENSE](LICENSE) file.
 
 [angular]: https://angularjs.org/
-[bootstrap]: https://getcomposer.org/
+[bootstrap]: http://getbootstrap.com/
 [carbon]: https://github.com/briannesbitt/Carbon
 [composer]: http://getcomposer.org
 [embed]: https://github.com/oscarotero/Embed
