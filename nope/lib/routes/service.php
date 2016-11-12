@@ -13,9 +13,29 @@ $app->group(NOPE_ADMIN_ROUTE . '/service', function() {
       $filter = $type['filter'];
       $cache = $type['cache']? : 5;
       $cachePath = $type['cachePath'];
-      if($media->isImage() || $media->isExternal()) {
-        $path = $media->getPath();
-      } else {
+      try {
+        if($media->isImage() || $media->isExternal()) {
+          $path = $media->getPath();
+        } else {
+          $f = 'icon-200';
+          $extension = 'png';
+          $icon = 'icon-'. str_replace('/','-',$media->mimetype);
+          if(file_exists(NOPE_LIB_DIR . 'assets/img/'.$icon.'.'.$extension)) {
+            $f = $icon;
+          }
+          $path = NOPE_LIB_DIR . 'assets/img/'.$f.'.'.$extension;
+        }
+        if($cachePath) {
+          Image::configure([
+            'cache' => [
+              'path' => $cachePath
+            ]
+          ]);
+        }
+        $img = Image::cache(function($image) use ($path, $filter) {
+          $image->make($path)->filter($filter);
+        }, $cache);
+      } catch(\Exception $e) {
         $f = 'icon-200';
         $extension = 'png';
         $icon = 'icon-'. str_replace('/','-',$media->mimetype);
@@ -23,17 +43,10 @@ $app->group(NOPE_ADMIN_ROUTE . '/service', function() {
           $f = $icon;
         }
         $path = NOPE_LIB_DIR . 'assets/img/'.$f.'.'.$extension;
+        $img = Image::cache(function($image) use ($path, $filter) {
+          $image->make($path)->filter($filter);
+        }, $cache);
       }
-      if($cachePath) {
-        Image::configure([
-          'cache' => [
-            'path' => $cachePath
-          ]
-        ]);
-      }
-      $img = Image::cache(function($image) use ($path, $filter) {
-        $image->make($path)->filter($filter);
-      }, $cache);
       $body = $response->getBody();
       $body->write($img);
       return $response->withHeader('Content-Type', 'image/jpeg')
