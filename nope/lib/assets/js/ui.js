@@ -265,6 +265,51 @@
         }
       }
     }])
+    .directive('nopeLazy', [function() {
+      return {
+        restrict: 'E',
+        template: '<div class="lazy" ng-class="{default:isDefault}">\
+          <img ng-src="{{srcImage}}" ng-if="isLoaded" />\
+        </div>',
+        scope: {
+          src: '='
+        },
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          var already = false;
+          $scope.loadImage = function(src) {
+            $scope.isLoaded = false;
+            $scope.srcImage = '';
+            var img = new Image();
+            var defaultImage = window.NOPE_TEMPLATES_PATH + 'assets/img/nope.png';
+            if(!src) {
+              src = defaultImage;
+              $scope.isDefault = true;
+            } else {
+              $scope.isDefault = false;
+            }
+            img.onload = function() {
+              $scope.srcImage = src;
+              $scope.isLoaded = true;
+              $scope.$apply();
+            };
+            img.onerror = function() {
+              $scope.srcImage = defaultImage;
+              $scope.isLoaded = true;
+              $scope.isDefault = true;
+              $scope.$apply();
+            }
+            img.src = src;
+          }
+
+          $scope.$watch('src', function(n,o) {
+            if(!already) {
+              already = true;
+              $scope.loadImage(n);
+            }
+          }, true);
+        }]
+      }
+    }])
     .directive('nopeModal', [function() {
       return {
         restrict: 'E',

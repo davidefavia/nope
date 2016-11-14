@@ -27,7 +27,8 @@
       <div class="col col-md-4 clearfix media" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="card">
           <h2 class="title"><a ng-href="#/content/{{contentType}}/view/{{p.id}}" nope-content-selection="p" ng-model="selection">{{::p.title}}</a></h2>
-          <img class="img-circle" ng-src="{{p.cover.preview.icon}}" ng-if="p.cover" />
+          <div class="divider"></div>
+          <nope-lazy src="p.cover.preview.icon" class="lazy--cover-preview"></nope-lazy>
           <div class="footer">
             <nope-publishing ng-model="p" class="pull-left"></nope-publishing>
             <div ng-if="nope.isIframe" class="pull-right">

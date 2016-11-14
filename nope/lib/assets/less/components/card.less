@@ -1,0 +1,26 @@
+.card {
+  position: relative;
+  min-height: 300px;
+  border: 1px solid #ccc;
+  padding: 30px 55px;
+  text-align: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  .title {
+    display:flex;
+    justify-content: center;
+    margin:0;
+  }
+  .divider {
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+  }
+  .footer {
+    @p: 20px;
+    position: absolute;
+    left: @p;
+    right: @p;
+    bottom: @p;
+  }
+}

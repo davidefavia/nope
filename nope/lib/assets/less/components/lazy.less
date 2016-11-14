@@ -1,0 +1,30 @@
+nope-lazy {
+  .lazy {
+    min-height: 20px;
+    position: relative;
+    i {
+      font-size: 1em;
+      top: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
+    img {
+      max-height: 100%;
+    }
+    &.default {
+      img {
+        filter: grayscale(100%);
+        opacity: .25;
+      }
+    }
+  }
+  &.lazy--cover-preview {
+    .lazy {
+      height: 48px;
+      img {
+        border-radius: 50%;
+      }
+    }
+  }
+}

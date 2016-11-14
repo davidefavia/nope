@@ -5,6 +5,7 @@
 }
 
 @import "bootstrap.less";
+@import "components/index.less";
 
 @gutter: 15px;
 @primary-color: @brand-primary;
@@ -705,28 +706,5 @@ label a.btn-link {
   color: @gray-light;
   &:hover {
     color: @gray;
-  }
-}
-
-.card {
-  position: relative;
-  min-height: 300px;
-  border: 1px solid #ccc;
-  padding: 30px 55px;
-  text-align: center;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  .title {
-    display:flex;
-    justify-content: center;
-    margin:0;
-  }
-  .footer {
-    @p: 20px;
-    position: absolute;
-    left: @p;
-    right: @p;
-    bottom: @p;
   }
 }
