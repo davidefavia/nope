@@ -268,8 +268,11 @@
     .directive('nopeLazy', [function() {
       return {
         restrict: 'E',
-        template: '<div class="lazy" ng-class="{default:isDefault}">\
-          <img ng-src="{{srcImage}}" ng-if="isLoaded" />\
+        template: '<div class="lazy" ng-class="{default:isDefault, loaded:isLoaded}">\
+          <i class="fa fa-circle-o-notch fa-spin"></i>\
+          <div>\
+            <img ng-src="{{srcImage}}" ng-if="isLoaded" />\
+          </div>\
         </div>',
         scope: {
           src: '='
