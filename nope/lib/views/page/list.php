@@ -24,8 +24,8 @@
     </div>
     <div class="row">
       <div class="col col-md-12 ng-cloak" ng-show="(!contentsList.length && (q.status || q.query)) || (!metadata.count && (!q.query && !q.status))">No {{contentType}} found<span ng-if="q.query || q.status"> with filter "{{q}}"</span>.</div>
-      <div class="col col-md-4 clearfix media" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
-        <div class="card">
+      <div class="col col-md-12 cards-list">
+        <div class="card" ng-class="{active:p.id===selectedContent.id}" ng-repeat="p in contentsList" ng-show="contentsList.length">
           <h2 class="title"><a ng-href="#/content/{{contentType}}/view/{{p.id}}" nope-content-selection="p" ng-model="selection">{{::p.title}}</a></h2>
           <div class="divider"></div>
           <nope-lazy src="p.cover.preview.icon" class="lazy--cover-preview"></nope-lazy>
