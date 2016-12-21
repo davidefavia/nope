@@ -68,6 +68,7 @@
           </div>
         </div>
       </div>
+      <h6 class="version">v<?php echo NOPE_VERSION; ?></h6>
     </div>
   </div>
 </div>

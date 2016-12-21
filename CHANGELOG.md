@@ -1,3 +1,15 @@
+## v0.14.0 (201?-??-??)
+
+### Libraries
+- Updated `composer` libraries.
+
+### Features
+- Added version variable `NOPE_VERSION`.
+
+### Fixes
+- Fixed livereload reloading on image orientation change.
+- Fixed multiple timestamps added to images path on orientation change.
+
 ## v0.13.0 (2016-09-23)
 
 ### Libraries

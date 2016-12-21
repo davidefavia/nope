@@ -63,7 +63,7 @@
           angular.forEach($scope.contentsList, function(value, index) {
             // Refresh only new previews
             if(index>=l) {
-              $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb + '?_t_=' + (new Date()).getTime();
+              $scope.contentsList[index].preview.thumb = $scope.contentsList[index].preview.thumb.split('?_t_=')[0] + '?_t_=' + (new Date()).getTime();
             }
           });
         });

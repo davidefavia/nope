@@ -9,6 +9,7 @@
           <a ng-href="#/user/view/{{currentUser.id}}">{{currentUser.getFullName()}}</a> |
           <a href="<?php echo \Nope\Utils::getFullBaseUrl(); ?>" target="_blank"><i class="fa fa-home"></i></a>
         </p>
+        <h6 class="version">v<?php echo NOPE_VERSION; ?></h6>
       </div>
       <div class="nav-container">
         <ul class="nav">

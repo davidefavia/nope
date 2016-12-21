@@ -1,5 +1,7 @@
 <?php
 
+define('NOPE_VERSION', '0.14.0');
+
 define('NOPE_DIR', realpath(__DIR__ . '/../') . '/');
 define('NOPE_LIB_DIR', NOPE_DIR . 'lib/');
 

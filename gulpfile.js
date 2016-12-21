@@ -46,6 +46,7 @@ gulp.task('watch', function() {
     'nope/**/*.*',
     '!nope/**/*.less',
     '!nope/**/*.css',
-    '!nope/lib/vendor/**'
+    '!nope/lib/vendor/**',
+    '!nope/storage/**/*.*',
   ], ['else']);
 });
