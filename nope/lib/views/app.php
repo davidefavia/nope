@@ -1,26 +1,18 @@
 <div class="container-fluid">
-  <div class="row">
-    <div id="sidebar" class="col col-md-2 col-sm-3" ng-if="!nope.isIframe">
-      <div id="welcome">
-        <a href="#/user/view/{{currentUser.id}}">
-          <img class="img-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" />
-        </a>
-        <p>
-          <a ng-href="#/user/view/{{currentUser.id}}">{{currentUser.getFullName()}}</a> |
-          <a href="<?php echo \Nope\Utils::getFullBaseUrl(); ?>" target="_blank"><i class="fa fa-home"></i></a>
-        </p>
-        <h6 class="version">v<?php echo NOPE_VERSION; ?></h6>
-      </div>
+  <div id="container" class="row">
+    <div id="sidebar" class="col col-md-3 col-sm-3 col-lg-2" ng-if="!nope.isIframe">
       <div class="nav-container">
-        <ul class="nav">
+        <div class="list-group">
+          <a href="#/user/view/{{currentUser.id}}" class="list-group-item">
+            <img class="rounded-circle" ng-src="{{currentUser.cover.preview.profile || assetsPath + 'assets/img/nope.png'}}" /> {{currentUser.getFullName()}}
+          </a>
           <?php foreach ($menuItems as $key => $item) { ?>
-            <li id="menu-item-<?php echo $key; ?>" <?php if($item['activeWhen']) { ?>ng-class="{active:<?php echo $item['activeWhen']; ?>}"<?php }?> <?php if($item['permission']) { echo 'nope-can="'.$item['permission'].'"';} ?> <?php if($item['role']) { echo 'nope-role="'.$item['role'].'"';} ?>>
-              <a <?php foreach($item['attrs'] as $key => $attr) { echo "$key=\"$attr\" ";} ?>><i class="<?php echo $item['icon']; ?>"></i> <?php echo $item['label']; ?></a>
-            </li>
+            <a class="list-group-item" id="menu-item-<?php echo $key; ?>" <?php if($item['activeWhen']) { ?>ng-class="{active:<?php echo $item['activeWhen']; ?>}"<?php }?> <?php if($item['permission']) { echo 'nope-can="'.$item['permission'].'"';} ?> <?php if($item['role']) { echo 'nope-role="'.$item['role'].'"';} ?> <?php foreach($item['attrs'] as $key => $attr) { echo "$key=\"$attr\" ";} ?>><i class="<?php echo $item['icon']; ?>"></i> <?php echo $item['label']; ?>
+            </a>
           <?php } ?>
-        </ul>
+        </div>
       </div>
     </div>
-    <div id="main" class="col" ng-class="{'col-md-10 col-md-offset-2 col-sm-9 col-sm-offset-3':!nope.isIframe}" ui-view="content"></div>
+    <div id="main" class="col col-md-9 col-lg-10 offset-md-3 offset-sm-3 offset-lg-2" ng-class="{'flex-items-xs-right':!nope.isIframe}" ui-view="content"></div>
   </div>
 </div>

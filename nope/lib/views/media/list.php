@@ -36,21 +36,27 @@
           <a href="" nope-upload="onUploadDone()" class="btn btn-default" nope-can="media.create">Upload <i class="fa fa-plus"></i></a>
         </nope-empty>
       </div>
-      <div class="row row-span clearfix">
-        <div class="col col-md-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
-          <div class="list-group-item clearfix" ng-class="{active:p.id===selectedMedia.id}" style="{{'background-image:url('+p.preview.thumb+');'+(p.palette?'background-color:rgb('+[p.palette[0][0],p.palette[0][1],p.palette[0][2]].join(',')+');':'')}}">
-            <div ng-if="nope.isIframe" class="pull-right">
-              <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
-              <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
+      <div class="row">
+        <div class="col-md-6 col-lg-4" ng-repeat="p in contentsList" ng-show="contentsList.length">
+          <div class="card card--media" ng-class="{active:p.id===selectedMedia.id}">
+            <a ng-href="#/media/view/{{p.id}}" nope-content-selection="p" ng-model="selection" class="btn-select">
+              <div class="background" style="{{'background-image:url('+p.preview.thumb+');'+(p.palette?'background-color:rgb('+[p.palette[0][0],p.palette[0][1],p.palette[0][2]].join(',')+');':'')}}">
+                <h4 class="card-title"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}}</h4>
+              </div>
+            </a>
+            <div class="card-block">
+              <div ng-if="nope.isIframe" class="pull-right">
+                <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
+                <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
+              </div>
+              <div class="btn-group btn-group-xs toolbar pull-right" ng-if="!nope.isIframe">
+                <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
+                <a href="" class="btn" ng-click="rotate(p,90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-left"></i></a>
+                <a href="" class="btn" ng-click="rotate(p,-90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-right"></i></a>
+                <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
+                <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
+              </div>
             </div>
-            <div class="btn-group btn-group-xs toolbar" ng-if="!nope.isIframe">
-              <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn star"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
-              <a href="" class="btn" ng-click="rotate(p,90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-left"></i></a>
-              <a href="" class="btn" ng-click="rotate(p,-90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-right"></i></a>
-              <a href="" nope-zoom="p.url" class="btn" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
-              <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
-            </div>
-            <a ng-href="#/media/view/{{p.id}}" nope-content-selection="p" ng-model="selection" class="btn-select"><h4 class="list-group-item-heading"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}}</h4></a>
           </div>
         </div>
       </div>

@@ -1,0 +1,39 @@
+.card {
+  &.card--media {
+    $h: 150px;
+    &>a {
+      color: #fff;
+    }
+    .background {
+      position: relative;
+      height: $h;
+      background: {
+        repeat: no-repeat;
+        position: center center;
+        size: cover;
+      }
+    }
+    .card-block {
+      padding: 0;
+    }
+    .card-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      bottom: $n-gutter;
+      left: $n-gutter;
+      right: $n-gutter;
+      margin:0;
+      text-shadow: 0 0 3px rgba(#000, .5);
+      line-height: 2rem;
+      font-weight: normal;
+    }
+    .toolbar {
+      .btn {
+        color: #666;
+        padding: .5rem;
+      }
+    }
+  }
+}

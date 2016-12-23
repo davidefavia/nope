@@ -2,6 +2,7 @@
 
 ### Libraries
 - Updated `composer` libraries.
+- Updated `bootstrap` to version 4.0.0-alpha.5.
 
 ### Features
 - Added version variable `NOPE_VERSION`.

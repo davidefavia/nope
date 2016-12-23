@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+@import "abstracts/variables";
+@import "components/card";
+@import "components/loader";
+@import "components/notification";
+@import "layout/container";
+@import "layout/sidebar";
+
+html, body {
+  position: relative;
+  height: 100%;
+  background: $n-bg-color;
+}

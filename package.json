@@ -1,6 +1,6 @@
 {
   "name": "nope",
-  "version": "0.1.0",
+  "version": "0.14.0",
   "description": "Content management system for small projects",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,8 @@
     "gulp-less": "^3.0.5",
     "gulp-livereload": "^3.8.1",
     "gulp-minify-css": "^1.2.1",
-    "gulp-rename": "^1.2.2"
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.0.0"
   },
   "dependencies": {
     "qq": "^0.3.5"

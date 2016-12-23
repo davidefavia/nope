@@ -48,7 +48,7 @@ Simple installation process will drive you through requirements and folder permi
 Administration interface is built on top of:
 
 - [AngularJS][angular]
-- [Bootstrap 3][bootstrap]
+- [Bootstrap 4][bootstrap]
 - [Font Awesome][fontawesome]
 
 and [others](bower.json).
