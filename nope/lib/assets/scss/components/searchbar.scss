@@ -1,0 +1,15 @@
+.searchbar {
+  background: #fff;
+  padding: 0;
+  margin-bottom: $n-gutter;
+  border-radius: .25rem;
+  border: 1px solid rgba(0,0,0,.125);
+  .input-group {
+    input, .btn {
+      border:0;
+    }
+  }
+  .form-check-inline {
+    font-size: 14px;
+  }
+}
