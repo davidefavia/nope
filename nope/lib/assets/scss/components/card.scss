@@ -25,7 +25,7 @@
     .card-block {
       padding:0;
       a {
-        padding: $n-gutter;
+        padding: $n-gutter/2 $n-gutter;
         display:block;
         color: #666;
         &:hover {
@@ -47,14 +47,17 @@
     }
     .toolbar {
       position: absolute;
-      right: $n-gutter;
-      top: $n-gutter;
+      right: $n-gutter/2;
+      top: $n-gutter/2;
       .btn {
         margin:0;
         background: rgba(#000, .25);
         &:hover {
           background: rgba(#000, .5);
         }
+      }
+      .fa-star {
+        color: #ffff8f;
       }
     }
   }

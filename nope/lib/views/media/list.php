@@ -1,5 +1,5 @@
 <div id="media" class="row tmpl-searchbar" ng-class="{'has-detail':selectedMedia}">
-  <div class="backdrop"></div>
+  <div class="backdrop" ng-click="closeDetail();"></div>
   <div class="col-xs list-column">
     <nav class="navbar navbar-fixed-top navbar-light bg-faded offset-md-3 offset-sm-3 offset-lg-2 searchbar" nope-can="media.read">
       <form name="searchForm" ng-submit="search(q);">
@@ -19,17 +19,12 @@
             <button type="submit" class="btn btn-secondary btn-info"><i class="fa fa-search"></i></button>
           </div>
           <div class="col-xs" nope-can="media.create">
-            <a href="" nope-upload-modal="onUploadDone()" accept="{{acceptedFiles}}" class="btn btn-outline-success">Create new media <i class="fa fa-upload"></i></a>
+            <a href="" nope-upload-modal="onUploadDone()" accept="{{acceptedFiles}}" class="btn btn-outline-danger">Create new media <i class="fa fa-upload"></i></a>
           </div>
         </div>
       </form>
     </nav>
     <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</div>
-    <div ng-if="!contentsList.length">
-      <nope-empty icon="upload">
-        <a href="" nope-upload="onUploadDone()" class="btn btn-default" nope-can="media.create">Upload <i class="fa fa-plus"></i></a>
-      </nope-empty>
-    </div>
     <div class="row">
       <div class="col-md-6 col-lg-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="card card--media" ng-class="{active:p.id===selectedMedia.id}">

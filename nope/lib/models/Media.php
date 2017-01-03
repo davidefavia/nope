@@ -44,10 +44,14 @@ class Media extends Content {
   function getMetadata() {
     if($this->isImage()) {
       $path = $this->getPath();
-      return (object) [
-        'exif' => Image::make($path)->exif(),
-        'iptc' => Image::make($path)->iptc()
-      ];
+      try {
+        return (object) [
+          'exif' => Image::make($path)->exif(),
+          'iptc' => Image::make($path)->iptc()
+        ];
+      } catch(\Exception $e) {
+        return null;
+      }
     }
     return null;
   }
@@ -80,11 +84,14 @@ class Media extends Content {
   function beforeSave() {
     $this->metadata = json_encode($this->getMetadata());
     if($this->isImage()) {
-      $info = getimagesize($this->getPath());
-      $this->width = (int) $info[0];
-      $this->height = (int) $info[1];
-      $palette = ColorThief::getPalette($this->getPath(), 8, 5);
-      $this->palette = json_encode($palette);
+      try {
+        $info = getimagesize($this->getPath());
+        $this->width = (int) $info[0];
+        $this->height = (int) $info[1];
+        $palette = ColorThief::getPalette($this->getPath(), 8, 5);
+        $this->palette = json_encode($palette);
+      } catch(\Exception $e) {
+      }
     }
     parent::beforeSave();
   }

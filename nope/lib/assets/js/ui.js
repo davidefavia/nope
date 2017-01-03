@@ -363,6 +363,7 @@
         },
         link: function($scope, $element, $attrs) {
           var theModal;
+          $scope.progressList = {};
           $element.addClass('nope-upload-modal');
           $element.on('click', function(e) {
             e.preventDefault();
@@ -386,9 +387,11 @@
         priority: 1000,
         scope: {
           onDone: '&nopeUpload',
-          accept: '@'
+          accept: '@',
+          onProgress: '='
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.onProgress = {};
           $scope.uploadFiles = function(files) {
             var promises = [];
             angular.forEach(files, function(file, i) {
@@ -397,10 +400,28 @@
                 data: {
                   file: file
                 }
+              }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ', resp);
+              }, function (resp) {
+                console.log('Error status: ' + resp.status, file);
+                $scope.onProgress[resp.config.data.file.name] = {
+                  percentage: 0,
+                  error: true,
+                  errorMessage: (resp.data.exception.length?resp.data.exception[0].message:resp.statusText)
+                };
+              }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                $scope.onProgress[evt.config.data.file.name] = {
+                  percentage: progressPercentage,
+                  error: false
+                };
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
               });
               promises.push(q);
             });
             $q.all(promises).then(function() {
+              $scope.onDone();
+            }, function() {
               $scope.onDone();
             });
           }
@@ -456,8 +477,8 @@
           $element.on('click', function(e) {
             e.preventDefault();
             $scope.path = $scope.path + '?__t__=' + (new Date()).getTime();
-            $nopeModal.fromTemplate('<nope-modal class="zoom">\
-          <nope-modal-body><img class="img-responsive" ng-src="{{path}}" /></nope-modal-body>\
+            $nopeModal.fromTemplate('<nope-modal class="modal--zoom">\
+          <nope-modal-body><img class="img-fluid" ng-src="{{path}}" /></nope-modal-body>\
           </nope-modal>', $scope).then(function(modal) {
               modal.show();
             })
@@ -541,7 +562,10 @@
           var t = parseInt($attrs.nopeTimeout, 10);
           t = t || 1000;
           $timeout(function() {
-            $element.remove();
+            $element.css({opacity:0});
+            $timeout(function() {
+              $element.remove();
+            }, 250);
           }, t);
         }]
       }

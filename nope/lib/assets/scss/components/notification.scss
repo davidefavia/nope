@@ -2,5 +2,9 @@
   position: absolute;
   top: $n-gutter;
   right: $n-gutter;
-  z-index: 1000;
+  z-index: 3900;
+  .alert {
+    opacity: 1;
+    transition: opacity 200ms;
+  }
 }
