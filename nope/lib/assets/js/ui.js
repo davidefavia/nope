@@ -1019,5 +1019,36 @@
         }
       }
     }])
+    .directive('nopeLazy', [function() {
+      return {
+        restrict : 'E',
+        scope : {
+          src : '='
+        },
+        template: '<div class="lazy" ng-class="{loaded:!loading}">\
+          <i class="loading fa fa-circle-o-notch fa-spin"></i>\
+          <div class="bg" style="background-image: url({{imageUrl}})"></div>\
+        </div>',
+        controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.$watch('src', function(n,o) {
+            if(n) {
+              _load($scope.src, false);
+            }
+          }, true);
+
+          function _load(src, isDefault) {
+            $scope.loading = true;
+            var image = new Image();
+            image.onload = function() {
+              $scope.imageUrl = image.src;
+              $scope.loading = false;
+              $scope.$apply();
+            }
+            image.src = $scope.src;
+          }
+
+        }]
+      }
+    }])
     ;
 })()

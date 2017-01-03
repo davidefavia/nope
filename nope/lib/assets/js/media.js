@@ -46,6 +46,11 @@
         });
       }
 
+      $scope.closeDetail = function() {
+        $scope.selectedMedia = null;
+        $location.path('media');
+      }
+
       $scope.onUploadDone = function() {
         $scope.$emit('nope.toast.success', 'Media created.');
         $scope.q = {};

@@ -1,39 +1,93 @@
 .card {
+  .card-image-block {
+    position: relative;
+    .provider {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      color: #fff;
+      font-weight: normal;
+      text-shadow: 0 0 5px #000;
+    }
+  }
   &.card--media {
+    .card-header {
+      font-size: .75rem;
+    }
     $h: 150px;
     &>a {
       color: #fff;
     }
-    .background {
-      position: relative;
+    .card-image-block {
       height: $h;
-      background: {
-        repeat: no-repeat;
-        position: center center;
-        size: cover;
-      }
     }
+    @include lazy($h);
     .card-block {
-      padding: 0;
+      padding:0;
+      a {
+        padding: $n-gutter;
+        display:block;
+        color: #666;
+        &:hover {
+          color: #000;
+        }
+      }
+      label a {
+        display: inline;
+      }
     }
     .card-title {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      position: absolute;
-      bottom: $n-gutter;
-      left: $n-gutter;
-      right: $n-gutter;
-      margin:0;
-      text-shadow: 0 0 3px rgba(#000, .5);
-      line-height: 2rem;
       font-weight: normal;
+      font-size: 1rem;
+      margin:0;
+      display: block;
     }
     .toolbar {
+      position: absolute;
+      right: $n-gutter;
+      top: $n-gutter;
       .btn {
-        color: #666;
-        padding: .5rem;
+        margin:0;
+        background: rgba(#000, .25);
+        &:hover {
+          background: rgba(#000, .5);
+        }
       }
+    }
+  }
+  &.card--media-detail {
+    $h: 200px;
+    border:0;
+    display:flex;
+    flex-direction: column;
+    .card-image-block {
+      height: $h;
+    }
+    @include lazy($h);
+    .card-form {
+      padding: 10px 10px 0;
+      margin-bottom: 62px;
+      overflow: auto;
+      position: relative;
+      flex: 1;
+    }
+    .card-header {
+      position: relative;
+      .btn {
+        position: absolute;
+        right:10px;
+        top: 50%;
+        transform: translate3d(0,-50%,0);
+        flex: .25;
+      }
+    }
+    .card-footer {
+      position: absolute;
+      bottom:0;
+      width: 100%;
     }
   }
 }

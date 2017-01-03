@@ -1,15 +1,11 @@
 .searchbar {
-  background: #fff;
-  padding: 0;
-  margin-bottom: $n-gutter;
-  border-radius: .25rem;
-  border: 1px solid rgba(0,0,0,.125);
-  .input-group {
-    input, .btn {
-      border:0;
-    }
-  }
-  .form-check-inline {
-    font-size: 14px;
-  }
+  min-height: 62px;
+  background: rgba(#fff, .95);
+  box-shadow: 0 0 5px #dfdfdf;
+  transition: top 750ms;
+}
+.load-more {
+  background: rgba(#fff, .95);
+  box-shadow: 0 0 5px #dfdfdf;
+  transition: bottom 750ms;
 }

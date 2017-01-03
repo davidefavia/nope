@@ -1,0 +1,7 @@
+@mixin lazy($h: 100px) {
+  nope-lazy {
+    .lazy {
+      height: $h;
+    }
+  }
+}

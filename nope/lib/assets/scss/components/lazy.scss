@@ -1,0 +1,41 @@
+nope-lazy {
+  $timing: 150ms;
+  width: 100%;
+  min-height: 100px;
+  position: relative;
+  .lazy {
+    width: 100%;
+    position: relative;
+    .loading {
+      z-index:10;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      opacity:1;
+      transition: opacity $timing ease-in-out;
+    }
+    .bg {
+      position: absolute;
+      left:0;
+      top:0;
+      right:0;
+      bottom:0;
+      opacity:0;
+      transition: opacity $timing ease-in-out;
+      background: {
+        position: center center;
+        repeat: no-repeat;
+        size: cover;
+      }
+    }
+    &.loaded {
+      .loading {
+        opacity: 0;
+      }
+      .bg {
+        opacity:1;
+      }
+    }
+  }
+}
