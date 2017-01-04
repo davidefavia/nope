@@ -1,4 +1,5 @@
 .card {
+  border: 1px solid rgba(#dfdfdf, .75);
   .card-image-block {
     position: relative;
     .provider {
@@ -11,6 +12,8 @@
     }
   }
   &.card--media {
+    margin-bottom:0;
+    overflow: hidden;
     .card-header {
       font-size: .75rem;
     }
@@ -25,11 +28,22 @@
     .card-block {
       padding:0;
       a {
-        padding: $n-gutter/2 $n-gutter;
+        padding: $n-gutter $n-gutter;
         display:block;
         color: #666;
+        text-decoration: none;
         &:hover {
           color: #000;
+          .card-title {
+            padding-right: 20px;
+            .fa-pencil {
+              display:block;
+            }
+          }
+        }
+        p {
+          font-size: .75rem;
+          margin: 2px 0 0;
         }
       }
       label a {
@@ -41,9 +55,18 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-weight: normal;
-      font-size: 1rem;
+      font-size: .9rem;
+      line-height: 1rem;
       margin:0;
       display: block;
+      position: relative;
+      .fa-pencil {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate3d(0, -50%, 0);
+      }
     }
     .toolbar {
       position: absolute;
@@ -58,6 +81,42 @@
       }
       .fa-star {
         color: #ffff8f;
+      }
+    }
+    .card-info {
+      background: rgba(#fff, .95);
+      position:absolute;
+      overflow-y: auto;
+      overflow-x: hidden;
+      top:0;
+      left:0;
+      right:0;
+      bottom: 0;
+      transform: translate3d(0, 100%, 0);
+      transition: transform 200ms;
+      z-index: 100;
+      padding-top: 25px;
+      table {
+        margin:0;
+      }
+      th {
+        font-size: .75rem;
+        color: #999;
+        font-weight: normal;
+      }
+      th,td {
+        font-size: .8rem;
+      }
+      td {
+        white-space: normal;
+      }
+      .btn {
+        position: fixed;
+        right:0;
+        top: 0;
+      }
+      &.opened {
+        transform: translate3d(0, 0, 0);
       }
     }
   }

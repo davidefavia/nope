@@ -109,6 +109,7 @@ class Media extends Content {
     $json->metadata = json_decode($this->metadata);
     $json->width = (int) $json->width;
     $json->height = (int) $json->height;
+    $json->size = (int) $json->size;
     if($json->palette) {
       $json->palette = json_decode($json->palette);
     }

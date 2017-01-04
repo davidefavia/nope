@@ -138,7 +138,8 @@ class Utils {
       'actual' => $page,
       'previous' => ($page>1?$page-1:1),
       'next' => ($page<$last?$page+1:$last),
-      'count' => $count
+      'count' => $count,
+      'rpp' => $rpp
     ];
   }
 

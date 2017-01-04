@@ -1,6 +1,6 @@
 <div id="media" class="row tmpl-searchbar" ng-class="{'has-detail':selectedMedia}">
   <div class="backdrop" ng-click="closeDetail();"></div>
-  <div class="col-xs list-column">
+  <div class="col-xs list-column" ng-class="{'has-more':metadata.next>metadata.actual}">
     <nav class="navbar navbar-fixed-top navbar-light bg-faded offset-md-3 offset-sm-3 offset-lg-2 searchbar" nope-can="media.read">
       <form name="searchForm" ng-submit="search(q);">
         <div class="row">
@@ -24,6 +24,7 @@
         </div>
       </form>
     </nav>
+    <p class="pagination-text text-xs-right text-muted">Items {{metadata.actual===metadata.last?metadata.count:metadata.actual*metadata.rpp}} of {{metadata.count}}</p>
     <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</div>
     <div class="row">
       <div class="col-md-6 col-lg-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
@@ -35,17 +36,54 @@
               <a href="" class="btn text-white" ng-click="rotate(p,90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-left"></i></a>
               <a href="" class="btn text-white" ng-click="rotate(p,-90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-right"></i></a>
               <a href="" nope-zoom="p.url" class="btn text-white" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
+              <a href="" class="btn text-white" ng-click="p.showInfo=!p.showInfo"><i class="fa fa-info"></i></a>
               <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
             </div>
           </div>
           <div class="card-block">
             <a ng-href="#/media/view/{{p.id}}" nope-content-selection="p" ng-model="selection" class="btn-select card-link">
-              <h4 class="card-title"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}}</h4>
+              <h4 class="card-title"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}} <i class="fa fa-pencil"></i></h4>
+              <p class="text-muted"><i class="fa fa-clock-o"></i> {{p.lastModificationDate | nopeMoment: 'calendar'}}</p>
             </a>
             <div ng-if="nope.isIframe" class="pull-right">
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
               <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
             </div>
+          </div>
+          <div class="card-info" ng-class="{opened:p.showInfo}">
+            <a href="" class="btn btn-sm btn-light text-muted" ng-click="p.showInfo=false;"><i class="fa fa-close"></i></a>
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <th>Creation date</th>
+                  <td>{{p.creationDate}}</td>
+                </tr>
+                <tr>
+                  <th>Filename</th>
+                  <td>{{p.filename}}</td>
+                </tr>
+                <tr ng-if="p.type">
+                  <th>Type</th>
+                  <td>{{p.type}}</td>
+                </tr>
+                <tr>
+                  <th>Mimetype</th>
+                  <td>{{p.mimetype}}</td>
+                </tr>
+                <tr>
+                  <th>Size</th>
+                  <td>{{p.size}} bites</td>
+                </tr>
+                <tr ng-if="p.width">
+                  <th>Width</th>
+                  <td>{{p.height}}px</td>
+                </tr>
+                <tr ng-if="p.height">
+                  <th>Height</th>
+                  <td>{{p.height}}px</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
