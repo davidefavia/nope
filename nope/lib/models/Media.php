@@ -142,7 +142,7 @@ class Media extends Content {
       } elseif($filters->mimetype==='provider') {
         $sql[] = '('.$p.'provider IS NOT NULL)';
       } else {
-        $sql[] = '('.$p.'mimetype LIKE ?)';
+        $sql[] = '('.$p.'mimetype LIKE ? and '.$p.'provider IS NULL)';
         $params[] = '%' . $filters->mimetype . '%';
       }
     }
