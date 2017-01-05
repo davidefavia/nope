@@ -116,7 +116,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     return $response->withJson(['currentUser' => $currentUser, "data" => $media]);
   });
 
-  $this->get('/{id}', function($request, $response, $args) {
+  $this->get('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.read')) {
       $content = Media::findById($args['id']);
@@ -124,7 +124,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
 
-  $this->put('/{id}', function($request, $response, $args) {
+  $this->put('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
@@ -148,7 +148,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     }
   });
 
-  $this->put('/{id}/edit', function($request, $response, $args) {
+  $this->put('/{id:[0-9]+}/edit', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     $body = $request->getParsedBody();
     if($currentUser->can('media.update')) {
@@ -175,13 +175,28 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     }
   });
 
-  $this->delete('/{id}', function($request, $response, $args) {
+  $this->delete('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.delete')) {
       $contentToDelete = new Media($args['id']);
       $path = $contentToDelete->getPath();
       $contentToDelete->delete();
       @unlink($path);
+    }
+    return $response->withJson(['currentUser' => $currentUser]);
+  });
+
+  $this->delete('/list', function($request, $response, $args) {
+    $currentUser = User::getAuthenticated();
+    if($currentUser->can('media.delete')) {
+      $queryParams = $request->getQueryParams();
+      $idsList = explode(',', $queryParams['id']);
+      foreach ($idsList as $id) {
+        $contentToDelete = new Media((int) $id);
+        $path = $contentToDelete->getPath();
+        $contentToDelete->delete();
+        @unlink($path);
+      }
     }
     return $response->withJson(['currentUser' => $currentUser]);
   });

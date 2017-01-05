@@ -5,6 +5,13 @@
   Array.prototype.hasItem = function(a) {
     return this.itemIndex(a) !== -1;
   }
+  Array.prototype.toggleItem = function(a) {
+    if(this.hasItem(a)) {
+      this.splice(this.itemIndex(a), 1);
+    } else {
+      this.push(a);
+    }
+  }
   Array.prototype.itemIndex = function(a) {
     return this.indexOf(a);
   }
@@ -46,6 +53,17 @@
     /**
      * Filters
      */
+     .filter('nopeBites', ['$filter', function($filter) {
+       // http://stackoverflow.com/a/18650828
+       return function(bytes) {
+         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+         if (bytes == 0) {
+           return '0 Byte';
+         }
+         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+         return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+       }
+     }])
     .filter('nopeDate', ['$filter', function($filter) {
       return function(input, format, timezone) {
         input = input ? input.toString().split(' ').join('T') + 'Z' : input;

@@ -1,6 +1,11 @@
 <nope-modal title="Delete content">
   <nope-modal-body>
-    <p>Are you sure you want to delete content "{{ngModel.title}}"?</p>
+    <div ng-if="ngModel.id">
+      <p>Are you sure you want to delete content "{{ngModel.title}}"?</p>
+    </div>
+    <div ng-if="!ngModel.id && ngModel.length">
+      <p>Are you sure you want to delete {{ngModel.length}} contents?</p>
+    </div>
     <p class="text-danger">This operation cannot be undone.</p>
   </nope-modal-body>
   <nope-modal-footer>

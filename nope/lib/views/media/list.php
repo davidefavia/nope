@@ -24,8 +24,11 @@
         </div>
       </form>
     </nav>
-    <p class="pagination-text text-xs-right text-muted">Items {{metadata.actual===metadata.last?metadata.count:metadata.actual*metadata.rpp}} of {{metadata.count}}</p>
-    <div class="list-group-item ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</div>
+    <div class="clearfix">
+      <p class="pagination-text text-xs-left text-muted pull-left" ng-show="contentsList.length"><a href="" class="text-primary" ng-click="bulkSelection=[].concat(contentsList);">Select all</a> | <a href="" class="text-primary" ng-click="bulkSelection=[];">Clear selection</a><span ng-show="bulkSelection.length">. Selected items: {{bulkSelection.length}}. With selected: <a href="" class="text-danger" nope-content-delete="deleteBulkContentOnClick(p);" ng-model="bulkSelection">delete</a>.</span></p>
+      <p ng-show="contentsList.length" class="pagination-text text-xs-right text-muted pull-right">Items {{metadata.actual===metadata.last?metadata.count:metadata.actual*metadata.rpp}} of {{metadata.count}}</p>
+      <p class="pagination-text text-muted ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</p>
+    </div>
     <div class="row">
       <div class="col-md-6 col-lg-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
         <div class="card card--media" ng-class="{active:p.id===selectedMedia.id}">
@@ -39,11 +42,20 @@
               <a href="" class="btn text-white" ng-click="p.showInfo=!p.showInfo"><i class="fa fa-info"></i></a>
               <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
             </div>
+            <div ng-if="!nope.isIframe" class="selection">
+              <a href="" class="btn" ng-click="bulkSelection.toggleItem(p);" ng-class="{'btn-selected':bulkSelection.hasItem(p)}">
+                <i class="fa fa-check-circle fa-2x"></i>
+              </a>
+            </div>
+            <div ng-if="nope.isIframe" class="selection">
+              <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
+              <i class="fa fa-check-circle fa-2x" ng-show="selection.hasItem(p);"></i>
+            </div>
           </div>
           <div class="card-block">
-            <a ng-href="#/media/view/{{p.id}}" nope-content-selection="p" ng-model="selection" class="btn-select card-link">
+            <a href="" ng-click="openDetail(p)" nope-content-selection="p" ng-model="selection" class="btn-select card-link">
               <h4 class="card-title"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}} <i class="fa fa-pencil"></i></h4>
-              <p class="text-muted"><i class="fa fa-clock-o"></i> {{p.lastModificationDate | nopeMoment: 'calendar'}}</p>
+              <p class="text-muted"><i class="fa fa-clock-o"></i> {{p.creationDate | nopeMoment: 'calendar'}}</p>
             </a>
             <div ng-if="nope.isIframe" class="pull-right">
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
@@ -59,20 +71,24 @@
                   <td>{{p.creationDate}}</td>
                 </tr>
                 <tr>
+                  <th>Last update date</th>
+                  <td>{{p.lastModificationDate}}</td>
+                </tr>
+                <tr>
                   <th>Filename</th>
                   <td>{{p.filename}}</td>
                 </tr>
-                <tr ng-if="p.type">
+                <tr ng-if="p.type && !p.provider">
                   <th>Type</th>
                   <td>{{p.type}}</td>
                 </tr>
-                <tr>
+                <tr ng-if="!p.provider">
                   <th>Mimetype</th>
                   <td>{{p.mimetype}}</td>
                 </tr>
-                <tr>
+                <tr ng-if="!p.provider">
                   <th>Size</th>
-                  <td>{{p.size}} bites</td>
+                  <td>{{p.size | nopeBites}}</td>
                 </tr>
                 <tr ng-if="p.width">
                   <th>Width</th>
@@ -81,6 +97,10 @@
                 <tr ng-if="p.height">
                   <th>Height</th>
                   <td>{{p.height}}px</td>
+                </tr>
+                <tr ng-if="p.provider">
+                  <th>Provider</th>
+                  <td>{{p.provider}}</td>
                 </tr>
               </tbody>
             </table>

@@ -14,6 +14,7 @@ nope-lazy {
       transform: translate3d(-50%, -50%, 0);
       opacity:1;
       transition: opacity $timing ease-in-out;
+      color: $n-brand-color;
     }
     .bg {
       position: absolute;

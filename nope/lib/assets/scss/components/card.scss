@@ -119,6 +119,21 @@
         transform: translate3d(0, 0, 0);
       }
     }
+    .selection {
+      position: absolute;
+      right: $n-gutter/2;
+      bottom: $n-gutter/2;
+      .btn {
+        padding:0;
+        color: rgba(#000, .25);
+        &:hover {
+          color: rgba(green, .5);
+        }
+        &.btn-selected {
+          color: green;
+        }
+      }
+    }
   }
   &.card--media-detail {
     $h: 200px;

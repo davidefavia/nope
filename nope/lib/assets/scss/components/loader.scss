@@ -4,7 +4,7 @@
   bottom:0;
   left:0;
   right:0;
-  background: rgba(#fff, .5);
+  background: $n-backdrop-color;
   z-index: 4000;
   text-align: center;
   div {
@@ -12,5 +12,6 @@
     left: 50%;
     top: 50%;
     transform: translate3d(-50%, -50%, 0);
+    color: $n-brand-color;
   }
 }

@@ -26,12 +26,26 @@
      * Controller
      */
     .controller('MediaListController', ['$scope', '$rootScope', '$location', '$window', '$state', '$stateParams', '$nopeModal', '$nopeUtils', 'Media', function($scope, $rootScope, $location, $window, $state, $stateParams, $nopeModal, $nopeUtils, Media) {
+      $scope.bulkSelection = [];
       $scope.contentType = 'media';
       $scope.contentsList = [];
       $scope.q = $location.search();
       if($location.search().mimetype) {
         $scope.acceptedFiles = $location.search().mimetype + '*';
-        $scope.hideMimetypeOptions = true;
+        //$scope.hideMimetypeOptions = true;
+      }
+
+      $scope.deleteBulkContentOnClick = function() {
+        var idsList = $scope.bulkSelection.map(function(item) {
+          return item.id;
+        });
+        return Media.deleteList({
+          id: idsList.join(',')
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Media deleted.');
+          $scope.bulkSelection = [];
+          $scope.search($scope.q);
+        });
       }
 
       $scope.deleteContentOnClick = function(p) {
@@ -40,9 +54,17 @@
           id: p.id
         }, function() {
           $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
-          $state.go('app.media', {}, {
-            reload: true
-          });
+          $scope.search($scope.q);
+        });
+      }
+
+      $scope.openDetail = function(p) {
+        $state.go('app.media.detail', {
+          id: p.id
+        }, {
+          inherit: true
+        }).then(function(){
+          $location.search($scope.q);
         });
       }
 
@@ -59,6 +81,7 @@
 
       $scope.search = function(q, page) {
         page = page || 1;
+        $location.search(q);
         Media.query(angular.extend({
           page : page
         }, q), function(data, headers) {
@@ -90,7 +113,7 @@
             $scope.contentsList[i] = data;
           } else {
             // Needed to avoid strange reordering due to 'starred' content sorted before than others.
-            $scope.search($scope.q);
+            $location.search($scope.q);
           }
           $scope.$broadcast('nope.media.updated', data);
         });
@@ -158,6 +181,10 @@
             id: '@id',
             rotate : '@rotate'
           }
+        },
+        deleteList: {
+          method: 'DELETE',
+          url: 'content/media/list'
         }
       });
     }]);

@@ -1,4 +1,4 @@
-## v0.14.0 (201?-??-??)
+## v0.14.0 (2017-??-??)
 
 ### Libraries
 - Updated `composer` libraries.
@@ -6,6 +6,7 @@
 
 ### Features
 - Added version variable `NOPE_VERSION`.
+- Added `Media` bulk deletion.
 
 ### Fixes
 - Fixed livereload reloading on image orientation change.
