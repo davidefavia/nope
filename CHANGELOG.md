@@ -3,6 +3,7 @@
 ### Libraries
 - Updated `composer` libraries.
 - Updated `bootstrap` to version 4.0.0-alpha.5.
+- Added `Photoswipe` version 4.1.1.
 
 ### Features
 - Added version variable `NOPE_VERSION`.

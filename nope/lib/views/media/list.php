@@ -38,7 +38,7 @@
               <a ng-click="p.starred=!p.starred;save(p,$index);" class="btn text-white"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
               <a href="" class="btn text-white" ng-click="rotate(p,90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-left"></i></a>
               <a href="" class="btn text-white" ng-click="rotate(p,-90,$index);" ng-if="p.isImage"><i class="fa fa-rotate-right"></i></a>
-              <a href="" nope-zoom="p.url" class="btn text-white" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
+              <a href="" nope-zoom="p" class="btn text-white" ng-if="p.isImage"><i class="fa fa-arrows-alt"></i></a>
               <a href="" class="btn text-white" ng-click="p.showInfo=!p.showInfo"><i class="fa fa-info"></i></a>
               <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
             </div>

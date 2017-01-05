@@ -488,18 +488,33 @@
       return {
         restrict: 'A',
         scope: {
-          path: '=nopeZoom'
+          item: '=nopeZoom'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $element.addClass('nope-zoom');
           $element.on('click', function(e) {
             e.preventDefault();
-            $scope.path = $scope.path + '?__t__=' + (new Date()).getTime();
-            $nopeModal.fromTemplate('<nope-modal class="modal--zoom">\
-          <nope-modal-body><img class="img-fluid" ng-src="{{path}}" /></nope-modal-body>\
-          </nope-modal>', $scope).then(function(modal) {
-              modal.show();
-            })
+            var pswpElement = document.querySelectorAll('.pswp')[0];
+            // build items array
+            var items = [
+                {
+                    src: $scope.item.url + '?__t__=' + (new Date()).getTime(),
+                    w: $scope.item.width,
+                    h: $scope.item.height
+                }
+            ];
+
+            // define options (if needed)
+            var options = {
+                // optionName: 'option value'
+                // for example:
+                index: 0, // start at first slide,
+                bgOpacity: .75
+            };
+
+            // Initializes and opens PhotoSwipe
+            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
           });
         }]
       }

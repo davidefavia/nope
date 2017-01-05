@@ -43,7 +43,6 @@
           id: idsList.join(',')
         }, function() {
           $scope.$emit('nope.toast.success', 'Media deleted.');
-          $scope.bulkSelection = [];
           $scope.search($scope.q);
         });
       }
@@ -82,6 +81,9 @@
       $scope.search = function(q, page) {
         page = page || 1;
         $location.search(q);
+        if(page===1) {
+          $scope.bulkSelection = [];
+        }
         Media.query(angular.extend({
           page : page
         }, q), function(data, headers) {
