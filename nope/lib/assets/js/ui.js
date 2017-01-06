@@ -509,7 +509,8 @@
                 // optionName: 'option value'
                 // for example:
                 index: 0, // start at first slide,
-                bgOpacity: .75
+                bgOpacity: .75,
+                history: false
             };
 
             // Initializes and opens PhotoSwipe

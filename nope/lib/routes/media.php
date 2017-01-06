@@ -160,6 +160,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         if($queryParams->rotate) {
           $img->rotate($queryParams->rotate);
           $img->save($path, 100);
+          $contentToUpdate->save();
           return $response->withJson([
             'currentUser' => $currentUser,
             'data' => $contentToUpdate

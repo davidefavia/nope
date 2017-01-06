@@ -27,7 +27,7 @@
     <div class="clearfix">
       <p class="pagination-text text-xs-left text-muted pull-left" ng-show="contentsList.length"><a href="" class="text-primary" ng-click="bulkSelection=[].concat(contentsList);">Select all</a> | <a href="" class="text-primary" ng-click="bulkSelection=[];">Clear selection</a><span ng-show="bulkSelection.length">. Selected items: {{bulkSelection.length}}. With selected: <a href="" class="text-danger" nope-content-delete="deleteBulkContentOnClick(p);" ng-model="bulkSelection">delete</a>.</span></p>
       <p ng-show="contentsList.length" class="pagination-text text-xs-right text-muted pull-right">Items {{metadata.actual===metadata.last?metadata.count:metadata.actual*metadata.rpp}} of {{metadata.count}}</p>
-      <p class="pagination-text text-muted ng-cloak" ng-show="!contentsList.length && (q.query || q.mimetype)">No media found with filter "{{q}}".</p>
+      <p class="pagination-text text-muted ng-cloak" ng-show="!contentsList.length">No media found<span ng-if="q.query || q.mimetype"> with filter "{{q}}"</span>.</p>
     </div>
     <div class="row">
       <div class="col-md-6 col-lg-3" ng-repeat="p in contentsList" ng-show="contentsList.length">
