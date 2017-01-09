@@ -4,6 +4,7 @@
     .config(['$stateProvider', function($stateProvider) {
       $stateProvider
         .state('app.media', {
+          title: 'Media list',
           url: 'media',
           views: {
             'content@app': {
@@ -13,6 +14,7 @@
           }
         })
         .state('app.media.detail', {
+          title: 'Media detail',
           url: '/view/{id:int}',
           views: {
             'content': {
@@ -43,6 +45,29 @@
           id: idsList.join(',')
         }, function() {
           $scope.$emit('nope.toast.success', 'Media deleted.');
+          $scope.search($scope.q);
+        });
+      }
+
+      $scope.bulkEditTags = function() {
+        $scope.bulkEditTagsOptions = {};
+        $nopeModal.fromTemplateUrl('view/modal/tags.html', $scope).then(function(modal) {
+          $scope.bulkEditTagsModal = modal;
+          $scope.bulkEditTagsModal.show();
+        });
+      };
+
+      $scope.bulkEditTagsAction = function(action, tags) {
+        $scope.bulkEditTagsModal.hide();
+        var idsList = $scope.bulkSelection.map(function(item) {
+          return item.id;
+        });
+        return Media.editTagsList({}, {
+          id: idsList.join(','),
+          action: action,
+          tags: tags
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Media tags edited.');
           $scope.search($scope.q);
         });
       }
@@ -187,6 +212,10 @@
         deleteList: {
           method: 'DELETE',
           url: 'content/media/list'
+        },
+        editTagsList: {
+          method: 'POST',
+          url: 'content/media/tags'
         }
       });
     }]);

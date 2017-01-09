@@ -292,8 +292,8 @@
        <div class="modal-dialog">\
          <div class="modal-content">\
            <div class="modal-header" ng-if="title">\
-             <a class="close" nope-modal-close><span>&times;</span></a>\
-             <h4 class="modal-title">{{title}}</h4>\
+             <h5 class="modal-title">{{title}}</h5>\
+             <a class="close" nope-modal-close><i class="fa fa-close"></i></a>\
            </div>\
            <div ng-transclude></div>\
          </div>\
@@ -382,6 +382,8 @@
         link: function($scope, $element, $attrs) {
           var theModal;
           $scope.progressList = {};
+          $scope.showButton = false;
+          $scope.uploadingStatus = '';
           $element.addClass('nope-upload-modal');
           $element.on('click', function(e) {
             e.preventDefault();
@@ -390,7 +392,7 @@
               theModal.show();
             });
           });
-
+          
           $scope.onDone = function() {
             theModal.hide();
             $scope.onUploadDone();
@@ -406,12 +408,14 @@
         scope: {
           onDone: '&nopeUpload',
           accept: '@',
-          onProgress: '='
+          onProgress: '=',
+          status: '=uploadingStatus'
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.onProgress = {};
           $scope.uploadFiles = function(files) {
             var promises = [];
+            $scope.uploadingStatus = 'uploading';
             angular.forEach(files, function(file, i) {
               var q = Upload.upload({
                 url: 'content/media/upload',
@@ -419,9 +423,7 @@
                   file: file
                 }
               }).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ', resp);
               }, function (resp) {
-                console.log('Error status: ' + resp.status, file);
                 $scope.onProgress[resp.config.data.file.name] = {
                   percentage: 0,
                   error: true,
@@ -433,13 +435,14 @@
                   percentage: progressPercentage,
                   error: false
                 };
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
               });
               promises.push(q);
             });
             $q.all(promises).then(function() {
+              $scope.uploadingStatus = 'done';
               $scope.onDone();
             }, function() {
+              $scope.uploadingStatus = 'done';
               $scope.onDone();
             });
           }
@@ -464,7 +467,7 @@
             <div class="input-group">\
               <input type="url" class="form-control" ng-model="importUrl" required placeholder="Insert URL" >\
               <div class="input-group-btn">\
-                <button class="btn btn-default" ng-disabled="importForm.$invalid">Import</button>\
+                <button class="btn" ng-class="{\'btn-outline-secondary\':importForm.$invalid,\'btn-outline-danger\':importForm.$valid}" ng-disabled="importForm.$invalid">Import</button>\
               </div>\
             </div>\
           </div>\

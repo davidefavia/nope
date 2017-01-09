@@ -1,6 +1,17 @@
 .modal {
   z-index: 4000;
   display:block;
+  .modal-header {
+    border-radius: .25rem .25rem 0 0;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    h5 {
+      color: #666;
+      font-weight: normal;
+    }
+  }
+  .modal-content {
+    border-radius: .25rem;
+  }
   &.modal--zoom {
     .modal-content {
       border:0;
@@ -15,6 +26,20 @@
     }
   }
   &.modal--upload {
+    .btn-upload {
+      padding: 40px;
+      border-style: dashed;
+      border-width: 2px;
+      &:hover {
+        background: #eee;
+        color: $n-brand-color;
+        border-color: $n-brand-color;
+      }
+      i {
+        display: block;
+        font-size: 3rem;
+      }
+    }
     progress {
       height: 4px;
       margin:0;

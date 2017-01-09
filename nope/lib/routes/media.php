@@ -46,9 +46,13 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $type = $_FILES['file']['type'];
         $p = explode('.',$filename);
         array_pop($p);
-        $filenameWithoutExtension = implode('.',$p);
-        $filenameWithoutExtension = str_replace('_', ' ', $filenameWithoutExtension);
-        $filenameWithoutExtension = trim(str_replace('-', ' ', $filenameWithoutExtension));
+        if(count($p)) {
+          $filenameWithoutExtension = implode('.',$p);
+          $filenameWithoutExtension = str_replace('_', ' ', $filenameWithoutExtension);
+          $filenameWithoutExtension = trim(str_replace('-', ' ', $filenameWithoutExtension));
+        } else {
+          $filenameWithoutExtension = $filename;
+        }
         $size = $_FILES['file']['size'];
         $media = new Media();
         $media->title = $filenameWithoutExtension;
@@ -187,7 +191,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
     return $response->withJson(['currentUser' => $currentUser]);
   });
 
-  $this->delete('/list', function($request, $response, $args) {
+  $this->delete('/list', function($request, $response) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('media.delete')) {
       $queryParams = $request->getQueryParams();
@@ -197,6 +201,49 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
         $path = $contentToDelete->getPath();
         $contentToDelete->delete();
         @unlink($path);
+      }
+    }
+    return $response->withJson(['currentUser' => $currentUser]);
+  });
+
+  $this->post('/tags', function($request, $response) {
+    $currentUser = User::getAuthenticated();
+    if($currentUser->can('media.update')) {
+      $body = (object) $request->getParsedBody();
+      $action = $body->action;
+      $tags = $body->tags;
+      $idsList = explode(',', $body->id);
+      switch($action) {
+        default:
+          break;
+        case 'add':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Media((int) $id);
+            $contentToUpdate->addTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'replace':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Media((int) $id);
+            $contentToUpdate->setTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'remove':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Media((int) $id);
+            $contentToUpdate->removeTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'removeall':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Media((int) $id);
+            $contentToUpdate->removeTags();
+            $contentToUpdate->save();
+          }
+          break;
       }
     }
     return $response->withJson(['currentUser' => $currentUser]);

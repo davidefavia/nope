@@ -4,7 +4,7 @@
     <p class="text-danger">This operation cannot be undone.</p>
   </nope-modal-body>
   <nope-modal-footer>
-  <a class="btn btn-default" nope-modal-close>Close</a>
-  <a class="btn btn-danger" ng-click="deleteUser();">Yes, delete</a>
+  <a href="" class="btn btn-default" nope-modal-close>Close</a>
+  <a href="" class="btn btn-danger" ng-click="deleteUser();">Yes, delete</a>
   </nope-modal-footer>
 </nope-modal>

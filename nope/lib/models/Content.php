@@ -114,6 +114,26 @@ class Content extends Model {
     R::tag($this->model,$tags);
   }
 
+  function removeTags($tags = null) {
+    if(is_string($tags)) {
+      $tags = array_map('trim', explode(',',$tags));
+    } elseif(is_array($tags)) {
+      $tags = array_map('trim', $tags);
+    } else {
+      $tags = $this->getTags();
+    }
+    R::untag($this->model, $tags);
+  }
+
+  function addTags($tags) {
+    if(is_string($tags)) {
+      $tags = array_map('trim', explode(',',$tags));
+    } elseif(is_array($tags)) {
+      $tags = array_map('trim', $tags);
+    }
+    R::addTags($this->model, $tags);
+  }
+
   function hasTag($tag) {
     return $this->hasTags([$tag]);
   }

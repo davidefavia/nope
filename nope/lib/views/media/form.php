@@ -7,7 +7,7 @@
     <div class="card-image-block">
       <nope-lazy src="media.preview.thumb"></nope-lazy>
       <div class="btn-group btn-group-sm toolbar">
-        <a ng-click="media.starred=!media.starred;" class="btn text-white"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
+        <a href="" ng-click="media.starred=!media.starred;" class="btn text-white"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
         <a href="" class="btn text-white" ng-click="$parent.rotate(media,90);" ng-if="media.isImage"><i class="fa fa-rotate-left"></i></a>
         <a href="" class="btn text-white" ng-click="$parent.rotate(media,-90);" ng-if="media.isImage"><i class="fa fa-rotate-right"></i></a>
         <a href="" nope-zoom="media.url" class="btn text-white" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>

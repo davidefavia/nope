@@ -7,7 +7,7 @@
     <title>Admin</title>
     <link href="<?php echo path('lib/assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/simplemde.min.css'); ?>" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap-flex.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/photoswipe.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/default-skin/default-skin.css'); ?>" rel="stylesheet" />

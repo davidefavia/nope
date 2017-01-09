@@ -4,10 +4,12 @@
 .tmpl-searchbar {
   .list-column {
     margin-top: 65px;
+    padding:0;
     &.has-more {
       margin-bottom: 65px;
     }
     &>.row {
+      margin:0;
       &>div {
         padding: 0 10px;
         margin-bottom: 20px;

@@ -357,11 +357,15 @@
    /**
     * Run!
     */
-   .run(['$rootScope', '$location', '$state', '$nopeModal', '$nopeToast', function($rootScope, $location, $state, $nopeModal, $nopeToast) {
+   .run(['$rootScope', '$location', '$window', '$state', '$nopeModal', '$nopeToast', function($rootScope, $location, $window, $state, $nopeModal, $nopeToast) {
 
-     $rootScope.$on('$stateChangeSuccess', function(e) {
+     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
        $rootScope.selectedPath = $location.path();
-       //console.log(arguments);
+       var p = ['n!'];
+       if(toState.title) {
+         p.push(toState.title);
+       }
+       $window.document.title = p.join(' » ');
      });
 
      $rootScope.$on('$stateChangeError', function() {

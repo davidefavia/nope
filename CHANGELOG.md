@@ -2,16 +2,19 @@
 
 ### Libraries
 - Updated `composer` libraries.
-- Updated `bootstrap` to version 4.0.0-alpha.5.
+- Updated `bootstrap` to version 4.0.0-alpha.6.
 - Added `Photoswipe` version 4.1.1.
 
 ### Features
 - Added version variable `NOPE_VERSION`.
 - Added `Media` bulk deletion.
+- Added `Media` bulk tags edit.
+- Added `addTags` and `removeTags` public methods to `Content`.
 
 ### Fixes
 - Fixed livereload reloading on image orientation change.
 - Fixed multiple timestamps added to images path on orientation change.
+- Fixed wrong title on `Media` creation.
 
 ## v0.13.0 (2016-09-23)
 
