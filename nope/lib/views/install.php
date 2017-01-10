@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Admin</title>
+    <link rel="icon" href="<?php echo path('lib/assets/img/nope.png'); ?>">
     <link href="<?php echo path('lib/assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
     <link href="<?php echo path('lib/assets/css/app.min.css'); ?>" rel="stylesheet" />
   </head>

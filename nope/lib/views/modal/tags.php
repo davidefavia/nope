@@ -10,14 +10,14 @@
           <option value="removeall">Remove all tags</option>
         </select>
       </div>
-      <div class="form-group" ng-if="bulkEditTagsOptions.action && bulkEditTagsOptions.action!=='removeall'">
-        <label>New tags (comma sepearated):</label>
-        <input type="text" class="form-control" ng-model="bulkEditTagsOptions.tags" placeholder="Tags (comma sepearated)" />
+      <div class="form-group">
+        <label>New tags (comma separated):</label>
+        <input type="text" class="form-control" ng-model="bulkEditTagsOptions.tags" placeholder="Tags (comma separated)" ng-disabled="!bulkEditTagsOptions.action || bulkEditTagsOptions.action==='removeall'" />
       </div>
     </nope-modal-body>
     <nope-modal-footer>
-      <a href="" class="btn btn-default" nope-modal-close>Close</a>
-      <button type="submit" class="btn btn-danger">Edit tags</button>
+      <a href="" class="btn btn-secondary btn-lg" nope-modal-close>Close</a>
+      <button type="submit" class="btn btn-danger btn-lg">Edit tags</button>
     </nope-modal-footer>
   </form>
 </nope-modal>

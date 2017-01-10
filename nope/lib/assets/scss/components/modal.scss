@@ -12,6 +12,27 @@
   .modal-content {
     border-radius: .25rem;
   }
+  .modal-footer {
+    padding:0;
+    display: flex;
+    .btn {
+      flex:1;
+      margin:0;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0;
+      &.btn-secondary {
+        border:0;
+        color: #999;
+      }
+      &:first-child {
+        border-bottom-left-radius: .125rem;
+      }
+      &:last-child {
+        border-bottom-right-radius: .125rem;
+      }
+    }
+  }
   &.modal--zoom {
     .modal-content {
       border:0;
@@ -26,6 +47,35 @@
     }
   }
   &.modal--upload {
+    .modal-body {
+      &.uploading {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    }
+    .list-group {
+      margin: -15px;
+      border-radius:0;
+    }
+    .list-group-item {
+      display: block;
+      border-radius: 0;
+      border-left:0;
+      border-right:0;
+      &:first-child {
+        border-top:0;
+      }
+      &:last-child {
+        border-bottom:0;
+      }
+      h6 {
+        margin:0;
+        font-weight: normal;
+      }
+      p {
+        margin:0;
+      }
+    }
     .btn-upload {
       padding: 40px;
       border-style: dashed;
@@ -39,10 +89,6 @@
         display: block;
         font-size: 3rem;
       }
-    }
-    progress {
-      height: 4px;
-      margin:0;
     }
   }
 }

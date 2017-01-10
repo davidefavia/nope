@@ -64,9 +64,9 @@
     </div>
   </nope-modal-body>
   <nope-modal-footer>
-    <a href="" class="btn btn-default" nope-modal-close>Close</a>
-    <a href="" class="btn btn-info" ng-if="todayVisible" ng-click="selectNow();">Now</a>
-    <a href="" class="btn btn-info" ng-if="todayVisible" ng-click="selectToday();">Today</a>
-    <a href="" class="btn btn-success" ng-disabled="!selectedDate || !canSelect" ng-click="select()">Select</a>
+    <a href="" class="btn btn-secondary btn-lg" nope-modal-close>Close</a>
+    <a href="" class="btn btn-info btn-lg" ng-if="todayVisible" ng-click="selectNow();">Now</a>
+    <a href="" class="btn btn-info btn-lg" ng-if="todayVisible" ng-click="selectToday();">Today</a>
+    <a href="" class="btn btn-success btn-lg" ng-disabled="!selectedDate || !canSelect" ng-click="select()">Select</a>
   </nope-modal-footer>
 </nope-modal>

@@ -10,6 +10,7 @@
 - Added `Media` bulk deletion.
 - Added `Media` bulk tags edit.
 - Added `addTags` and `removeTags` public methods to `Content`.
+- Added `Media` list upload.
 
 ### Fixes
 - Fixed livereload reloading on image orientation change.

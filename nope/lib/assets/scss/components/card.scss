@@ -1,5 +1,6 @@
 .card {
   border: 1px solid rgba(#dfdfdf, .75);
+  transition: border-color 200ms;
   .card-image-block {
     position: relative;
     .provider {
@@ -126,14 +127,18 @@
       .btn {
         padding:0;
         color: rgba(#000, .25);
+        transition: color 200ms;
         &:hover {
-          color: rgba(green, .5);
+          color: rgba($n-brand-success, .5);
         }
         &.btn-selected {
-          color: green;
+          color: $n-brand-success;
         }
       }
     }
+  }
+  &.card--selected {
+    border-color: $n-brand-success;
   }
   &.card--media-detail {
     $h: 200px;

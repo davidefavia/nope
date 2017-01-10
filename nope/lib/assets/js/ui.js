@@ -305,11 +305,13 @@
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           this.close = function() {
             $element.remove();
+            $scope.$emit('nope.modal.close');
           }
 
           $scope.close = function($event) {
             if (angular.element($event.target).hasClass('modal')) {
               $element.remove();
+              $scope.$emit('nope.modal.close');
             }
           }
         }]
@@ -381,21 +383,23 @@
         },
         link: function($scope, $element, $attrs) {
           var theModal;
-          $scope.progressList = {};
-          $scope.showButton = false;
-          $scope.uploadingStatus = '';
           $element.addClass('nope-upload-modal');
           $element.on('click', function(e) {
             e.preventDefault();
+            $scope.showFooter = false;
             $nopeModal.fromTemplateUrl('view/modal/upload.html', $scope).then(function(modal) {
               theModal = modal;
               theModal.show();
             });
           });
-          
           $scope.onDone = function() {
+            $scope.showFooter = true;
+          }
+          var dismiss = $scope.$on('nope.modal.close', $scope.onDoneFooter);
+          $scope.onDoneFooter = function() {
             theModal.hide();
             $scope.onUploadDone();
+            dismiss();
           }
         }
       }
@@ -408,14 +412,17 @@
         scope: {
           onDone: '&nopeUpload',
           accept: '@',
-          onProgress: '=',
-          status: '=uploadingStatus'
+          onProgress: '='
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
-          $scope.onProgress = {};
+          $scope.onProgress = {
+            list: {},
+            status: ''
+          };
+          $scope.onStatus = '';
           $scope.uploadFiles = function(files) {
             var promises = [];
-            $scope.uploadingStatus = 'uploading';
+            $scope.onProgress.status = 'uploading';
             angular.forEach(files, function(file, i) {
               var q = Upload.upload({
                 url: 'content/media/upload',
@@ -424,14 +431,14 @@
                 }
               }).then(function (resp) {
               }, function (resp) {
-                $scope.onProgress[resp.config.data.file.name] = {
+                $scope.onProgress.list[resp.config.data.file.name] = {
                   percentage: 0,
                   error: true,
                   errorMessage: (resp.data.exception.length?resp.data.exception[0].message:resp.statusText)
                 };
               }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                $scope.onProgress[evt.config.data.file.name] = {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total, 10);
+                $scope.onProgress.list[evt.config.data.file.name] = {
                   percentage: progressPercentage,
                   error: false
                 };
@@ -439,10 +446,10 @@
               promises.push(q);
             });
             $q.all(promises).then(function() {
-              $scope.uploadingStatus = 'done';
+              $scope.onProgress.status = 'done';
               $scope.onDone();
             }, function() {
-              $scope.uploadingStatus = 'done';
+              $scope.onProgress.status = 'error';
               $scope.onDone();
             });
           }

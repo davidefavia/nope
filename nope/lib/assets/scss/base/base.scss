@@ -8,6 +8,16 @@ label {
 .pagination-text {
   font-size: .8rem;
 }
+.no-results {
+  margin-top: 30px;
+  color: #d5d5d5;
+  text-align: center;
+  font-size: 2rem;
+  i {
+    display: block;
+    font-size: 12rem;
+  }
+}
 .info-text {
   padding: 0 15px;
 }
@@ -17,5 +27,10 @@ label {
   }
   &:active {
     outline:none;
+  }
+}
+.form-control {
+  @include placeholder {
+    color: #999;
   }
 }
