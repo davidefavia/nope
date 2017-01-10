@@ -5,6 +5,7 @@
       $stateProvider
         .state('app.gallery', {
           url: 'gallery',
+          title: 'Gallery',
           views: {
             'content@app': {
               templateUrl: 'view/gallery/list.html',
@@ -14,6 +15,7 @@
         })
         .state('app.gallery.create', {
           url: '/create',
+          title: 'Gallery create',
           views: {
             'content': {
               templateUrl: 'view/gallery/form.html',
@@ -23,6 +25,7 @@
         })
         .state('app.gallery.detail', {
           url: '/view/{id:int}',
+          title: 'Gallery detail',
           views: {
             'content': {
               templateUrl: 'view/gallery/form.html',
@@ -35,9 +38,26 @@
      * Controller
      */
     .controller('GalleriesListController', ['$scope', '$rootScope', '$location', '$state', '$stateParams', '$nopeModal', '$nopeUtils', 'Gallery', function($scope, $rootScope, $location, $state, $stateParams, $nopeModal,  $nopeUtils, Gallery) {
+      $scope.bulkSelection = [];
       $scope.contentType = 'gallery';
       $scope.contentsList = [];
       $scope.q = $location.search();
+
+      $scope.openDetail = function(p) {
+        $scope.bulkSelection = [];
+        $state.go('app.gallery.detail', {
+          id: p.id
+        }, {
+          inherit: true
+        }).then(function(){
+          $location.search($scope.q);
+        });
+      }
+
+      $scope.closeDetail = function() {
+        $scope.selectedGallery = null;
+        $location.path('gallery');
+      }
 
       $scope.search = function(q, page) {
         page = page || 1;
@@ -86,6 +106,7 @@
     }])
     .controller('GalleryCreateController', ['$scope', '$state', 'Gallery', function($scope, $state, Gallery) {
       $scope.gallery = new Gallery();
+      $scope.$parent.selectedGallery = $scope.gallery;
 
       $scope.save = function() {
         Gallery.save($scope.gallery, function(data) {

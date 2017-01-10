@@ -395,7 +395,11 @@
           $scope.onDone = function() {
             $scope.showFooter = true;
           }
-          var dismiss = $scope.$on('nope.modal.close', $scope.onDoneFooter);
+          var dismiss = $scope.$on('nope.modal.close', function() {
+            theModal.hide();
+            $scope.onUploadDone();
+            dismiss();
+          });
           $scope.onDoneFooter = function() {
             theModal.hide();
             $scope.onUploadDone();
@@ -469,7 +473,7 @@
       return {
         restrict: 'E',
         template: '<form name="importForm" ng-submit="importMedia();">\
-          <div class="form-group">\
+          <div class="form-group" ng-show="!onProgress.status">\
             <label>or import from url:</label>\
             <div class="input-group">\
               <input type="url" class="form-control" ng-model="importUrl" required placeholder="Insert URL" >\
@@ -478,16 +482,28 @@
               </div>\
             </div>\
           </div>\
+          <p ng-show="onProgress.status===\'importing\'">Importing...</p>\
+          <div ng-show="onProgress.status===\'done\'">\
+            <p><strong>{{onProgress.data.title}}</strong> successfully imported from {{onProgress.data.provider}}.</p>\
+          </div>\
         </form>',
         replace: true,
         scope: {
-          onDone: '&onDone'
+          onDone: '&onDone',
+          onProgress: '='
         },
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
           $scope.importMedia = function() {
+            $scope.onProgress = {
+              status: 'importing'
+            };
             Media.import({
               url: $scope.importUrl
-            }, function() {
+            }, function(data) {
+              $scope.onProgress = {
+                status: 'done',
+                data: data
+              };
               $scope.onDone();
             });
           }

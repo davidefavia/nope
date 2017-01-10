@@ -139,6 +139,9 @@
   }
   &.card--selected {
     border-color: $n-brand-success;
+    .card-block {
+      background-color: rgba($n-brand-success, .15);
+    }
   }
   &.card--media-detail {
     $h: 200px;

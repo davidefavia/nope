@@ -1,13 +1,13 @@
 <form name="galleryForm" ng-submit="save();">
-  <div class="panel panel-default">
-    <div class="panel-heading content-author" ng-if="gallery.id">
-      <div class="btn-group btn-group-xs toolbar pull-right">
+  <div class="card card--media card--media-detail">
+    <div class="card-header">
+      <div class="btn-group btn-group-xs toolbar pull-right" ng-if="gallery.id">
         <a ng-click="gallery.starred=!gallery.starred;" class="btn star"><i class="fa" ng-class="{'fa-star-o':!gallery.starred,'fa-star':gallery.starred}"></i></a>
         <a href="" nope-content-delete="$parent.deleteContentOnClick(gallery);" ng-model="gallery" class="btn text-danger"><i class="fa fa-trash"></i></a>
       </div>
-      <nope-author content="gallery" class="pull-left"></nope-author>
+      <a href="" class="btn btn-sm btn-light text-muted" ng-click="$parent.closeDetail();"><i class="fa fa-close"></i></a>
     </div>
-    <div class="panel-body">
+    <div class="card-block card-form">
       <div class="form-group" ng-class="{'has-error':(!galleryForm.title.$valid && galleryForm.title.$touched)}">
         <input type="text" name="title" class="form-control input-lg" placeholder="Gallery title" ng-model="gallery.title" required />
       </div>
@@ -48,10 +48,8 @@
         }
       ?>
     </div>
-    <div class="panel-footer">
-      <div class="form-group">
-        <button class="btn btn-default btn-block" ng-disabled="galleryForm.$invalid" ng-class="{'btn-success':!galleryForm.$invalid}">Save</button>
-      </div>
+    <div class="card-footer">
+      <button class="btn btn-default btn-block" ng-disabled="galleryForm.$invalid" ng-class="{'btn-success':!galleryForm.$invalid}">Save</button>
     </div>
   </div>
 </form>

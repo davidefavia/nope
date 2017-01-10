@@ -79,10 +79,12 @@
         }, function() {
           $scope.$emit('nope.toast.success', 'Media "'+t+'" deleted.');
           $scope.search($scope.q);
+          $scope.closeDetail();
         });
       }
 
       $scope.openDetail = function(p) {
+        $scope.bulkSelection = [];
         $state.go('app.media.detail', {
           id: p.id
         }, {

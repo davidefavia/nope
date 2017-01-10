@@ -295,7 +295,7 @@
        request : function(request) {
          var $nopeLoading = $injector.get('$nopeLoading');
          // @TODO
-         if(!/media\/upload/.test(request.url)) {
+         if(!/media\/(upload|import)/.test(request.url)) {
            $nopeLoading.show();
          }
          if(!request.cache) {
@@ -328,9 +328,9 @@
              return $q.reject(reason);
            }
          } else {
-           //if(!/media\/upload/.test(reason.config.url)) {
+           if(!/media\/(upload|import)/.test(reason.config.url)) {
              $rootScope.$emit('nope.error', reason);
-           //}
+           }
            return $q.reject(reason);
          }
          return reason;

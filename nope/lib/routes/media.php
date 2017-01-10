@@ -51,7 +51,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/media', function() {
           $filenameWithoutExtension = str_replace('_', ' ', $filenameWithoutExtension);
           $filenameWithoutExtension = trim(str_replace('-', ' ', $filenameWithoutExtension));
         } else {
-          //$filenameWithoutExtension = $filename;
+          $filenameWithoutExtension = $filename;
         }
         $size = $_FILES['file']['size'];
         $media = new Media();

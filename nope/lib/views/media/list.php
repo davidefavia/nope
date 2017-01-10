@@ -1,7 +1,7 @@
-<div id="media" class="row tmpl-searchbar" ng-class="{'has-detail':selectedMedia}">
+<div id="media" class="row tmpl-searchbar tmpl-detail-column" ng-class="{'has-detail':selectedMedia}">
   <div class="backdrop" ng-click="closeDetail();"></div>
   <div class="col list-column" ng-class="{'has-more':metadata.next>metadata.actual}">
-    <nav class="navbar fixed-top navbar-light bg-faded offset-md-3 offset-sm-3 offset-lg-2 searchbar" nope-can="media.read">
+    <nav class="navbar fixed-top navbar-light offset-md-3 offset-sm-3 offset-lg-2 searchbar" nope-can="media.read">
       <form name="searchForm" ng-submit="search(q);">
         <div class="row">
           <div class="col-7">
@@ -27,7 +27,7 @@
     <div class="info-text clearfix">
       <p class="pagination-text text-xs-left text-muted pull-left" ng-show="contentsList.length"><a href="" class="text-primary" ng-click="bulkSelection=[].concat(contentsList);">Select all</a> | <a href="" class="text-primary" ng-click="bulkSelection=[];">Clear selection</a><span ng-show="bulkSelection.length">. Selected items: {{bulkSelection.length}}. With selected: <a href="" class="text-danger" nope-content-delete="deleteBulkContentOnClick(p);" ng-model="bulkSelection">delete</a> or <a href="" class="text-info" ng-click="bulkEditTags();">edit tags</a>.</span></p>
       <p ng-show="contentsList.length" class="pagination-text text-xs-right text-muted pull-right">Items {{metadata.actual===metadata.last?metadata.count:metadata.actual*metadata.rpp}} of {{metadata.count}}</p>
-      <p class="pagination-text ng-cloak no-results" ng-show="!contentsList.length"><i class="fa fa-frown-o" aria-hidden="true"></i>No media found<span ng-if="q.query || q.mimetype"> with filter "{{q}}"</span>.</p>
+      <p class="pagination-text ng-cloak no-results" ng-show="!contentsList.length"><i class="fa fa-frown-o"></i>No media found<span ng-if="q.query || q.mimetype"><br/>with filter <span ng-if="q.query">"{{q.query}}"</span><span ng-if="q.query && q.mimetype"> and </span><span ng-if="q.mimetype">"{{q.mimetype}}"</span></span>.</p>
     </div>
     <div class="row">
       <div class="col-md-6 col-lg-3" ng-repeat="p in contentsList" ng-show="contentsList.length">

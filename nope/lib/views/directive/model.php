@@ -74,5 +74,5 @@ $templateList = sprintf($template, 'dnd-nodrag', 'item');
       </li>
     </ul>
   </div>
-  <a href="" class="btn btn-block btn-default" ng-click="openModal($event)" ng-hide="(!multiple && ngModel) && !button">{{label?label+ ' ':''}}<i class="fa fa-{{icon || 'plus'}}"></i></a>
+  <a href="" class="btn btn-block btn-outline-secondary" ng-click="openModal($event)" ng-hide="(!multiple && ngModel) && !button">{{label?label+ ' ':''}}<i class="fa fa-{{icon || 'plus'}}"></i></a>
 </div>

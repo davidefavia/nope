@@ -1,0 +1,11 @@
+#gallery {
+  .detail-column {
+    width: 50%;
+    right:-50%;
+  }
+  &.has-detail {
+    .detail-column {
+      right:0;
+    }
+  }
+}

@@ -1,36 +1,5 @@
 #media {
-  position: relative;
-  .backdrop {
-    cursor: pointer;
-    position: fixed;
-    left:0;
-    top:0;
-    opacity:0;
-    background: $n-backdrop-color;
-    transition: opacity 200ms;
-    z-index: 1050;
-  }
   form, .card--media-detail {
     height: 100%;
-  }
-  &.has-detail {
-    .backdrop {
-      bottom:0;
-      right:0;
-      opacity:1;
-    }
-    .detail-column {
-      right:0;
-    }
-  }
-  .detail-column {
-    background: #fff;
-    position: fixed;
-    top:0;
-    bottom: 0;
-    width: 25%;
-    right:-25%;
-    transition: right 200ms;
-    z-index: 3010;
   }
 }
