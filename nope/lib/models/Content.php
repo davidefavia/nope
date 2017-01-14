@@ -152,9 +152,7 @@ class Content extends Model {
         } elseif($f === 'custom') {
           $this->setModelSettings($body[$f]);
         } else {
-          if(array_key_exists($f, $body)) {
-            $this->$f = $body[$f];
-          }
+          $this->$f = $body[$f];
         }
       }
     }

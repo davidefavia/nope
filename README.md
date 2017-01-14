@@ -100,7 +100,7 @@ See [LICENSE](LICENSE) file.
 
 ## Credits
 
-Splash photo by [Nick Scheebart @ Unsplash](https://unsplash.com/photos/gkJiLjGayYI), logo font [Megrim](https://fonts.google.com/specimen/Megrim).
+Splash photo by [Lukas Neasi @ Unsplash](https://unsplash.com/photos/4dRyVyXN6Lg).
 
 [angular]: https://angularjs.org/
 [bootstrap]: http://getbootstrap.com/

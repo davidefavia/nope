@@ -283,6 +283,38 @@
         }
       }
     }])
+    .directive('nopeScroll', [function() {
+      return {
+        restrict: 'A',
+        scope: {
+          options: '=nopeScroll'
+        },
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          // https://developer.mozilla.org/en-US/docs/Web/Events/scroll
+          var lastKnownScrollPosition = 0;
+          var ticking = false;
+
+          function doAction(scrollPosition) {
+            if(scrollPosition > $scope.options.amount) {
+              $element.addClass($scope.options.cssClass);
+            } else {
+              $element.removeClass($scope.options.cssClass);
+            }
+          }
+
+          window.addEventListener('scroll', function(e) {
+            lastKnownScrollPosition = window.scrollY;
+            if (!ticking) {
+              window.requestAnimationFrame(function() {
+                doAction(lastKnownScrollPosition);
+                ticking = false;
+              });
+            }
+            ticking = true;
+          });
+        }]
+      }
+    }])
     .directive('nopeModal', [function() {
       return {
         restrict: 'E',
@@ -529,6 +561,8 @@
                     h: $scope.item.height
                 }
             ];
+
+            console.log(items);
 
             // define options (if needed)
             var options = {
@@ -1109,14 +1143,19 @@
         scope : {
           src : '='
         },
-        template: '<div class="lazy" ng-class="{loaded:!loading}">\
+        template: '<div class="lazy" ng-class="{loaded:!loading,\'default\':isDefault}">\
           <i class="loading fa fa-circle-o-notch fa-spin"></i>\
           <div class="bg" style="background-image: url({{imageUrl}})"></div>\
         </div>',
         controller : ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          $scope.isDefault = false;
           $scope.$watch('src', function(n,o) {
             if(n) {
               _load($scope.src, false);
+            } else {
+              $scope.loading = false;
+              $scope.isDefault = true;
+              $scope.imageUrl = window.NOPE_TEMPLATES_PATH + 'assets/img/nope.png';
             }
           }, true);
 
@@ -1126,6 +1165,13 @@
             image.onload = function() {
               $scope.imageUrl = image.src;
               $scope.loading = false;
+              $scope.isDefault = false;
+              $scope.$apply();
+            }
+            image.onerror = function() {
+              $scope.loading = false;
+              $scope.isDefault = true;
+              $scope.imageUrl = window.NOPE_TEMPLATES_PATH + 'assets/img/nope.png';
               $scope.$apply();
             }
             image.src = $scope.src;

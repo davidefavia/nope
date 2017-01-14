@@ -17,7 +17,7 @@
           url: '/create',
           title: 'Gallery create',
           views: {
-            'content': {
+            'content@app': {
               templateUrl: 'view/gallery/form.html',
               controller: 'GalleryCreateController'
             }
@@ -27,7 +27,7 @@
           url: '/view/{id:int}',
           title: 'Gallery detail',
           views: {
-            'content': {
+            'content@app': {
               templateUrl: 'view/gallery/form.html',
               controller: 'GalleryDetailController'
             }
@@ -39,9 +39,43 @@
      */
     .controller('GalleriesListController', ['$scope', '$rootScope', '$location', '$state', '$stateParams', '$nopeModal', '$nopeUtils', 'Gallery', function($scope, $rootScope, $location, $state, $stateParams, $nopeModal,  $nopeUtils, Gallery) {
       $scope.bulkSelection = [];
-      $scope.contentType = 'gallery';
       $scope.contentsList = [];
       $scope.q = $location.search();
+
+      $scope.deleteBulkContentOnClick = function() {
+        var idsList = $scope.bulkSelection.map(function(item) {
+          return item.id;
+        });
+        return Gallery.deleteList({
+          id: idsList.join(',')
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Galleries deleted.');
+          $scope.search($scope.q);
+        });
+      }
+
+      $scope.bulkEditTags = function() {
+        $scope.bulkEditTagsOptions = {};
+        $nopeModal.fromTemplateUrl('view/modal/tags.html', $scope).then(function(modal) {
+          $scope.bulkEditTagsModal = modal;
+          $scope.bulkEditTagsModal.show();
+        });
+      };
+
+      $scope.bulkEditTagsAction = function(action, tags) {
+        $scope.bulkEditTagsModal.hide();
+        var idsList = $scope.bulkSelection.map(function(item) {
+          return item.id;
+        });
+        return Gallery.editTagsList({}, {
+          id: idsList.join(','),
+          action: action,
+          tags: tags
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Gallery tags edited.');
+          $scope.search($scope.q);
+        });
+      }
 
       $scope.openDetail = function(p) {
         $scope.bulkSelection = [];
@@ -54,13 +88,12 @@
         });
       }
 
-      $scope.closeDetail = function() {
-        $scope.selectedGallery = null;
-        $location.path('gallery');
-      }
-
       $scope.search = function(q, page) {
         page = page || 1;
+        $location.search(q);
+        if(page===1) {
+          $scope.bulkSelection = [];
+        }
         Gallery.query(angular.extend({
           page : page
         }, q), function(data, headers) {
@@ -80,6 +113,18 @@
           $state.go('app.gallery', {}, {
             reload: true
           });
+        });
+      }
+
+      $scope.deleteBulkContentOnClick = function() {
+        var idsList = $scope.bulkSelection.map(function(item) {
+          return item.id;
+        });
+        return Gallery.deleteList({
+          id: idsList.join(',')
+        }, function() {
+          $scope.$emit('nope.toast.success', 'Galleries deleted.');
+          $scope.search($scope.q);
         });
       }
 
@@ -106,7 +151,6 @@
     }])
     .controller('GalleryCreateController', ['$scope', '$state', 'Gallery', function($scope, $state, Gallery) {
       $scope.gallery = new Gallery();
-      $scope.$parent.selectedGallery = $scope.gallery;
 
       $scope.save = function() {
         Gallery.save($scope.gallery, function(data) {
@@ -118,6 +162,14 @@
           });
         });
       }
+
+      $scope.deleteContentOnClick = function(g) {
+        var title = g.title;
+        Gallery.delete(g, function(data) {
+          $scope.$emit('nope.toast.success', 'Gallery "'+title+'" created.');
+          $state.go('app.gallery');
+        });
+      }
     }])
     .controller('GalleryDetailController', ['$scope', '$filter', '$state', '$stateParams', 'Gallery', function($scope, $filter, $state, $stateParams, Gallery) {
 
@@ -125,7 +177,6 @@
         id: $stateParams.id
       }, function(data) {
         $scope.gallery = data;
-        $scope.$parent.$parent.selectedGallery = $scope.gallery;
       });
 
       $scope.$on('nope.gallery.updated', function(e, data) {
@@ -136,7 +187,14 @@
       });
 
       $scope.save = function() {
-        $scope.$parent.save($scope.gallery);
+        Gallery.update($scope.gallery, function(data) {
+          $scope.$emit('nope.toast.success', 'Gallery "'+data.title+'" updated.');
+          $state.go('app.gallery.detail', {
+            id: data.id
+          }, {
+            reload: true
+          });
+        });
       }
 
     }])
@@ -149,6 +207,14 @@
       }, {
         update: {
           method: 'PUT'
+        },
+        deleteList: {
+          method: 'DELETE',
+          url: 'content/gallery/list'
+        },
+        editTagsList: {
+          method: 'POST',
+          url: 'content/gallery/tags'
         }
       });
     }]);

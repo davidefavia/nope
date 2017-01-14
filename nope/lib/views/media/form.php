@@ -10,7 +10,7 @@
         <a href="" ng-click="media.starred=!media.starred;" class="btn text-white"><i class="fa" ng-class="{'fa-star-o':!media.starred,'fa-star':media.starred}"></i></a>
         <a href="" class="btn text-white" ng-click="$parent.rotate(media,90);" ng-if="media.isImage"><i class="fa fa-rotate-left"></i></a>
         <a href="" class="btn text-white" ng-click="$parent.rotate(media,-90);" ng-if="media.isImage"><i class="fa fa-rotate-right"></i></a>
-        <a href="" nope-zoom="media.url" class="btn text-white" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>
+        <a href="" nope-zoom="media" class="btn text-white" ng-if="media.isImage"><i class="fa fa-arrows-alt"></i></a>
         <a href="" class="btn text-danger" nope-content-delete="$parent.deleteContentOnClick(media);" ng-model="media"><i class="fa fa-trash"></i></a>
       </div>
       <h4 class="provider" ng-if="media.provider" ><i class="fa {{'fa-'+(media.provider | lowercase)}}" ></i> {{media.provider}}</h4>

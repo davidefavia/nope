@@ -1,6 +1,8 @@
 label {
   font-size: .75rem;
   color: #999;
+  text-transform: uppercase;
+  font-style: italic;
 }
 .card, input, select, textarea, .form-control, .form-group, .btn {
   border-radius: .125rem;
@@ -22,6 +24,7 @@ label {
   padding: 0 15px;
 }
 .btn {
+  cursor: pointer;
   &:focus {
     box-shadow: none;
   }

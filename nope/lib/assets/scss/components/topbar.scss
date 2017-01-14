@@ -1,0 +1,10 @@
+.topbar {
+  transition: background 250ms, box-shadow 250ms;
+  .form-group {
+    margin-bottom:0;
+  }
+  &.add-bg {
+    background: #fff;
+    box-shadow: 0 0 5px #dfdfdf;
+  }
+}

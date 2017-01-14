@@ -57,7 +57,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     }
   });
 
-  $this->get('/{id}', function($request, $response, $args) {
+  $this->get('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.read')) {
       $content = Gallery::findById($args['id']);
@@ -65,7 +65,7 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     return $response->withJson(['currentUser' => $currentUser, "data" => $content]);
   });
 
-  $this->put('/{id}', function($request, $response, $args) {
+  $this->put('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.update')) {
       $fields = ['title', 'body', 'tags', 'slug', 'starred', 'priority'];
@@ -95,11 +95,67 @@ $app->group(NOPE_ADMIN_ROUTE . '/content/gallery', function() {
     }
   });
 
-  $this->delete('/{id}', function($request, $response, $args) {
+  $this->delete('/{id:[0-9]+}', function($request, $response, $args) {
     $currentUser = User::getAuthenticated();
     if($currentUser->can('gallery.delete')) {
       $contentToDelete = new Gallery($args['id']);
       $contentToDelete->delete();
+    }
+    return $response->withJson(['currentUser' => $currentUser]);
+  });
+
+  $this->delete('/list', function($request, $response) {
+    $currentUser = User::getAuthenticated();
+    if($currentUser->can('gallery.delete')) {
+      $queryParams = $request->getQueryParams();
+      $idsList = explode(',', $queryParams['id']);
+      foreach ($idsList as $id) {
+        $contentToDelete = new Gallery((int) $id);
+        $contentToDelete->delete();
+      }
+    }
+    return $response->withJson(['currentUser' => $currentUser]);
+  });
+
+  $this->post('/tags', function($request, $response) {
+    $currentUser = User::getAuthenticated();
+    if($currentUser->can('gallery.update')) {
+      $body = (object) $request->getParsedBody();
+      $action = $body->action;
+      $tags = $body->tags;
+      $idsList = explode(',', $body->id);
+      switch($action) {
+        default:
+          break;
+        case 'add':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Gallery((int) $id);
+            $contentToUpdate->addTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'replace':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Gallery((int) $id);
+            $contentToUpdate->setTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'remove':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Gallery((int) $id);
+            $contentToUpdate->removeTags($tags);
+            $contentToUpdate->save();
+          }
+          break;
+        case 'removeall':
+          foreach ($idsList as $id) {
+            $contentToUpdate = new Gallery((int) $id);
+            $contentToUpdate->removeTags();
+            $contentToUpdate->save();
+          }
+          break;
+      }
     }
     return $response->withJson(['currentUser' => $currentUser]);
   });

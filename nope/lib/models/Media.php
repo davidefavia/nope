@@ -88,8 +88,10 @@ class Media extends Content {
         $info = getimagesize($this->getPath());
         $this->width = (int) $info[0];
         $this->height = (int) $info[1];
-        $palette = ColorThief::getPalette($this->getPath(), 8, 5);
-        $this->palette = json_encode($palette);
+        if(!$this->palette) {
+          $palette = ColorThief::getPalette($this->getPath(), 8, 5);
+          $this->palette = json_encode($palette);
+        }
       } catch(\Exception $e) {
       }
     }
@@ -114,6 +116,8 @@ class Media extends Content {
       $json->palette = json_decode($json->palette);
     }
     unset($json->cover);
+    unset($json->startPublishingDate);
+    unset($json->endPublishingDate);
     return $json;
   }
 

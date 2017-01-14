@@ -1,4 +1,4 @@
-<div id="gallery" class="row tmpl-searchbar tmpl-detail-column" ng-class="{'has-detail':selectedGallery}">
+<div id="gallery" class="row tmpl-searchbar">
   <div class="backdrop" ng-click="closeDetail();"></div>
   <div class="col list-column" ng-class="{'has-more':metadata.next>metadata.actual}">
     <nav class="navbar fixed-top navbar-light offset-md-3 offset-sm-3 offset-lg-2 searchbar" nope-can="gallery.read">
@@ -8,10 +8,10 @@
             <input type="text" class="form-control" ng-model="q.query" placeholder="Search" />
           </div>
           <div class="col">
-            <button type="submit" class="btn btn-secondary btn-info"><i class="fa fa-search"></i></button>
+            <button type="submit" class="btn btn-block btn-secondary btn-info"><i class="fa fa-search"></i></button>
           </div>
           <div class="col" nope-can="gallery.create" ng-if="!nope.isIframe">
-            <a href="#/gallery/create" class="btn btn-outline-danger" ng-click="selectedGallery=null;">Create new gallery <i class="fa fa-plus"></i></a>
+            <a href="#/gallery/create" class="btn btn-outline-danger">Create new gallery <i class="fa fa-plus"></i></a>
           </div>
         </div>
       </form>
@@ -26,6 +26,10 @@
         <div class="card card--media" ng-class="{active:p.id===selectedGallery.id,'card--selected':bulkSelection.hasItem(p)}">
           <div class="card-image-block">
             <nope-lazy src="p.cover.preview.thumb"></nope-lazy>
+            <div class="btn-group btn-group-sm toolbar" ng-if="!nope.isIframe">
+              <a href="" ng-click="p.starred=!p.starred;save(p,$index);" class="btn text-white"><i class="fa" ng-class="{'fa-star-o':!p.starred,'fa-star':p.starred}"></i></a>
+              <a href="" class="btn text-danger" nope-content-delete="deleteContentOnClick(p);" ng-model="p"><i class="fa fa-trash"></i></a>
+            </div>
             <div ng-if="!nope.isIframe" class="selection">
               <a href="" class="btn" ng-click="bulkSelection.toggleItem(p);" ng-class="{'btn-selected':bulkSelection.hasItem(p)}">
                 <i class="fa fa-check-circle fa-2x"></i>
@@ -39,7 +43,7 @@
           <div class="card-block">
             <a href="" ng-click="openDetail(p)" nope-content-selection="p" ng-model="selection" class="btn-select card-link">
               <h4 class="card-title"><i class="fa {{'fa-'+(p.provider | lowercase)}}" ng-if="p.provider"></i> {{p.title}} <i class="fa fa-pencil"></i></h4>
-              <p class="text-muted"><i class="fa fa-clock-o"></i> {{p.creationDate | nopeMoment: 'calendar'}}</p>
+              <p class="text-muted"><i class="fa fa-clock-o"></i> {{p.lastModificationDate | nopeMoment: 'calendar'}}</p>
             </a>
             <div ng-if="nope.isIframe" class="pull-right">
               <i class="fa fa-check-circle-o fa-2x" ng-show="!selection.hasItem(p);"></i>
@@ -68,5 +72,4 @@
       <a href="" class="btn btn-block btn-outline-info" ng-click="search(q,metadata.next)">More</a>
     </nav>
   </div>
-  <div class="detail-column" ui-view="content"></div>
 </div>

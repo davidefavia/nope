@@ -38,5 +38,16 @@ nope-lazy {
         opacity:1;
       }
     }
+    &.default {
+      background-color: #f4f4f4;
+      .bg {
+        background: {
+          position: center center;
+          repeat: no-repeat;
+          size: 96px;
+        }
+        opacity: .05;
+      }
+    }
   }
 }
